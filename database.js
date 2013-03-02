@@ -17,8 +17,10 @@ module.exports = function(callback) {
 
     
     var Content = schema.define('Content',{
-        id       : {type : Number , index : true},
-        name     : {type : String}    
+        id        : {type : Number , index : true},
+        name      : {type : String},   
+        latitude  : {type : Number},
+        longitude : {type : Number}
     });
 
 
