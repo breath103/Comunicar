@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+    	<div>
+    		<%contents.forEach(function(c,i){%>
+	   	 		<div>
+	   	 			<a href = "/contents/<%=c.name%>"> 
+	   	 				<%=c.id%> | <%=c.name%>
+	   	 			</a>
+	   	 		</div>		    
+	    	<%});%>
+	    </div>
+    </body>
+</html>

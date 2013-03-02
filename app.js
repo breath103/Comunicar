@@ -15,7 +15,7 @@ module.exports = function(db, callback) {
         app.use(express.logger('dev'));
         
         app.use(express.cookieParser());
-        app.use(express.session({ secret: 'something', store: new express.session.MemoryStore }));
+        app.use(express.session({ secret: 'Comunicar', store: new express.session.MemoryStore }));
         
         app.use(express.bodyParser());
         app.use(express.methodOverride());
@@ -53,6 +53,5 @@ module.exports = function(db, callback) {
 
 
     console.log("APP_CREATE_SUCCESS");
-
     callback(null, app);
 }

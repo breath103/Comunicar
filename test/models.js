@@ -7,11 +7,18 @@ describe("API", function() {
     var schema;
     before(function(done){
         database(function(err, db) {
-            should.exist(db);
             schema = db;
+            should.exist(schema);
             done();
         }); 
     });  
+    
+    describe(" DB Should Be Initialized",function(){
+    	it("++",function(){
+	   		should.exist(schema);
+	   	});
+    });
+    
     describe(" Models ", function() {
         describe(" User Model", function() {
             it("should on schema", function() {
@@ -27,29 +34,8 @@ describe("API", function() {
             });
         });
     });
-
-
-
-
-
-    /*
-    var schema = null;
-    before(function(done) {
-        database(function(err,db){
-            console(err,db);
-            schema = db;
-            done();
-        });
-    });
     
     
-    describe(" User Model ", function(done) {
-        var User = schema.models.User;
-        it(" Should Connect With User Table", function(done) {
-            User.all(function(err,users){
-                console.log(users);
-            });
-        });
-    });
-    */
+    
+    
 });

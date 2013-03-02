@@ -19,34 +19,48 @@ module.exports = function(app) {
     
     app.post("/login", function(req, res, next) {
         var user = req.body.user;
-        User.login(user, function(err, user) {
-            if (err) {
+        User.findOne({where : user}, function(err, user) {
+            if (err || !user) {
                 res.redirect("/login");
             }
             else {
-                req.session.user = user;
-                res.redirect("/" + user.name);
+	        	req.session.user = user;
+	        	res.redirect("/" + user.name);
             }
         });
     });
     
-    app.get("/signup",function(req,res,next){
+    app.get("/users/signup",function(req,res){
         res.render("user/create");
     });
 
     app.post("/users", function(req, res, next) {
-        console.log("++",req.body.user);
-        User.create(req.body.user, function(err, user) {
-            console.log("==",req.body.user);
-            if (err) next(err);
-            else {
-                res.redirect("/login");
-            }
-        });
+        var newUser = req.body.user;
+        console.log(newUser);
+        User.create(newUser,function (err,user) {
+        	if(err) {
+	    		next(err);    	
+        	}else {
+	    		res.json(user);
+			}
+		});
     });
     
 
-    app.get("/:name",User.findWithName,function(req,res,next){
+    app.get("/:name/*",function(req,res,next){
+    	User.findOne({ where : {name : req.param("name") }} ,function(err,user) { 
+	    	if(err) next(err);
+	    	else {
+	    		if(user){
+		    		req.user = user;
+		    		next();	
+	    		}else{
+		    		next("route");
+		    		//next(new Error("no user with name : " + req.param("name")));
+	    		}
+	    	}
+    	});
+    },function(req,res,next){
         if(req.user){
             next();
         } 
@@ -57,8 +71,21 @@ module.exports = function(app) {
     
     app.get("/:name",function(req,res){
         res.render("user/show",{
-            user : req.user
+            user : req.user || req.session.user
         });     
+    });
+    
+    app.get("/:name/contents",function(req,res){
+    	req.user.contents({},function(err,contents) { 
+	   		if(err) next(err);
+	   		else{
+		   		res.render("user/contents",{
+		        	"user" : req.user,
+		        	"contents" : contents
+		        });
+	   		} 	
+    	});
+       
     });
 
     console.log("       --USERS END--");

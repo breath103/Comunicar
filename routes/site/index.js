@@ -10,6 +10,7 @@ module.exports = function(app){
     
     require("./auth")(app);
     require("./users")(app);
-    
+    require("./contents")(app);
+
     console.log("   --SITES END--");
 };

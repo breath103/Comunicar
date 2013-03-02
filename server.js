@@ -8,9 +8,10 @@ process.on('uncaughtException', function(err) {
 
 try {
     Step(function() {
+    	console.log("DB init start");
         require("./database")(this);
     }, function(err, db) {
-        console.log(db);
+    	console.log("DB init END");
         try{
             require("./app")(db, this);
         }
