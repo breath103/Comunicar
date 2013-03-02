@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+		<title>게임</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+		
+		<link href="/css/main.css" rel="stylesheet" type="text/css" />
+		
+		<script src="/js/async.js"></script>
+		<script src="/js/step.js"></script>
+		<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>
+		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+		<script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
+		<script src="/diaryJS/facebook_contents_loader.js"></script>
+		<script>
+			function initFacebook(callback)
+			{
+				FB.init({ appId: '219361271536200', status: false, cookie: true, xfbml: true ,oauth:true});
+				FB.getLoginStatus(function(response) {
+				    if (response.authResponse && response.authResponse.userID) {
+				        callback();
+                    }
+                    else{
+                          FB.login(function(response){
+        		        	if (response.authResponse && response.authResponse.userID) {
+    				            callback();
+				            } else {
+				    
+                            }
+				        },{scope : "user_photos,publish_stream,publish_actions,email," + 
+                           "user_likes,user_birthday,user_education_history,user_hometown," + 
+                           "read_stream,user_about_me,read_friendlists,offline_access"});        
+                    }
+				});
+              
+			}	
+			
+			$(document).ready(function(){
+				initFacebook(function(){
+                        FB.ui({
+                            method: 'send',
+                            name: 'People Argue Just to Win',
+                            link: 'http://www.nytimes.com/2011/06/15/arts/people-argue-just-to-win-scholars-assert.html',
+                        });
+                    /*
+					FB.api('/100003298833229/feed', 'post', { message: "!!!!!테스트" }, function(response) {
+                        if (!response || response.error) {
+                            console.log(response,response.error);
+                            alert('Error occured');
+                        } else {
+                            alert('Post ID: ' + response.id);
+                        }
+                    });
+                    */
+				});
+			});
+	   	</script> 
+	   	<style>
+			html,body{
+				width:100%;
+				height:100%;
+				overflow:hidden;
+			}
+			*{
+				font-size: 1em;
+				letter-spacing: -1px;
+				font-family: NanumGothic,"Apple SD Gothic Neo","Malgun Gothic",AppleGothic,Dotum,sans-serif;
+				margin: 0px;
+				padding: 0px;
+			}
+			.site-container{
+				width:100%;
+				height:100%;
+				overflow:scroll;
+			}
+			.date-container{
+				border-radius:10px;
+				background-color: rgb(142, 194, 190);
+				width:500px;
+				height:auto;
+				margin-bottom:10px;
+			}
+			.date-container .title{
+				text-align: center;
+				font-family: "맑은 고딕";
+				font-size: 40px;
+			}
+			.Photo{
+				width:100%;
+				height: auto;
+				background-color: rgba(0, 0, 0, 0.28);
+				margin-bottom:8px;
+				border-radius:5px;
+			}
+			.Photo img{
+			}
+			.Photo .caption{
+			}
+			.Status{
+				width:100%;
+				height: auto;
+				background-color: rgba(0, 0, 0, 0.28);
+				margin-bottom:8px;
+				border-radius:5px;
+			}
+			.Link{
+				width:100%;
+				height: auto;
+				background-color: rgba(0, 0, 0, 0.28);
+				margin-bottom:8px;
+				border-radius:5px;
+			}
+			.Loading{
+				width:100%;
+				height:100%;
+				position:absolute;
+				left:0px;
+				top:0px;
+				background-color:black;
+				color:white;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="site-container">
+			
+		</div>
+	</body>
+</html>

@@ -1,0 +1,19 @@
+{
+	"name": "RollingPaper", 
+    "version": "0.0.1", 
+    "private": true, 
+    "engines": {
+    	"node": "0.8.x",
+    	"npm":  "1.1.x"
+    }, 
+    "dependencies": {
+    	"express"  :  "3.0.1",
+        "orm"      :  "2.0.2",
+    	"ejs"      :  "0.8.3",
+        "step"     :  "0.0.5",
+    	"mysql"    :  "2.0.0-alpha7",
+        "mocha"    :  "1.8.1",
+        "supertest":  "0.5.1",
+        "should"   :  "1.2.2"
+    }
+}
