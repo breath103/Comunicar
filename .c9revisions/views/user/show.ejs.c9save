@@ -1,0 +1,1 @@
+{"ts":1362223504212,"silentsave":true,"restoring":false,"patch":[[{"diffs":[[1,"<html>\n    <head>\n        <title></title>\n    </head>\n    <body>\n        <%=JSON.stringify(user)%><br/>\n        <ul>\n            <li>name : <%=user.name%></li>\n        </ul>\n    </body>\n</html>\n"]],"start1":0,"start2":0,"length1":0,"length2":194}]],"length":194}
