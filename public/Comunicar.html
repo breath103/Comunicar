@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/paper.css">
+        <link rel="shortcut icon" href="/icons/logo3.ico">
+        <script src="/js/jquery-1.7.1.js"></script>
+        <script src="/js/jquery.transit.min.js"></script>
+        <script src="/js/google_analytics.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+	        Array.prototype.lastObject = function() { 
+	        	return this[this.length-1];
+	        }
+
+            var socket = null;
+
+            function connectWS() {
+                console.log('Connecting to local server...');
+                if (socket == null) {
+
+                    socket = io.connect("/Comunicar");
+                    socket.emit("joinViewRoom");
+
+                    socket.on('message', function(data) {});
+
+                    socket.on('disconnect', function() {});
+
+                    socket.on("newImage", function(data) {
+                        $("body").append("<div class='image_container'><img src='" + data.image + "'/></div>");
+                        var newImage = $($(".image_container").lastObject());
+                        newImage.hide();
+                        newImage.fadeIn();
+                    });
+
+                }
+                socket.socket.connect();
+            }
+
+            $(document).ready(function() {
+                connectWS();
+            });
+        </script>
+        <style>
+            .image_container {
+                width:200px;
+                height:180px;
+            }
+            .image_container img {
+                width:100%;
+                height:100%;
+            }
+        </style>
+        <title>Rolling Paper</title>
+    </head>
+    
+    <body></body>
+
+</html>

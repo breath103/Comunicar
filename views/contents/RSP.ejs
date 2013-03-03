@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="/css/paper.css">
+		<link rel="shortcut icon" href="/icons/logo3.ico">
+		
+		<script src="/js/jquery-1.7.1.js"></script>
+		<script src="/js/jquery.transit.min.js"></script>
+		<script src="/js/google_analytics.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		
+		<script>
+			
+			function selectToString(select){
+				return ["가위","바위","보"][select];
+			}
+			
+			
+			var socket = null;
+			
+			
+	        function connectWS() {
+	            console.log('Connecting to local server...');
+	            if (socket == null) {
+	                socket = io.connect("http://localhost:8001/RSP",{'auto connect': false});
+	                socket.on('message', function (data){
+	       					
+	       			});
+	        		socket.on('disconnect',function(){
+	        				
+	        		});
+	        		socket.on("SERVER_SELECT",function(data){
+	        			$(".server_select").html(selectToString(data.select));
+	        		});
+	        		socket.on("GAME_START",function(data){
+	        			
+	        		});
+	        		socket.on("GAME_TIMER",function(data){
+	        			$(".timer_container").html(data.time);
+	        		});
+	        		socket.on("GAME_END",function(data){
+	        		
+	        		});
+	        	}
+	        	socket.socket.connect();
+	        }
+	        
+			$(document).ready(function(){
+				connectWS();
+			});
+		</script>
+		<style>
+			.select_container{
+				width:620px;
+				height:auto;
+				text-align:center;
+				background-color : gray;
+			}
+			.select_option{
+				display:inline-block;
+				width:200px;
+				height:200px;
+			}
+			.server_select{
+				width:100px;
+				height:100px;
+				background-color:#342512;
+			}
+			.timer_container{
+				width:70px;
+				height:70px;
+				background-color:white;
+				border-radius : 10px;
+				border : 5px red solid;
+			}
+		</style>
+		<title>Rolling Paper</title>
+	</head>
+	<body>
+		<div class = "select_container">
+			<div class = "select_option">
+				가위
+			</div>
+			<div class = "select_option">
+				바위
+			</div>
+			<div class = "select_option">
+				보
+			</div>
+		</div>
+		
+		<div class="server_select">
+		</div>
+		<div class="timer_container">
+		</div>
+	</body>
+</html>

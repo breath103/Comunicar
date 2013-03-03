@@ -1,5 +1,7 @@
 var http = require("http"),
     Step = require("step");
+  
+  
 
 process.on('uncaughtException', function(err) {
     console.error(err.stack);
@@ -18,8 +20,14 @@ try {
         catch(e){
             console.log(e);
         }
-    }, function(err, app) {
-        http.createServer(app).listen(app.get('port'), function(err) {
+    }, 
+    function(err, app) {
+	    
+	    var httpServer = http.createServer(app);
+		
+		require("./contents_implements")(httpServer);    
+	    
+	    httpServer.listen(app.get('port'), function(err) {
             console.log("Express server listening on port " + app.get('port'));
         });
     });

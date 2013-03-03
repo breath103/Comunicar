@@ -69,10 +69,15 @@ module.exports = function(app) {
         }
     });
     
-    app.get("/:name",function(req,res){
-        res.render("user/show",{
-            user : req.user || req.session.user
-        });     
+    app.get("/:name",function(req,res,next){
+    	if(req.user){
+	    	res.render("user/show",{
+       	    	user : req.user || req.session.user
+       	    }); 	
+    	}
+    	else{
+	    	next("route");
+    	}
     });
     
     app.get("/:name/contents",function(req,res){

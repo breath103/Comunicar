@@ -3,6 +3,5 @@ module.exports = function(app) {
 
     var User = app.db.models.User;
     
-
     console.log("       - AUTH END -");
 }

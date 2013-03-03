@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+    
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="/css/paper.css">
+        <link rel="shortcut icon" href="/icons/logo3.ico">
+        <script src="/js/jquery-1.7.1.js"></script>
+        <script src="/js/jquery.transit.min.js"></script>
+        <script src="/js/google_analytics.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = null;
+            var target_url = null;
+            	
+            function checkShakeEvent(){
+	            // Shake sensitivity (a lower number is more)
+	            var sensitivity = 20;
+	    		// Position variables
+	    		var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
+	    		// Listen to motion events and update the position 
+	    		window.addEventListener('devicemotion', function (e) {
+	    			lastAcc = e.accelerationIncludingGravity;
+	    			x1 = e.accelerationIncludingGravity.x;
+	    			y1 = e.accelerationIncludingGravity.y;
+	    			z1 = e.accelerationIncludingGravity.z;
+	    			$("#top").html(x1 + " : " + y1 + " : " + z1);
+		   		}, false);
+
+	    		// Periodically check the position and fire 
+	    		// if the change is greater than the sensitivity 
+	    		setInterval(function () {	
+	    			if( !target_url )
+	    				return;
+	    		
+	    			var change = Math.abs(x1-x2+y1-y2+z1-z2);
+	    			if (change > sensitivity) {
+	    				socket.emit("uploadImage", {
+	                    	image : target_url
+	                    });
+	                    target_url = null;
+	                 //   alert("uploaded");
+	                }
+	    			// Update new position
+	    			x2 = x1;
+	    			y2 = y1;
+	    			z2 = z1;
+	    		}, 150);
+            }
+            	
+            function resizeImage(file, dataURL, callback) {
+                var fileType = file.type;
+                var image = new Image();
+                image.src = dataURL;
+
+                image.onload = function() {
+                    var maxWidth	 = 250,
+                        maxHeight 	 = 250,
+                        imageWidth   = image.width,
+                        imageHeight  = image.height;
+
+                    console.log(imageWidth + " , " + imageHeight);
+                    if (imageWidth > imageHeight) {
+                        if (imageWidth > maxWidth) {
+                            imageHeight *= maxWidth / imageWidth;
+                            imageWidth = maxWidth;
+                        }
+                    }
+                    else {
+                        if (imageHeight > maxHeight) {
+                            imageWidth *= maxHeight / imageHeight;
+                            imageHeight = maxHeight;
+                        }
+                    }
+                    console.log(imageWidth + " , " + imageHeight);
+
+                    var canvas = document.createElement('canvas');
+                    canvas.width  = imageWidth;
+                    canvas.height = imageHeight;
+
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+
+                    // The resized file ready for upload
+                    var finalFile = canvas.toDataURL(fileType);
+                    callback(finalFile);
+                    
+                    $(canvas).remove();
+                }
+            }
+
+
+
+            function connectWS() {
+                console.log('Connecting to local server...');
+                if (socket == null) {
+                    socket = io.connect("/Comunicar");
+                    socket.on('message', function(data) {});
+                    socket.on('disconnect', function() {});
+                    
+                    
+                    checkShakeEvent();
+                }
+                socket.socket.connect();
+            }
+
+            $(document).ready(function() {
+                connectWS();
+                $("#image_input").change(function() {
+                    $("#output").html(JSON.stringify(this.files));
+                    $("#image_output").attr("src", $(this).val());
+
+                    var fileReader = new FileReader();
+                    var file = this.files[0];
+                    fileReader.onloadend = function(evt) {
+                        if (evt.target.readyState == FileReader.DONE) {
+                        	resizeImage(file, evt.target.result, function(url){
+	                        	$("#image_output")[0].src = url;
+
+	                        	target_url = url;
+                        	});
+                        }
+                    };
+
+                    fileReader.readAsDataURL(file);
+                });
+            });
+        </script>
+        <style>
+</style>
+        <title>Rolling Paper</title>
+    </head>
+    
+    <body>
+        <input id="image_input" type="file" />
+        <div id="output"></div>
+        <img id="image_output" />
+    </body>
+
+</html>

@@ -20,7 +20,9 @@ module.exports = function(callback) {
         id        : {type : Number , index : true},
         name      : {type : String},   
         latitude  : {type : Number},
-        longitude : {type : Number}
+        longitude : {type : Number},
+        min_player_count : {type:Number},
+        max_player_count : {type:Number}
     });
 
 

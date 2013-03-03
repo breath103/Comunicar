@@ -20,7 +20,7 @@ module.exports = function(app) {
     });
     
     app.get("/contents/:name",function(req,res){
-    	res.render("contents/show",{
+    	res.render("contents/" + req.content.name,{
     		content : req.content
     	});
     });
