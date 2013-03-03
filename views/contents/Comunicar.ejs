@@ -3,6 +3,7 @@
     
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
         <link rel="stylesheet" type="text/css" href="/css/paper.css">
         <link rel="shortcut icon" href="/icons/logo3.ico">
         <script src="/js/jquery-1.7.1.js"></script>
@@ -13,12 +14,17 @@
             var socket = null;
             var target_url = null;
             	
+            function uploadImage(){
+            	if(target_url){
+	        	    socket.emit("uploadImage", {
+		            	image : target_url
+		            });
+		            target_url = null;
+            	}
+	        }
             function checkShakeEvent(){
-	            // Shake sensitivity (a lower number is more)
-	            var sensitivity = 20;
-	    		// Position variables
+	            var sensitivity = 35;
 	    		var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
-	    		// Listen to motion events and update the position 
 	    		window.addEventListener('devicemotion', function (e) {
 	    			lastAcc = e.accelerationIncludingGravity;
 	    			x1 = e.accelerationIncludingGravity.x;
@@ -27,21 +33,15 @@
 	    			$("#top").html(x1 + " : " + y1 + " : " + z1);
 		   		}, false);
 
-	    		// Periodically check the position and fire 
-	    		// if the change is greater than the sensitivity 
 	    		setInterval(function () {	
 	    			if( !target_url )
 	    				return;
 	    		
 	    			var change = Math.abs(x1-x2+y1-y2+z1-z2);
 	    			if (change > sensitivity) {
-	    				socket.emit("uploadImage", {
-	                    	image : target_url
-	                    });
-	                    target_url = null;
+	    				uploadImage();
 	                 //   alert("uploaded");
 	                }
-	    			// Update new position
 	    			x2 = x1;
 	    			y2 = y1;
 	    			z2 = z1;
@@ -105,9 +105,10 @@
             }
 
             $(document).ready(function() {
+            	alert("사진을 선택한뒤 화면에 보여지면 핸드폰을 흔들어주세요.\n그래도 업로드가 안된다면 아래 버튼을 눌러주세요");
                 connectWS();
                 $("#image_input").change(function() {
-                    $("#output").html(JSON.stringify(this.files));
+                 //   $("#output").html(JSON.stringify(this.files));
                     $("#image_output").attr("src", $(this).val());
 
                     var fileReader = new FileReader();
@@ -135,6 +136,9 @@
         <input id="image_input" type="file" />
         <div id="output"></div>
         <img id="image_output" />
+        <br/>
+        <br/>
+        <button onclick="uploadImage();">강제 업로드</button>
     </body>
 
 </html>

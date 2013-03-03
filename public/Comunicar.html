@@ -11,11 +11,22 @@
         <script src="/js/google_analytics.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-	        Array.prototype.lastObject = function() { 
+        
+        /*
+	        Object.prototype.lastObject = function() { 
 	        	return this[this.length-1];
 	        }
+	       */
 
             var socket = null;
+
+            
+            function infiniteTransit(){
+	            $(this).transit({
+	            	left : (Math.random() * 300),
+                    top  : (Math.random() * 300)
+                },infiniteTransit);
+            }
 
             function connectWS() {
                 console.log('Connecting to local server...');
@@ -30,11 +41,20 @@
 
                     socket.on("newImage", function(data) {
                         $("body").append("<div class='image_container'><img src='" + data.image + "'/></div>");
-                        var newImage = $($(".image_container").lastObject());
-                        newImage.hide();
-                        newImage.fadeIn();
+                        var newImage = $($(".image_container")[$(".image_container").length-1]);
+                        newImage.css({
+                        	opacity : 0,
+                        	left : $("body").width() / 2,
+                        	top  : $("body").height() / 2
+                        });
+                        
+                        newImage.transit({
+                        	opacity : 1,
+                        	left : "+=" + (Math.random() * 50 - 100),
+                        	top  : "+=" + (Math.random() * 50 - 100)
+                        },infiniteTransit);
+                        
                     });
-
                 }
                 socket.socket.connect();
             }
@@ -45,6 +65,7 @@
         </script>
         <style>
             .image_container {
+            	position:absolute;
                 width:200px;
                 height:180px;
             }
