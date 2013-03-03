@@ -37,7 +37,10 @@
 
                     socket.on('message', function(data) {});
 
-                    socket.on('disconnect', function() {});
+                    socket.on('disconnect', function() {
+	                    alert("disconnect");
+	                    
+                    });
 
                     socket.on("newImage", function(data) {
                         $("body").append("<div class='image_container'><img src='" + data.image + "'/></div>");

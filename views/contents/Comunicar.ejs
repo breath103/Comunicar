@@ -96,7 +96,9 @@
                 if (socket == null) {
                     socket = io.connect("/Comunicar");
                     socket.on('message', function(data) {});
-                    socket.on('disconnect', function() {});
+                    socket.on('disconnect', function() {
+	                    alert("disconnect");
+	                });
                     
                     
                     checkShakeEvent();
