@@ -91,16 +91,23 @@
 
 
 
+
             function connectWS() {
                 console.log('Connecting to local server...');
+                
+                var connecting_handle = null;
                 if (socket == null) {
                     socket = io.connect("/Comunicar");
+                    socket.on("connect",function(){
+	                  	clearInterval(connecting_handle); 
+                    });
                     socket.on('message', function(data) {});
                     socket.on('disconnect', function() {
 	                    alert("disconnect");
+	                    connecting_handle = setInterval(function(){
+		                    socket.socket.connect();
+	                    }, 500);
 	                });
-                    
-                    
                     checkShakeEvent();
                 }
                 socket.socket.connect();

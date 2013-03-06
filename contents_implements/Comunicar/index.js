@@ -4,8 +4,6 @@ module.exports = function(io,callback){
 	
 	var viewerRoom = "viewRoom";
 	
-	var imageCount = 0;
-	
 	io.of('/Comunicar').on('connection', function (socket) {
 		socket.on('message', function (data) {
 			console.log(data);
@@ -14,14 +12,9 @@ module.exports = function(io,callback){
     
         });
         socket.on('uploadImage',function(data){
-	        
-	        
-	        fs.writeFile("uploaded_images/_"+imageCount++,data.image);
-	        
-	        
-        	socket.broadcast.to(viewerRoom).emit("newImage",data);
+	        fs.writeFile("uploaded_images/"+(new Date()).getTime(),data.image);
+	        socket.broadcast.to(viewerRoom).emit("newImage",data);
         });
-        
         socket.on("joinViewRoom",function(data){
         	socket.join(viewerRoom);
         });

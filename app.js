@@ -8,7 +8,7 @@ module.exports = function(db, callback) {
 
     app.db = db;
     app.configure(function() {
-        app.set('port', process.env.PORT || 1234);
+        app.set('port', process.env.PORT || 80);
         app.set('views', __dirname + '/views');
         app.set('view engine', 'ejs');
         app.use(express.favicon());
