@@ -1,5 +1,6 @@
 var http = require("http"),
-    Step = require("step");
+    Step = require("step"),
+    util = require("util");
   
   
 
@@ -24,12 +25,14 @@ try {
     function(err, app) {
 	    
 	    var httpServer = http.createServer(app);
-		
-		require("./contents_implements")(httpServer);    
-	    
-	    httpServer.listen(app.get('port'), function(err) {
-            console.log("Express server listening on port " + app.get('port'));
-        });
+		require("./contents_implements")({
+			app : app, 
+			server : httpServer
+		},function(){
+			httpServer.listen(app.get('port'), function(err) {
+	            console.log("Express server listening on port " + app.get('port'));
+	        });
+		});    
     });
 }
 catch (e) {

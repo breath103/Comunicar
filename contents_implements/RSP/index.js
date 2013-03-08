@@ -1,5 +1,7 @@
 
-module.exports = function(io,callback){
+module.exports = function(params,callback){
+	
+	var io = params.io;
 	
 	var STATES = {
 		WAITING_FOR_PLAYER : 0

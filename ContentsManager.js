@@ -1,9 +1,9 @@
 
 var shared_instance = null;
 
-function ContentsManager(app,db) {
-	this.app = app;
-	this.db  = db;
+function ContentsManager(params) {
+	this.app = params.app;
+	this.db  = params.db;
 }
 
 

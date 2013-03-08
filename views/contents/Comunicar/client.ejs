@@ -17,7 +17,8 @@
             function uploadImage(){
             	if(target_url){
 	        	    socket.emit("uploadImage", {
-		            	image : target_url
+		            	image : target_url,
+		            	text : $("#text_input").val()
 		            });
 		            target_url = null;
             	}
@@ -145,6 +146,8 @@
         <input id="image_input" type="file" />
         <div id="output"></div>
         <img id="image_output" />
+        <textarea id="text_input"></textarea>
+        
         <br/>
         <br/>
         <button onclick="uploadImage();">강제 업로드</button>

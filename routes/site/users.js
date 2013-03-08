@@ -47,7 +47,8 @@ module.exports = function(app) {
     });
     
 
-    app.get("/:name/*",function(req,res,next){
+    app.get("/users/:name/*",function(req,res,next){
+    	console.log("!");
     	User.findOne({ where : {name : req.param("name") }} ,function(err,user) { 
 	    	if(err) next(err);
 	    	else {
@@ -69,7 +70,7 @@ module.exports = function(app) {
         }
     });
     
-    app.get("/:name",function(req,res,next){
+    app.get("/users/:name",function(req,res,next){
     	if(req.user){
 	    	res.render("user/show",{
        	    	user : req.user || req.session.user
@@ -80,7 +81,7 @@ module.exports = function(app) {
     	}
     });
     
-    app.get("/:name/contents",function(req,res){
+    app.get("/users/:name/contents",function(req,res){
     	req.user.contents({},function(err,contents) { 
 	   		if(err) next(err);
 	   		else{
@@ -90,7 +91,6 @@ module.exports = function(app) {
 		        });
 	   		} 	
     	});
-       
     });
 
     console.log("       --USERS END--");
