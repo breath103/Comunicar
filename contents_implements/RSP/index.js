@@ -1,5 +1,5 @@
 
-module.exports = function(params,callback){
+module.exports = function(content,params){
 	
 	var io = params.io;
 	

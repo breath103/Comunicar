@@ -1,8 +1,7 @@
 var fs = require("fs");
-module.exports = function(io){
-
+module.exports = function(content,io){
 	var viewerRoom = "viewRoom";
-	io.of('/Comunicar').on('connection', function (socket) {
+	io.of('/' + content.name ).on('connection', function (socket) {
 		socket.on('message', function (data) {
 			console.log(data);
         });

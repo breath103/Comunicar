@@ -28,7 +28,9 @@ module.exports = function(params,callback){
 	    	contents.forEach(function(v){
 	    		if (fs.existsSync(path.join(__dirname,v.name) )) {
 		    		console.log("				"+v.name);
-	    			require(util.format("./%s",v.name))(params);
+		    		
+	    			require(util.format("./%s",v.name))(v,params);
+	    			
 	    			console.log("				"+v.name + " END");
 		    	}else{
 			    	console.log(v.name + " not exist");

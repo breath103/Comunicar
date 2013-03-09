@@ -1,14 +1,21 @@
+var util = require("util");
 
-module.exports = function(app){
+module.exports = function(content,app){
 	
-	var defaultPath = "/contents/Comunicar/";
-	var viewPath = "contents/Comunicar/";
+	var defaultPath = util.format("/contents/%s/",content.name);
+	var viewPath 	= util.format("contents/%s/",content.name);
 	
 	app.get(defaultPath + "client",function(req,res){
     	res.render(viewPath + "client",{
     		content : req.content
     	});
     });
+    app.get(defaultPath + "view",function(req,res){
+    	res.render(viewPath + "view",{
+    		content : req.content
+    	});
+    });
     
-    console.log(app.routes);
+    
+    
 };	

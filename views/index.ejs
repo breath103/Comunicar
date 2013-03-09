@@ -1,10 +1,117 @@
-<html>
-    <head>
-        <title>LOGIN</title>
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="ko">
 
-        MAIN!!
-        
-    </body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="/css/paper.css">
+		<!-- Loading Bootstrap -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<!-- Loading Flat UI -->
+		<link href="css/flat-ui.css" rel="stylesheet">
+		<link rel="shortcut icon" href="images/favicon.ico">
+
+		<script src="/js/jquery-1.7.1.js"></script>
+		<script src="/js/jquery.transit.min.js"></script>
+		<script src="/js/google_analytics.js"></script>
+		<script src="js/jquery-1.8.2.min.js"></script>
+		<script src="js/jquery-ui-1.10.0.custom.min.js"></script>
+		<script src="js/jquery.dropkick-1.0.0.js"></script>
+		<script src="js/custom_checkbox_and_radio.js"></script>
+		<script src="js/custom_radio.js"></script>
+		<script src="js/jquery.tagsinput.js"></script>
+		<script src="js/bootstrap-tooltip.js"></script>
+		<script src="js/jquery.placeholder.js"></script>
+		<script src="http://vjs.zencdn.net/c/video.js"></script>
+		<script src="js/application.js"></script>
+
+		<script></script>
+		<style>
+			.login-container {
+				background-color: rgb(26, 188, 156);
+				width: 100%;
+				height: 700px;
+			}
+			.login-container .top-place-holder{
+				width:100%;
+				height:150px;
+			}
+			.login-container .login-form{
+				margin-left:auto;
+				margin-right:auto;
+			}
+		</style>
+		<title>Rolling Paper</title>
+	</head>
+
+	<body>
+		<div class="navbar navbar-inverse" style="margin-bottom:0px">
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li>
+								<a href="#"> Menu Item <span class="navbar-unread">1</span> </a>
+							</li>
+							<li class="active">
+								<a href="#"> Messages <span class="navbar-unread">1</span> </a>
+								<ul>
+									<li>
+										<a href="#">Element One</a>
+									</li>
+									<li>
+										<a href="#">Sub menu</a>
+										<ul>
+											<li>
+												<a href="#">Element One</a>
+											</li>
+											<li>
+												<a href="#">Element Two</a>
+											</li>
+											<li>
+												<a href="#">Element Three</a>
+											</li>
+										</ul>
+										<!-- /Sub menu -->
+									</li>
+									<li>
+										<a href="#">Element Three</a>
+									</li>
+								</ul>
+								<!-- /Sub menu -->
+							</li>
+							<li>
+								<a href="#"> About Us <span class="navbar-unread">1</span> </a>
+							</li>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+		<div class="login-container">
+			<div class="top-place-holder"></div>
+			<div>
+				<div class="login-form" style="width:313px;height:200px">
+					<form id="login-form" method="POST" action = "/login">
+						<div class="control-group">
+							<input type="text" name="user[name]" class="login-field" value="" placeholder="Enter your name" id="login-name">
+							<label class="login-field-icon fui-man-16" for="login-name"></label>
+						</div>
+			
+						<div class="control-group">
+							<input type="password" name="user[password]" class="login-field" value="" placeholder="Password" id="login-pass">
+							<label class="login-field-icon fui-lock-16" for="login-pass"></label>
+						</div>
+						<a class="btn btn-primary btn-large btn-block" href="javascript:$('#login-form').submit();">Login</a>
+						<a class="login-link" href="#">Lost your password?</a>
+					</form>
+				</div>	
+			</div>
+		</div>
+	</body>
 </html>

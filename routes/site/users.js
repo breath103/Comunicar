@@ -3,6 +3,7 @@ module.exports = function(app) {
     console.log("       --USERS--");
 
     var User = app.db.models.User;
+    var Content = 
     
     User.checkAuth = function(req,res,next) {
         if(req.session.user){
@@ -47,6 +48,7 @@ module.exports = function(app) {
     });
     
 
+    // users/:name/* sub routes allways has a user
     app.get("/users/:name/*",function(req,res,next){
     	console.log("!");
     	User.findOne({ where : {name : req.param("name") }} ,function(err,user) { 
@@ -61,13 +63,6 @@ module.exports = function(app) {
 	    		}
 	    	}
     	});
-    },function(req,res,next){
-        if(req.user){
-            next();
-        } 
-        else{
-            next(new Error("there is no user Name " + req.param("name")));
-        }
     });
     
     app.get("/users/:name",function(req,res,next){
@@ -82,7 +77,7 @@ module.exports = function(app) {
     });
     
     app.get("/users/:name/contents",function(req,res){
-    	req.user.contents({},function(err,contents) { 
+    	req.user.contents(function(err,contents) { 
 	   		if(err) next(err);
 	   		else{
 		   		res.render("user/contents",{

@@ -5,6 +5,23 @@ module.exports = function(app) {
 
     var Content = app.db.models.Content;
     
+
+    function getContentMiddleware(req,res,next){
+    	Content.findOne({ where : {name : req.param("name") }} ,function(err,content) { 
+	    	if(err) next(err);
+	    	else {
+	    		if(content){
+		    		req.content = content;
+		    		console.log("+++++",content);
+		    		next();	
+	    		}else{
+		    		next(new Error("no content with name : " + req.param("name")));
+	    		}
+	    	}
+    	});
+    }
+
+    // show Contents list
     app.get("/contents",function(req,res,next){
     	Content.all(function(err,contents) { 
 	    	if(err) next(err);
@@ -14,17 +31,16 @@ module.exports = function(app) {
     	});
     });
 
+
+    // Middleware mapping
+    app.get("/contents/:name",getContentMiddleware);
+    app.get("/contents/:name/*",getContentMiddleware);
+    
+    
+    // show Content Summary
     app.get("/contents/:name",function(req,res,next){
-    	Content.findOne({ where : {name : req.param("name") }} ,function(err,content) { 
-	    	if(err) next(err);
-	    	else {
-	    		if(content){
-		    		req.content = content;
-		    		next();	
-	    		}else{
-		    		next(new Error("no content with name : " + req.param("name")));
-	    		}
-	    	}
+    	res.render("contents/show",{
+    		content : req.content
     	});
     });
     
