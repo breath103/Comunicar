@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/paper.css">
+        <link rel="shortcut icon" href="/icons/logo3.ico">
+        <title>iFish</title>
+        <script src="/js/google_analytics.js"></script>
+        <script src="/js/underscore-min.js"></script>
+        <script src="/js/jquery-1.7.1.js"></script>
+        <script src="/js/jquery.transit.min.js"></script>
+        
+        <script src="/contents/iFish/js/vector.js"></script>
+        <script src="/contents/iFish/js/boid.js"></script>
+        
+        <script src="/socket.io/socket.io.js"></script>
+        <script>   
+        	var socket = null;
+        	function connectWS() {
+                console.log('Connecting to local server...');
+                if (socket == null) {
+	                socket = io.connect("/iFish");
+                    socket.emit("joinViewRoom");
+                    socket.on('message', function(data) {});
+                    socket.on('disconnect', function() {
+	                    alert("disconnect");
+	                });
+	                socket.on("newImage", function(data) {
+                    	var photo = new Photo(data);
+                    });
+                }
+                socket.socket.connect();
+            }
+            
+            var boids = [];
+            $(document).ready(function() {
+                connectWS();
+                for(var i=0;i<100;i++){
+					var boid = new Boid({
+						location : new Vector(500,500)
+					});
+					boids.push( boid );
+                }
+                setInterval(function(){
+	                _.each(boids,function(boid){
+	                	boid.step(boids);
+	                });
+                }, 1000/100);
+            });
+            
+        </script>
+        <style>
+        	.aquarium{
+	        	position:relative;
+	        	width:100%;
+	        	height:100%;
+	        }
+        	.aquarium .fish{
+	        	position:absolute;
+	        	width:60px;
+	        	height:20px;
+	        	background-image:url("http://vector.us/files/images/1/1/118669/fish_outline_clip_art.jpg");
+	        	background-size:100% 100%;
+        	}
+        </style>
+    </head>
+    <body>
+		<div class="aquarium">
+		</div>
+	</body>
+</html>

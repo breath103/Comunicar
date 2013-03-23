@@ -83,7 +83,7 @@
 
                 var connecting_handle = null;
                 if (socket == null) {
-                    socket = io.connect("/Comunicar");
+                    socket = io.connect("/iFish");
                     socket.on("connect", function() {
                         clearInterval(connecting_handle);
                     });

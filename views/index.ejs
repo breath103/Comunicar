@@ -24,8 +24,26 @@
 		<script src="js/jquery.placeholder.js"></script>
 		<script src="http://vjs.zencdn.net/c/video.js"></script>
 		<script src="js/application.js"></script>
-
-		<script></script>
+		<script>
+			function startMyApp()
+			{
+				document.location = 'rollingpaper://';
+				setTimeout( function()
+				{
+					alert("app not installed yet");
+					
+				/*
+					if( confirm( 'You do not seem to have Your App installed, do you want to go download it now?'))
+					{
+						document.location = 'http://itunes.apple.com/us/app/yourAppId';
+					}
+					*/
+				}, 300);
+			}
+			$(function(){
+			//	startMyApp();
+			});
+		</script>
 		<style>
 			.login-container {
 				background-color: rgb(26, 188, 156);

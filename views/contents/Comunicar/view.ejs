@@ -11,6 +11,7 @@
         <script src="/js/jquery.transit.min.js"></script>
         <script src="/js/google_analytics.js"></script>
         <script src="/socket.io/socket.io.js"></script>
+        
         <script>
 	       	function random(min,max){
 		       	return min + Math.random() * (max-min);
@@ -36,23 +37,14 @@
 				$this.append("<div class='separtor_line'></div>");
 				$this.append("<div class='text_container'>" + params.text + "</div>");
 				
-				var top = Math.random() * 80 + "%";
-				var targetLeft = Math.random() * 20;
 				$this.css({
-					opacity : 0,
-					left : "0",
-					top : top
-				});
-				
-				$this.transit({
-					left : targetLeft + "%",
-					top  : top,
+					left : Math.random() * 80 + "%",
+					top  : Math.random() * 80 + "%",
 					rotate : random(-30,30) + "deg",
+					opacity : 0
+				});
+				$this.transit({
 					opacity : 1
-				},targetLeft * 100,"ease",function(){
-					$(this).transit({
-						left : targetLeft + 100 + "%",
-					},20000,"linear");
 				});
 			
 				
@@ -148,8 +140,7 @@
 	            height:300px;
 	            background-image:url("https://chart.googleapis.com/chart?chs=177x177&cht=qr&chld=L|0&chl=http://210.122.0.119/contents/Comunicar/");
 	            background-size:100% 100%;
-	            
-            }
+	        }
         </style>
         <title>Comunicar</title>
     </head>

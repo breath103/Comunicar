@@ -38,8 +38,14 @@ module.exports = function(app) {
     
     
     // show Content Summary
-    app.get("/contents/:name",function(req,res,next){
+    app.get("/contents/:name/",function(req,res,next){
+    	/*
     	res.render("contents/show",{
+    		content : req.content
+    	});
+    	*/
+    	
+    	res.render(util.format("contents/%s/index",req.content.name),{
     		content : req.content
     	});
     });
