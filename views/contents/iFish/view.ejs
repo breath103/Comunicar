@@ -1,73 +1,141 @@
 <!DOCTYPE html>
 <html lang="ko">
-    
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="/css/paper.css">
-        <link rel="shortcut icon" href="/icons/logo3.ico">
-        <title>iFish</title>
-        <script src="/js/google_analytics.js"></script>
-        <script src="/js/underscore-min.js"></script>
-        <script src="/js/jquery-1.7.1.js"></script>
-        <script src="/js/jquery.transit.min.js"></script>
-        
-        <script src="/contents/iFish/js/vector.js"></script>
-        <script src="/contents/iFish/js/boid.js"></script>
-        
-        <script src="/socket.io/socket.io.js"></script>
-        <script>   
-        	var socket = null;
-        	function connectWS() {
-                console.log('Connecting to local server...');
-                if (socket == null) {
-	                socket = io.connect("/iFish");
-                    socket.emit("joinViewRoom");
-                    socket.on('message', function(data) {});
-                    socket.on('disconnect', function() {
-	                    alert("disconnect");
-	                });
-	                socket.on("newImage", function(data) {
-                    	var photo = new Photo(data);
-                    });
-                }
-                socket.socket.connect();
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/paper.css">
+    <link rel="shortcut icon" href="/icons/logo3.ico">
+    <title>iFish</title>
+
+    <script src="/js/google_analytics.js"></script>
+    <script src="/js/underscore-min.js"></script>
+    <script src="/js/jquery-1.7.1.js"></script>
+    <script src="/js/jquery.transit.min.js"></script>
+    <script src="http://mbostock.github.com/d3/d3.js?1.29.1"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = null;
+        function connectWS() {
+            console.log('Connecting to local server...');
+            if (socket == null) {
+                socket = io.connect("/iFish");
+                socket.emit("joinViewRoom");
+                socket.on('message', function(data) {});
+                socket.on('disconnect', function() {
+                    alert("disconnect");
+                });
+                socket.on("newImage", function(data) {
+                    var photo = new Photo(data);
+                });
             }
-            
-            var boids = [];
-            $(document).ready(function() {
-                connectWS();
-                for(var i=0;i<100;i++){
-					var boid = new Boid({
-						location : new Vector(500,500)
-					});
-					boids.push( boid );
-                }
-                setInterval(function(){
-	                _.each(boids,function(boid){
-	                	boid.step(boids);
-	                });
-                }, 1000/100);
+            socket.socket.connect();
+        }
+        function initFlock(){
+            var w = 960,
+                    h = 500,
+                    n = 100,
+                    m = 12,
+                    degrees = 180 / Math.PI;
+
+            var spermatozoa = d3.range(n).map(function() {
+                var x = Math.random() * w, y = Math.random() * h;
+                return {
+                    vx: Math.random() * 2 - 1,
+                    vy: Math.random() * 2 - 1,
+                    path: d3.range(m).map(function() { return [x, y]; }),
+                    count: 0
+                };
             });
-            
-        </script>
-        <style>
-        	.aquarium{
-	        	position:relative;
-	        	width:100%;
-	        	height:100%;
-	        }
-        	.aquarium .fish{
-	        	position:absolute;
-	        	width:60px;
-	        	height:20px;
-	        	background-image:url("http://vector.us/files/images/1/1/118669/fish_outline_clip_art.jpg");
-	        	background-size:100% 100%;
-        	}
-        </style>
-    </head>
-    <body>
-		<div class="aquarium">
-		</div>
-	</body>
+
+            var svg = d3.select("body").append("svg:svg")
+                    .attr("width", w)
+                    .attr("height", h);
+
+            var g = svg.selectAll("g")
+                    .data(spermatozoa)
+                    .enter().append("svg:g");
+
+            var head = g.append("svg:ellipse")
+                    .attr("rx", 6.5)
+                    .attr("ry", 4);
+
+            g.append("svg:path")
+                    .map(function(d) { return d.path.slice(0, 3); })
+                    .attr("class", "mid");
+
+            g.append("svg:path")
+                    .map(function(d) { return d.path; })
+                    .attr("class", "tail");
+
+            var tail = g.selectAll("path");
+
+            d3.timer(function() {
+                for (var i = -1; ++i < n;) {
+                    var spermatozoon = spermatozoa[i],
+                            path = spermatozoon.path,
+                            dx = spermatozoon.vx,
+                            dy = spermatozoon.vy,
+                            x = path[0][0] += dx,
+                            y = path[0][1] += dy,
+                            speed = Math.sqrt(dx * dx + dy * dy),
+                            count = speed * 10,
+                            k1 = -5 - speed / 3;
+
+                    // Bounce off the walls.
+                    if (x < 0 || x > w) spermatozoon.vx *= -1;
+                    if (y < 0 || y > h) spermatozoon.vy *= -1;
+
+                    // Swim!
+                    for (var j = 0; ++j < m;) {
+                        var vx = x - path[j][0],
+                                vy = y - path[j][1],
+                                k2 = Math.sin(((spermatozoon.count += count) + j * 3) / 300) / speed;
+                        path[j][0] = (x += dx / speed * k1) - dy * k2;
+                        path[j][1] = (y += dy / speed * k1) + dx * k2;
+                        speed = Math.sqrt((dx = vx) * dx + (dy = vy) * dy);
+                    }
+                }
+
+                head.attr("transform", function(d) {
+                    return "translate(" + d.path[0] + ")rotate(" + Math.atan2(d.vy, d.vx) * degrees + ")";
+                });
+
+                tail.attr("d", function(d) {
+                    return "M" + d.join("L");
+                });
+            });
+        }
+        $(document).ready(function() {
+            connectWS();
+            initFlock();
+        });
+
+    </script>
+    <style>
+        body {
+            background: #000;
+        }
+
+        ellipse {
+            fill: #fff;
+        }
+
+        path {
+            fill: none;
+            stroke: #fff;
+            stroke-linecap: round;
+        }
+
+        .mid {
+            stroke-width: 4px;
+        }
+
+        .tail {
+            stroke-width: 2px;
+        }
+    </style>
+</head>
+<body>
+</body>
 </html>
