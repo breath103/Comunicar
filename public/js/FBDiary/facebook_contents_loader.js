@@ -63,7 +63,7 @@ FacebookContentsLoader.prototype = {
                     return;
                 }
                 if (res && res.data && res.data.length > 0) {
-                    resultsArray.addArray(res.data);
+                    resultsArray = _.union(resultsArray,res.data);
                     getPostAfterTime(index + 1);
                 } else {
                     resultsArray.forEach(function(v,i){
@@ -93,8 +93,7 @@ FacebookContentsLoader.prototype = {
                 }
                 if (res && res.data && res.data.length > 0) {
                     console.log("new Data : "+res.data.length);
-                    resultsArray.addArray(res.data);
-
+                    resultsArray = _.union(resultsArray,res.data);
                     console.log("resultsArray  : "+resultsArray.length);
                     getPhotoWithIndex(index + 1);
                 } else {
@@ -123,7 +122,7 @@ FacebookContentsLoader.prototype = {
                     return;
                 }
                 if (res && res.data && res.data.length > 0) {
-                    resultsArray.addArray(res.data);
+                    resultsArray = _.union(resultsArray,res.data);
                     getLinkWithIndex(index + 1);
                 } else {
                     resultsArray.forEach(function(v,i){
