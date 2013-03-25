@@ -26,6 +26,10 @@
         return typeof(Storage) !== "undefined";
     }
 
+    function clearCache(){
+        localStorage.clear();
+        location.href = location.href;
+    }
 
     function searchPost(keyword) {
         $.each($(".date-container"), function (i, v) {
@@ -315,6 +319,7 @@
     </div>
     <div class="right-pad">
         <header>
+            <button onclick="clearCache();">clear Cache</button>
             <button onclick="showPreviousDayContent();"><<</button>
             <button id="showDayButton" onclick="showTodayContent();">오늘꺼 보기</button>
             <button onclick="showNextDayContent();">>></button>
