@@ -104,6 +104,36 @@
         initFacebook(function () {
 
             var facebookContentsLoader = new FacebookContentsLoader();
+
+            $(".Loading").fadeOut();
+
+            function createPostDiv(v){
+                $(".site-container").append(
+                                "<div class='Status'>" +
+                                        v.message +
+                                        "</div>"
+                        ).children().last().click(function(){
+                            alert(JSON.stringify(v));
+                            $(this).clone().appendTo($(".left-pad"));
+                        });
+            }
+
+            function loadingFBPostLoop(response){
+                console.log(response);
+                _.each(response.data, createPostDiv);
+                if(response.data.length > 0 && response.paging.next){
+                    $.getJSON(response.paging.next,loadingFBPostLoop);
+                }
+                else {
+                    console.log("loading finished");
+                    alert("글 로딩이 끝났습니다");
+                }
+            }
+
+
+                FB.api("me/posts",{limit:200},loadingFBPostLoop);
+
+            /*
             Step(function loadStuff() {
                         facebookContentsLoader.getAllStatuses(this.parallel());
                         facebookContentsLoader.getAllPhotos(this.parallel());
@@ -172,6 +202,7 @@
                         $(".Loading").fadeOut();
                     }
             );
+            */
         });
     });
 </script>
@@ -206,6 +237,7 @@
         width:70%;
         height:100%;
         background-color:#2f96b4;
+        overflow-y:scroll;
     }
 
     .site-container {
