@@ -8,7 +8,7 @@
 <script src="/js/async.js"></script>
 <script src="/js/step.js"></script>
 <script src="http://underscorejs.org/underscore-min.js"></script>
-<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>
+<script type="text/javascript" src="http://connect.facebook.net/ko_KR/all.js"></script>
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 <script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
 <script src="/js/FBDiary/facebook_contents_loader.js"></script>
@@ -102,107 +102,66 @@
         });
 
         initFacebook(function () {
-
-            var facebookContentsLoader = new FacebookContentsLoader();
-
             $(".Loading").fadeOut();
 
             function createPostDiv(v){
-                $(".site-container").append(
-                                "<div class='Status'>" +
-                                        v.message +
-                                        "</div>"
-                        ).children().last().click(function(){
-                            alert(JSON.stringify(v));
-                            $(this).clone().appendTo($(".left-pad"));
+                if(v.type!="status") console.log(v);
+                var divstr = null;
+
+                var photoTemplate = _.template("<img src='<\%-src%>'/>");
+                var template = _.template("<div class='Status'><img src='<\%-picture%>'/><div class='main-text'><\%-main_text\%></div></div>");
+                var data = {};
+                data.main_text = v.message ? v.message : v.story;
+                data.picture   = v.picture;
+
+                $(".site-container").append( template(data) ).children().last().click(function(){
+                       $(".left-pad").html(JSON.stringify(v));
+                      //      $(this).clone().appendTo($(".left-pad"));
                         });
             }
 
-            function loadingFBPostLoop(response){
-                console.log(response);
-                _.each(response.data, createPostDiv);
-                if(response.data.length > 0 && response.paging.next){
-                    $.getJSON(response.paging.next,loadingFBPostLoop);
+            if (localStorage.latest_post) { //if is there a cached response already exist.
+                if(localStorage.loaded_posts)
+                    loadedPosts = JSON.parse(localStorage.loaded_posts);
+                else{
+                    loadedPosts = [];
                 }
-                else {
-                    console.log("loading finished");
-                    alert("글 로딩이 끝났습니다");
+                _.each(loadedPosts, createPostDiv);
+                /*
+                var loadingPrevFBPostLoop = function(response){
+                    loadedPosts = _.union(response.data,loadedPosts);
+                    _.each(response.data, createPostDiv);
+                    if(response.data.length > 0 && response.paging.previous){
+                        $.getJSON(response.paging.previous,loadingFBPostLoop);
+                    }
+                    else {
+                    }
                 }
+                $.getJSON(localStorage.getItem("prev_page"),loadingPrevFBPostLoop);
+                */
+            } else {
+                var loadedPosts = [];
+
+                var loadingNextFBPostLoop = function(response){
+                    loadedPosts = _.union(loadedPosts,response.data);
+                    _.each(response.data, createPostDiv);
+                    if(response.data.length > 0 && response.paging.next){
+                        $.getJSON(response.paging.next,loadingNextFBPostLoop);
+                    }
+                    else {
+                        console.log("loading finished");
+                        alert("글 로딩이 끝났습니다");
+                        localStorage.loaded_posts = JSON.stringify(loadedPosts);
+                        localStorage.latest_post  = JSON.stringify(_.last(loadedPosts));
+                    }
+                }
+                FB.api("me/posts",{limit:200},loadingNextFBPostLoop);
             }
 
 
-                FB.api("me/posts",{limit:200},loadingFBPostLoop);
-
-            /*
-            Step(function loadStuff() {
-                        facebookContentsLoader.getAllStatuses(this.parallel());
-                        facebookContentsLoader.getAllPhotos(this.parallel());
-                        facebookContentsLoader.getAllLinks(this.parallel());
-                    }, function showStuff(error, statuses, photos, links) {
-                        if (error) {
-                            console.err(error);
-                        } else {
-                            var contents = _.chain(_.union(statuses,photos,links))
-                                            .sortBy(function(a){ return -a.getCreatedTime().getTime(); })
-                                            .value();
-
-                            calendarMap = _.groupBy(contents, function(v){
-                                var x = v.getCreatedTime();
-                                return x.getFullYear() + "/" + (x.getMonth() + 1) + "/" + x.getDate();
-                            });
 
 
-                            for (var i in calendarMap) {
-                                var title = i;
 
-                                $(".site-container").append("<div class='date-container' date = '" + title + "'><p class='title'>" + title + "</p></div>");
-
-                                var contents = calendarMap[i];
-                                contents.forEach(function (v, i) {
-                                    if (v instanceof Photo) {
-                                        $(".date-container[date='" + title + "']").append(
-                                            "<div class='Photo'>" +
-                                                "<a href = '" + v.src_big + "'>" +
-                                                    "<img src='" + v.src + "' />" +
-                                                "</a>" +
-                                                "<p class='caption'>" + (v.caption ? v.caption : "") + "</p>" +
-                                            "</div>"
-                                        ).children().last().click(function(){
-                                            console.log(v);
-                                        });
-                                    }
-                                    else if (v instanceof Status) {
-                                        $(".date-container[date='" + title + "']").append(
-                                                "<div class='Status'>" +
-                                                    v.message +
-                                                "</div>"
-                                        ).children().last().click(function(){
-                                            $(this).clone().appendTo($(".left-pad"));
-                                        });
-                                    }
-                                    else if (v instanceof Link) {
-                                        $(".date-container[date='" + title + "']").append(
-                                                "<div class='Link'>" +
-                                                        "<p>" + v.title + "</p>" +
-                                                        "<p>" + v.summary + "</p>" +
-                                                        "<p>" + v.owner_comment + "</p>" +
-                                                        "<p>" + v.url + "</p>" +
-                                                        (v.image_urls ? ("<a href = '" + v.url + "'>" +
-                                                                "<img src='" + v.image_urls[0] + "'/>" +
-                                                                "</a>") : ("")) +
-                                                        "</div>"
-                                        ).children().last().click(function(){
-                                                    console.log(v);
-                                                });
-                                    }
-                                });
-                            }
-                        }
-
-                        $(".Loading").fadeOut();
-                    }
-            );
-            */
         });
     });
 </script>
