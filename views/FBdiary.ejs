@@ -131,20 +131,24 @@
                                 contents.forEach(function (v, i) {
                                     if (v instanceof Photo) {
                                         $(".date-container[date='" + title + "']").append(
-                                                "<div class='Photo'>" +
-                                                        "<a href = '" + v.src_big + "'>" +
-                                                        "<img src='" + v.src + "' />" +
-                                                        "</a>" +
-                                                        "<p class='caption'>" + (v.caption ? v.caption : "") + "</p>" +
-                                                        "</div>"
-                                        );
+                                            "<div class='Photo'>" +
+                                                "<a href = '" + v.src_big + "'>" +
+                                                    "<img src='" + v.src + "' />" +
+                                                "</a>" +
+                                                "<p class='caption'>" + (v.caption ? v.caption : "") + "</p>" +
+                                            "</div>"
+                                        ).children().last().click(function(){
+                                            console.log(v);
+                                        });
                                     }
                                     else if (v instanceof Status) {
                                         $(".date-container[date='" + title + "']").append(
                                                 "<div class='Status'>" +
-                                                        v.message +
-                                                        "</div>"
-                                        );
+                                                    v.message +
+                                                "</div>"
+                                        ).children().last().click(function(){
+                                            $(this).clone().appendTo($(".left-pad"));
+                                        });
                                     }
                                     else if (v instanceof Link) {
                                         $(".date-container[date='" + title + "']").append(
@@ -157,7 +161,9 @@
                                                                 "<img src='" + v.image_urls[0] + "'/>" +
                                                                 "</a>") : ("")) +
                                                         "</div>"
-                                        );
+                                        ).children().last().click(function(){
+                                                    console.log(v);
+                                                });
                                     }
                                 });
                             }
