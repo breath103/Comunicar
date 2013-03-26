@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<title>게임</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-<link href="/css/main.css" rel="stylesheet" type="text/css"/>
-<script src="/js/async.js"></script>
-<script src="/js/step.js"></script>
-<script src="http://underscorejs.org/underscore-min.js"></script>
-<script type="text/javascript" src="http://connect.facebook.net/ko_KR/all.js"></script>
-<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-<script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
-<script src="/js/FBDiary/facebook_contents_loader.js"></script>
-<script src="/js/FBDiary/facebook_clip.js"></script>
+    <title>게임</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/async.js"></script>
+    <script src="/js/step.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script type="text/javascript" src="http://connect.facebook.net/ko_KR/all.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
+    <script src="/js/FBDiary/facebook_contents_loader.js"></script>
+    <script src="/js/FBDiary/facebook_clip.js"></script>
 <script>
 
     function initLocalStorage() {
@@ -113,42 +113,98 @@
 
         initFacebook(function () {
             var generatePostDivHTML = function(v){
-                var template = _.template(
-                        "<div class='Status'>" +
-                            "<img src='<\%-picture%>'/>" +
-                            "<img src='<\%-icon%>'/>" +
-                            "<div class='main-text'>" +
-                                "<\%-main_text\%>" +
-                            "</div>" +
-                            "<div class='post_status'>" +
-                                " like : <\%-likes_count\%>" +
-                                " comment : <\%-comments_count\%>" +
-                             "</div>"+
-                        "</div>");
-
-                var data = {};
-                data.main_text      = v.message ? v.message : v.story;
-                data.picture        = v.picture;
-                data.icon           = v.icon;
-                data.likes_count    = v.likes?v.likes.count:0;
-                data.likes          = v.likes?v.likes.data:"";
-                data.comments_count = v.comments?v.comments.count:0;
-
-                return template(data);
 
                 switch (v.type){
                     case "status" :{
-
+                        var template = _.template(
+                                "<div class='Status'>" +
+                                    "<img src='<\%-picture\%>'/>" +
+                                     "<img src='<\%-icon\%>'/>" +
+                                     "<div class='main-text'>" +
+                                        "<\%-main_text\%>" +
+                                        "</div>" +
+                                        "<div class='post_status'>" +
+                                        " like : <\%-likes_count\%>" +
+                                        " comment : <\%-comments_count\%>" +
+                                        "</div>"+
+                                        "</div>");
+                        var data = {};
+                        data.main_text      = v.message ? v.message : v.story;
+                        data.picture        = v.picture;
+                        data.icon           = v.icon;
+                        data.likes_count    = v.likes?v.likes.count:0;
+                        data.likes          = v.likes?v.likes.data:"";
+                        data.comments_count = v.comments?v.comments.count:0;
+                        return template(data);
                     }break;
                     case "link" :{
-
+                        var template = _.template(
+                                "<div class='Status'>" +
+                                    "<p>" +
+                                        "<a href='<\%-link\%>'>" +
+                                            '<\% if(picture){ \%>' +
+                                                '<img class="center-croped-image" style="background-image:url(\'<\%-picture?picture:""\%>\')"; height="100px" width="100px">' +
+                                                '<br/>' +
+                                            '<\%}\%>'+
+                                            "<\%-link\%>" +
+                                        "</a>" +
+                                    "</p>" +
+                                    "<p>" +
+                                        "<\%-main_text\%>" +
+                                    "</p>" +
+                                    "<div class='post_status'>" +
+                                        " like : <\%-likes_count\%>" +
+                                        " comment : <\%-comments_count\%>" +
+                                    "</div>"+
+                                "</div>");
+                        var data = v;
+                        data.main_text      = v.message?v.message.replace("\n","<br/>"):"";
+                        data.picture        = v.picture? v.picture:"";
+                       // console.log(data);
+                        data.link           = v.link? v.link:"";
+                        data.icon           = v.icon;
+                        data.likes_count    = v.likes?v.likes.count:0;
+                        data.likes          = v.likes?v.likes.data:"";
+                        data.comments_count = v.comments?v.comments.count:0;
+                        return template(data);
                     }break;
                     case "photo" :{
-
+                        var template = _.template(
+                                "<div class='Status'>" +
+                                    "<img src='<\%-picture\%>'/>" +
+                                    "<img src='<\%-icon\%>'/>" +
+                                "   <div class='main-text'>" +
+                                "<\%-main_text\%>" +
+                                "</div>" +
+                                "<div class='post_status'>" +
+                                " like : <\%-likes_count\%>" +
+                                " comment : <\%-comments_count\%>" +
+                                "</div>"+
+                                "</div>");
+                        var data = {};
+                        data.main_text      = v.message ? v.message : v.story;
+                        data.picture        = v.picture;
+                        data.icon           = v.icon;
+                        data.likes_count    = v.likes?v.likes.count:0;
+                        data.likes          = v.likes?v.likes.data:"";
+                        data.comments_count = v.comments?v.comments.count:0;
+                        return template(data);
                     }break;
                     case "video" :{
 
-                    }break;
+                        var template = _.template(_.unescape($("#templates #video_post").html()));
+                        var data = v;
+                        data.main_text      = v.message ? v.message : v.story;
+                        data.picture        = v.picture;
+                        data.icon           = v.icon;
+                        data.likes_count    = v.likes?v.likes.count:0;
+                        data.likes          = v.likes?v.likes.data:"";
+                        data.comments_count = v.comments?v.comments.count:0;
+                        return template(data);
+                    }
+                    default :
+                        console.log(v);
+                    break;
                 }
             };
 
@@ -332,9 +388,30 @@
         background-color: black;
         color: white;
     }
+    .center-croped-image{
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+    }
 </style>
 </head>
 <body>
+<div id="templates" style="display:none;">
+    <div id="video_post">
+        <div class="Status">
+            <a style="width:100px;height:100px;display:inline-block">
+                <img class="center-croped-image" style="background-image:url('<\%-picture\%>')" height="100%" width="100%">
+            </a>
+            <a href="<\%-source\%>" target="_blank">
+                <div>
+                    <div><\%-name\%></div>
+                    <div></div>
+                    <div><\%-description\%></div>
+                </div>
+            </a>
+            <p><\%-message\%></p>
+        </div>
+    </div>
+</div>
 <div class="site">
     <div class="left-pad">
 
