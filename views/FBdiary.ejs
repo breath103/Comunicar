@@ -112,31 +112,53 @@
         });
 
         initFacebook(function () {
-            function createPostDiv(v){
-               // if(v.type!="status") console.log(v);
-                var divstr = null;
+            var generatePostDivHTML = function(v){
+                var template = _.template(
+                        "<div class='Status'>" +
+                            "<img src='<\%-picture%>'/>" +
+                            "<img src='<\%-icon%>'/>" +
+                            "<div class='main-text'>" +
+                                "<\%-main_text\%>" +
+                            "</div>" +
+                            "<div class='post_status'>" +
+                                " like : <\%-likes_count\%>" +
+                                " comment : <\%-comments_count\%>" +
+                             "</div>"+
+                        "</div>");
 
-                var photoTemplate = _.template("<img src='<\%-src%>'/>");
-                var template = _.template("<div class='Status'><img src='<\%-picture%>'/><div class='main-text'><\%-main_text\%></div></div>");
                 var data = {};
-                data.main_text = v.message ? v.message : v.story;
-                data.picture   = v.picture;
+                data.main_text      = v.message ? v.message : v.story;
+                data.picture        = v.picture;
+                data.icon           = v.icon;
+                data.likes_count    = v.likes?v.likes.count:0;
+                data.likes          = v.likes?v.likes.data:"";
+                data.comments_count = v.comments?v.comments.count:0;
 
-                $(".site-container").append( template(data) ).children().last().click(function(){
+                return template(data);
+
+                switch (v.type){
+                    case "status" :{
+
+                    }break;
+                    case "link" :{
+
+                    }break;
+                    case "photo" :{
+
+                    }break;
+                    case "video" :{
+
+                    }break;
+                }
+            };
+
+            function createPostDiv(v){
+                $(".site-container").append( generatePostDivHTML(v) ).children().last().click(function(){
                     $(".left-pad").html(JSON.stringify(v));
                 });
             }
             function createPostDivAndPrepend(v){
-                // if(v.type!="status") console.log(v);
-                var divstr = null;
-
-                var photoTemplate = _.template("<img src='<\%-src%>'/>");
-                var template = _.template("<div class='Status'><img src='<\%-picture%>'/><div class='main-text'><\%-main_text\%></div></div>");
-                var data = {};
-                data.main_text = v.message ? v.message : v.story;
-                data.picture   = v.picture;
-
-                $(".site-container").prepend(template(data))
+                $(".site-container").prepend(generatePostDivHTML(v))
                                     .children()
                                     .last()
                                     .click(function(){
