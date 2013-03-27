@@ -13,7 +13,19 @@
     <script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
     <script src="/js/FBDiary/facebook_contents_loader.js"></script>
     <script src="/js/FBDiary/facebook_clip.js"></script>
-<script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-39627038-1']);
+        _gaq.push(['_setDomainName', '210.122.0.119.']);
+        _gaq.push(['_setAllowLinker', true]);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <script>
 
     function initLocalStorage() {
         if (typeof(Storage) !== "undefined") {
@@ -192,7 +204,7 @@
                     }break;
                     case "video" :{
 
-                        var template = _.template(_.unescape($("#templates #video_post").html()));
+                        var template = _.template( _.unescape($("#templates #video_post").html()).replace(/\\%/gi, "%") );
                         var data = v;
                         data.main_text      = v.message ? v.message : v.story;
                         data.picture        = v.picture;
