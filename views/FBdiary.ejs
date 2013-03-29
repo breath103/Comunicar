@@ -8,11 +8,12 @@
     <script src="/js/async.js"></script>
     <script src="/js/step.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
-    <script type="text/javascript" src="http://connect.facebook.net/ko_KR/all.js"></script>
+    <script type="text/javascript" src="http://connect.facebook.net/ko_KR/all.js#xfbml=1"></script>
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
     <script src="/js/FBDiary/facebook_contents_loader.js"></script>
     <script src="/js/FBDiary/facebook_clip.js"></script>
+    <script src="/js/FBDiary/template_loader.js"></script>
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-39627038-1']);
@@ -43,7 +44,7 @@
     }
 
     function searchPost(keyword) {
-        $.each($(".date-container"), function (i, v) {
+        $.each($(".Status"), function (i, v) {
             var content = $(v).html();
             if (content.indexOf(keyword) != -1) {
                 console.log(content);
@@ -296,13 +297,7 @@
                     }
                 }
                 FB.api("me/posts",{limit:200},loadingNextFBPostLoop);
-
             }
-
-
-
-
-
         });
     });
 </script>
@@ -419,10 +414,11 @@
                     <div><\%-description\%></div>
                 </div>
             </a>
-            <p><\%-message\%></p>
+            <p><\%-main_text\%></p>
         </div>
     </div>
 </div>
+
 <div class="site">
     <div class="left-pad">
 
