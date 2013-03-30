@@ -8,24 +8,16 @@
     <script src="/js/async.js"></script>
     <script src="/js/step.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
-    <script type="text/javascript" src="http://connect.facebook.net/ko_KR/all.js#xfbml=1"></script>
+    <script src="http://connect.facebook.net/ko_KR/all.js#xfbml=1"></script>
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
-    <script src="/js/FBDiary/facebook_contents_loader.js"></script>
+    <script src="/js/FBDiary/FacebookContentsManager.js"></script>
     <script src="/js/FBDiary/facebook_clip.js"></script>
     <script src="/js/FBDiary/template_loader.js"></script>
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-39627038-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
+    <script src="/js/FBDiary/google_analytics.js"></script>
     <script>
+
+    var contentsManager = new FacebookContentsManager();
 
     function initLocalStorage() {
         if (typeof(Storage) !== "undefined") {
@@ -38,10 +30,6 @@
         return typeof(Storage) !== "undefined";
     }
 
-    function clearCache(){
-        localStorage.clear();
-        location.href = location.href;
-    }
 
     function searchPost(keyword) {
         $.each($(".Status"), function (i, v) {
@@ -55,249 +43,27 @@
         });
     }
 
-    function initFacebook(callback) {
-        var debug_app = "358262920960112";
-        var release_app = "333864290041286";
-        FB.init({ "appId": debug_app,
-            "status": false,
-            "cookie": true,
-            "xfbml": true,
-            "oauth": true});
-        function startFacebookLogin(success, failure) {
-            FB.login(function (response) {
-                if (response.authResponse) {
-                    success(response);
-                } else {
-                    failure(response);
-                }
-            }, {"scope": 'email,user_likes,read_stream'});
-        }
-
-        function facebookLoginFailureCallback() {
-            alert("페이스북 로그인이 취소되었습니다. 다이어리 사용이 불가능합니다.");
-        }
-
-        FB.getLoginStatus(function (response) {
-            if (response.status === 'connected') {
-                callback(response);
-            } else if (response.status === 'not_authorized') {
-                startFacebookLogin(callback, facebookLoginFailureCallback);
-            } else {
-                startFacebookLogin(callback, facebookLoginFailureCallback);
-            }
-        });
+    function getYotubueThumbnail(youtube_link){
+        var video_id = youtube_link.split("v=")[1];
+        return "http://img.youtube.com/vi/" + video_id + "/mqdefault.jpg";
     }
-
-    function showDateIn(date) {
-        $("#showDayButton").html((date.getMonth() + 1) + "/" + date.getDate());
-        $(".date-container").clearQueue().hide();
-        for (var i = 2000; i < date.getFullYear(); i++) {
-            $(".date-container[date='" + i + "/" + (date.getMonth() + 1) + "/" + date.getDate() + "']").clearQueue().fadeIn();
-        }
-    }
-    function test_delete_post(count){
-        var loadedPosts = JSON.parse(localStorage.loaded_posts);
-        loadedPosts = _.reject(loadedPosts, function(v,i){ return i<count; });
-        localStorage.loaded_posts = JSON.stringify(loadedPosts);
-        localStorage.latest_post  = JSON.stringify(_.first(loadedPosts));
-    }
-
-    var currentShowingDate = new Date();
-    function showPreviousDayContent() {
-        currentShowingDate.setDate(currentShowingDate.getDate() - 1);
-        showDateIn(currentShowingDate);
-    }
-    function showTodayContent() {
-        currentShowingDate = new Date();
-        showDateIn(currentShowingDate);
-    }
-    function showNextDayContent() {
-        currentShowingDate.setDate(currentShowingDate.getDate() + 1);
-        showDateIn(currentShowingDate);
-    }
-
-    var calendarMap = {};
 
     $(document).ready(function () {
-        $("#search_input").change(function () {
-            searchPost($(this).val());
-        });
+        contentsManager.connectFacebook(function(error,response){
+            if (error) {
+            }
+            var posts = this.getCachedPosts();
+            if(posts && posts.length > 0)
+                this.loadAllPosts(function(error,posts,stepCount,isLast){
+                    if(error){
 
-        initFacebook(function () {
-            var generatePostDivHTML = function(v){
-
-                switch (v.type){
-                    case "status" :{
-                        var template = _.template(
-                                "<div class='Status'>" +
-                                    "<img src='<\%-picture\%>'/>" +
-                                     "<img src='<\%-icon\%>'/>" +
-                                     "<div class='main-text'>" +
-                                        "<\%-main_text\%>" +
-                                        "</div>" +
-                                        "<div class='post_status'>" +
-                                        " like : <\%-likes_count\%>" +
-                                        " comment : <\%-comments_count\%>" +
-                                        "</div>"+
-                                        "</div>");
-                        var data = {};
-                        data.main_text      = v.message ? v.message : v.story;
-                        data.picture        = v.picture;
-                        data.icon           = v.icon;
-                        data.likes_count    = v.likes?v.likes.count:0;
-                        data.likes          = v.likes?v.likes.data:"";
-                        data.comments_count = v.comments?v.comments.count:0;
-                        return template(data);
-                    }break;
-                    case "link" :{
-                        var template = _.template(
-                                "<div class='Status'>" +
-                                    "<p>" +
-                                        "<a href='<\%-link\%>'>" +
-                                            '<\% if(picture){ \%>' +
-                                                '<img class="center-croped-image" style="background-image:url(\'<\%-picture?picture:""\%>\')"; height="100px" width="100px">' +
-                                                '<br/>' +
-                                            '<\%}\%>'+
-                                            "<\%-link\%>" +
-                                        "</a>" +
-                                    "</p>" +
-                                    "<p>" +
-                                        "<\%-main_text\%>" +
-                                    "</p>" +
-                                    "<div class='post_status'>" +
-                                        " like : <\%-likes_count\%>" +
-                                        " comment : <\%-comments_count\%>" +
-                                    "</div>"+
-                                "</div>");
-                        var data = v;
-                        data.main_text      = v.message?v.message.replace("\n","<br/>"):"";
-                        data.picture        = v.picture? v.picture:"";
-                       // console.log(data);
-                        data.link           = v.link? v.link:"";
-                        data.icon           = v.icon;
-                        data.likes_count    = v.likes?v.likes.count:0;
-                        data.likes          = v.likes?v.likes.data:"";
-                        data.comments_count = v.comments?v.comments.count:0;
-                        return template(data);
-                    }break;
-                    case "photo" :{
-                        var template = _.template(
-                                "<div class='Status'>" +
-                                    "<img src='<\%-picture\%>'/>" +
-                                    "<img src='<\%-icon\%>'/>" +
-                                "   <div class='main-text'>" +
-                                "<\%-main_text\%>" +
-                                "</div>" +
-                                "<div class='post_status'>" +
-                                " like : <\%-likes_count\%>" +
-                                " comment : <\%-comments_count\%>" +
-                                "</div>"+
-                                "</div>");
-                        var data = {};
-                        data.main_text      = v.message ? v.message : v.story;
-                        data.picture        = v.picture;
-                        data.icon           = v.icon;
-                        data.likes_count    = v.likes?v.likes.count:0;
-                        data.likes          = v.likes?v.likes.data:"";
-                        data.comments_count = v.comments?v.comments.count:0;
-                        return template(data);
-                    }break;
-                    case "video" :{
-
-                        var template = _.template( _.unescape($("#templates #video_post").html()).replace(/\\%/gi, "%") );
-                        var data = v;
-                        data.main_text      = v.message ? v.message : v.story;
-                        data.picture        = v.picture;
-                        data.icon           = v.icon;
-                        data.likes_count    = v.likes?v.likes.count:0;
-                        data.likes          = v.likes?v.likes.data:"";
-                        data.comments_count = v.comments?v.comments.count:0;
-                        return template(data);
                     }
-                    default :
-                        console.log(v);
-                    break;
-                }
-            };
-
-            function createPostDiv(v){
-                $(".site-container").append( generatePostDivHTML(v) ).children().last().click(function(){
-                    $(".left-pad").html(JSON.stringify(v));
+                    else{
+                        console.log(posts.length,stepCount,isLast);
+                    }
                 });
-            }
-            function createPostDivAndPrepend(v){
-                $(".site-container").prepend(generatePostDivHTML(v))
-                                    .children()
-                                    .last()
-                                    .click(function(){
-                                        $(".left-pad").html(JSON.stringify(v));
-                                    });
-            }
-
-
-            if (localStorage.latest_post) { //if is there a cached response already exist.
-                var loadedPosts = [];
-
-                if(localStorage.loaded_posts)
-                    loadedPosts = JSON.parse(localStorage.loaded_posts);
-                else{
-                    loadedPosts = [];
-                }
-
-                var latest_post = JSON.parse(localStorage.latest_post);
-
-                _.each(loadedPosts, createPostDiv);
-
-                console.log(latest_post);
-
-                $(".Loading").css({"display":"none"});
-                var loadingPrevFBPostLoop = function(response){
-                    loadedPosts =
-                            _.chain(loadedPosts)
-                            .union(response.data)
-                            .uniq(function(v){return v.id;})
-                            .sortBy(function(v){return -(new Date(v.created_time)).getTime();})
-                            .value();
-
-                    _(response.data.reverse()).each(createPostDivAndPrepend);
-
-                    if(response.data.length > 0 && response.paging.previous){
-                        console.log(response);
-                        $.getJSON(response.paging.previous,loadingPrevFBPostLoop);
-                    }
-                    else {
-                        console.log(loadedPosts);
-                        localStorage.loaded_posts = JSON.stringify(loadedPosts);
-                        localStorage.latest_post  = JSON.stringify(_.first(loadedPosts));
-                        $(".Loading").fadeOut();
-                    }
-                }
-                FB.api("me/posts",{
-                    limit:25,
-                    since: (new Date(latest_post.created_time).getTime())/1000
-                },loadingPrevFBPostLoop);
-
-            } else {
-                var loadedPosts = [];
-
-                $(".Loading").html("페이스북 정보를 로딩중입니다. 이 로딩은 초기 한번만 실행됩니다");
-                var loadingNextFBPostLoop = function(response){
-                    loadedPosts = _.union(loadedPosts,response.data);
-                    _.each(response.data, createPostDiv);
-                    if(response.data.length > 0 && response.paging.next){
-                        $.getJSON(response.paging.next,loadingNextFBPostLoop);
-                        $(".Loading").append("<p>" + response.data.length + "</p>");
-                    }
-                    else {
-                        console.log("loading finished");
-                        alert("글 로딩이 끝났습니다");
-                        localStorage.loaded_posts = JSON.stringify(loadedPosts);
-                        localStorage.latest_post  = JSON.stringify(_.first(loadedPosts));
-                        $(".Loading").fadeOut();
-                    }
-                }
-                FB.api("me/posts",{limit:200},loadingNextFBPostLoop);
-            }
+            else
+                this.loadNewPosts();
         });
     });
 </script>
@@ -398,23 +164,43 @@
         background-position: 50% 50%;
         background-repeat: no-repeat;
     }
+
+    .Photo{
+        background-color:rgb(240,240,240);
+    }
+    .Photo .PhotoContainer{
+        width:100%;
+        height:80%;
+    }
+    .Photo .PhotoContainer img{
+        width:100%;
+        height:100%;
+    }
 </style>
 </head>
 <body>
 <div id="templates" style="display:none;">
     <div id="video_post">
         <div class="Status">
-            <a style="width:100px;height:100px;display:inline-block">
-                <img class="center-croped-image" style="background-image:url('<\%-picture\%>')" height="100%" width="100%">
-            </a>
-            <a href="<\%-source\%>" target="_blank">
-                <div>
-                    <div><\%-name\%></div>
-                    <div></div>
-                    <div><\%-description\%></div>
+            <a href="<\%-source\%>" target="_blank"></a>
+            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;"
+                 class="Photo">
+                <div class="PhotoContainer">
+                    <img src="<\%-picture\%>" />
                 </div>
-            </a>
-            <p><\%-main_text\%></p>
+                <div class="TextContainer">
+                    <div class="DateContainer">
+                    </div>
+                    <div class="MessageContainer">
+                        <p><\%-name\%></p>
+                        <p><\%-description\%></p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p><\%-main_text\%></p>
+            </div>
         </div>
     </div>
 </div>

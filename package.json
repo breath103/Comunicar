@@ -17,6 +17,8 @@
         "mocha"      :  "1.8.1",
         "supertest"  :  "0.5.1",
         "should"     :  "1.2.2",
-        "require-dir" : "*"
+        "require-dir" : "*",
+        "browserify" : "2.10.1",
+	"sinon" : "*"         
     }
 }

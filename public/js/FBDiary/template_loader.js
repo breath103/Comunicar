@@ -3,5 +3,4 @@
 
 function TemplateLoader(container){
     this.$container = $(container);
-
 }
