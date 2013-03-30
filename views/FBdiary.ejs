@@ -8,7 +8,7 @@
     <script src="/js/async.js"></script>
     <script src="/js/step.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
-    <script src="http://connect.facebook.net/ko_KR/all.js#xfbml=1"></script>
+    <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
     <script src="/js/FBDiary/FacebookContentsManager.js"></script>
@@ -53,17 +53,26 @@
             if (error) {
             }
             var posts = this.getCachedPosts();
-            if(posts && posts.length > 0)
-                this.loadAllPosts(function(error,posts,stepCount,isLast){
-                    if(error){
-
-                    }
-                    else{
-                        console.log(posts.length,stepCount,isLast);
+            console.log(posts);
+            if (posts && posts.length > 0) {
+                this.loadNewPosts(function(error,posts,stepCount,isLast){
+                    if(error){ throw error; }
+                    console.log("new posts",posts.length,stepCount,isLast);
+                    if(isLast){
+                        $(".Loading").fadeOut();
                     }
                 });
-            else
-                this.loadNewPosts();
+
+            }
+            else {
+                this.loadAllPosts(function(error,posts,stepCount,isLast){
+                    if (error) { throw error; }
+                    console.log("all posts",posts.length,stepCount,isLast);
+                    if (isLast) {
+                        $(".Loading").fadeOut();
+                    }
+                });
+            }
         });
     });
 </script>

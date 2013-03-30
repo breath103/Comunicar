@@ -31,12 +31,14 @@ describe("FacebookContentsManager", function() {
         var posts = [
             1,2,3,4,5
         ];
+        beforeEach(function(){
+            localStorage.clear();
+            manager.setCachedPosts(posts);
+        });
+        afterEach(function(){
+            manager.clearCache();
+        });
         describe("-setCachedPosts",function(){
-            beforeEach(function(){
-                localStorage.clear();
-                manager.setCachedPosts(posts);
-            });
-
             it("should cached posts",function(){
                 var cachedPosts = manager.getCachedPosts();
                 expect(_.isEqual(posts,cachedPosts)).to.be.ok();
@@ -47,10 +49,6 @@ describe("FacebookContentsManager", function() {
             });
         });
         describe("-getCachedPosts",function(){
-            beforeEach(function(){
-                manager.clearCache();
-                manager.setCachedPosts(posts);
-            });
             it("should cached posts",function(){
                 var cachedPosts = manager.getCachedPosts();
                 expect(_.isEqual(posts,cachedPosts)).to.be.ok();
