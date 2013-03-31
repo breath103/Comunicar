@@ -3,6 +3,9 @@ describe("FacebookContentsManager", function() {
     beforeEach(function(){
         manager = new FacebookContentsManager();
     });
+    afterEach(function(){
+        manager.clearCache();
+    });
 
     describe("initialize", function() {
         it("should be initialized", function() {
@@ -82,5 +85,6 @@ describe("FacebookContentsManager", function() {
             xhr.restore();
         });
     });
-
+    describe("-searchPost",function(){
+    });
 });

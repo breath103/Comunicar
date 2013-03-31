@@ -4,215 +4,104 @@
     <title>게임</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-    <link href="/css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/fbdiary.css" rel="stylesheet" type="text/css"/>
     <script src="/js/async.js"></script>
     <script src="/js/step.js"></script>
+    <script src="/js/date_format.js"></script>
+    <script src="/js/js-url.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
+    <script src="/js/FBDiary/Post.js"></script>
     <script src="/js/FBDiary/FacebookContentsManager.js"></script>
+    <script src="/js/FBDiary/DiaryController.js"></script>
     <script src="/js/FBDiary/facebook_clip.js"></script>
     <script src="/js/FBDiary/template_loader.js"></script>
     <script src="/js/FBDiary/google_analytics.js"></script>
     <script>
-
-    var contentsManager = new FacebookContentsManager();
-
-    function initLocalStorage() {
-        if (typeof(Storage) !== "undefined") {
-        }
-        else {
-            alert("브라우져가 웹스토리지를 지원하지 않습니다. 스크랩이 사용 불가능하고 로딩시간이 길어질 수 있습니다.");
-        }
-    }
-    function isStorageEnabled() {
-        return typeof(Storage) !== "undefined";
+    /**
+    *
+    * @param id : String
+    */
+    function getTemplate(template_selector){
+        var rawTemplateHtml = _.unescape( $("#templates").find(template_selector).html()).replace(/\\%/gi, '%');
+        return _.template(rawTemplateHtml);
     }
 
+    function PostPresenter(){
+    }
+    PostPresenter.prototype = {
+        _presentVideo : function(post){
+            var videoTemplate = getTemplate("#video_post");
+            return videoTemplate(post);
+        },
+        _presentPhoto : function(post){
 
-    function searchPost(keyword) {
-        $.each($(".Status"), function (i, v) {
-            var content = $(v).html();
-            if (content.indexOf(keyword) != -1) {
-                console.log(content);
-                $(v).clearQueue().slideDown();
-            } else {
-                $(v).clearQueue().slideUp();
+        },
+        /**
+         * @param post
+         */
+        presentPost : function(post){
+            if(post.type == "video"){
+                return this._presentVideo(post);
+            } else if(post.type == "photo") {
+                return this._presentPhoto(post);
+            } else if(post.type == "status") {
+
             }
-        });
-    }
+        }
+    };
 
-    function getYotubueThumbnail(youtube_link){
-        var video_id = youtube_link.split("v=")[1];
-        return "http://img.youtube.com/vi/" + video_id + "/mqdefault.jpg";
-    }
 
     $(document).ready(function () {
+        var diaryController = new DiaryController();
+        var contentsManager = new FacebookContentsManager();
+        var postPresenter   = new PostPresenter();
+
+        diaryController.fbContentsManager = contentsManager;
+
         contentsManager.connectFacebook(function(error,response){
-            if (error) {
-            }
+            if (error) {}
             var posts = this.getCachedPosts();
-            console.log(posts);
             if (posts && posts.length > 0) {
+                $(".Loading").html("마지막 데이터 로딩 이후에 새로 추가된 페이스북 컨텐츠를 로딩 중입니다...");
                 this.loadNewPosts(function(error,posts,stepCount,isLast){
                     if(error){ throw error; }
-                    console.log("new posts",posts.length,stepCount,isLast);
                     if(isLast){
                         $(".Loading").fadeOut();
+                        $.each(posts,function(index,post){
+                            var postString = postPresenter.presentPost(post);
+                            $(".site-container").append(postString);
+                        });
+                        diaryController.showToday();
+                    } else {
+                        console.log( _.first(posts).created_time , _.last(posts).created_time);
                     }
                 });
-
             }
             else {
+                $(".Loading").html("초기 데이터를 로딩중입니다...");
                 this.loadAllPosts(function(error,posts,stepCount,isLast){
                     if (error) { throw error; }
-                    console.log("all posts",posts.length,stepCount,isLast);
                     if (isLast) {
                         $(".Loading").fadeOut();
+                        $.each(posts,function(index,post){
+                            var postString = postPresenter.presentPost(post);
+                            $(".site-container").append(postString);
+                        });
+                        diaryController.showToday();
+                    } else {
+                        console.log( _.first(posts).created_time , _.last(posts).created_time);
                     }
                 });
             }
         });
     });
+
 </script>
-<style>
-    html, body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    * {
-        font-size: 1em;
-        letter-spacing: -1px;
-        font-family: NanumGothic, "Apple SD Gothic Neo", "Malgun Gothic", AppleGothic, Dotum, sans-serif;
-        margin: 0px;
-        padding: 0px;
-    }
-
-    .site{
-        width:100%;
-        height:100%;
-    }
-
-    .site .left-pad{
-        float:left;
-        width:30%;
-        height:100%;
-        background-color:#df8505;
-    }
-    .site .right-pad{
-        float:right;
-        width:70%;
-        height:100%;
-        background-color:#2f96b4;
-        overflow-y:scroll;
-    }
-
-    .site-container {
-        width: 100%;
-        height: 100%;
-        overflow: scroll;
-    }
-
-    .date-container {
-        border-radius: 10px;
-        background-color: rgb(142, 194, 190);
-        width: 500px;
-        height: auto;
-        margin-bottom: 10px;
-    }
-
-    .date-container .title {
-        text-align: center;
-        font-family: "맑은 고딕";
-        font-size: 40px;
-    }
-
-    .Photo {
-        width: 100%;
-        height: auto;
-        background-color: rgba(0, 0, 0, 0.28);
-        margin-bottom: 8px;
-        border-radius: 5px;
-    }
-
-    .Photo img {
-    }
-
-    .Photo .caption {
-    }
-
-    .Status {
-        width: 100%;
-        height: auto;
-        background-color: rgba(0, 0, 0, 0.28);
-        margin-bottom: 8px;
-        border-radius: 5px;
-    }
-
-    .Link {
-        width: 100%;
-        height: auto;
-        background-color: rgba(0, 0, 0, 0.28);
-        margin-bottom: 8px;
-        border-radius: 5px;
-    }
-
-    .Loading {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        background-color: black;
-        color: white;
-    }
-    .center-croped-image{
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-    }
-
-    .Photo{
-        background-color:rgb(240,240,240);
-    }
-    .Photo .PhotoContainer{
-        width:100%;
-        height:80%;
-    }
-    .Photo .PhotoContainer img{
-        width:100%;
-        height:100%;
-    }
-</style>
 </head>
 <body>
-<div id="templates" style="display:none;">
-    <div id="video_post">
-        <div class="Status">
-            <a href="<\%-source\%>" target="_blank"></a>
-            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;"
-                 class="Photo">
-                <div class="PhotoContainer">
-                    <img src="<\%-picture\%>" />
-                </div>
-                <div class="TextContainer">
-                    <div class="DateContainer">
-                    </div>
-                    <div class="MessageContainer">
-                        <p><\%-name\%></p>
-                        <p><\%-description\%></p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <p><\%-main_text\%></p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="site">
     <div class="left-pad">
@@ -227,9 +116,34 @@
             <input type="text" id="search_input"/>
         </header>
         <div class="site-container">
-
         </div>
         <div class="Loading">Loading..</div>
+    </div>
+</div>
+
+<div id="templates" style="display:none;">
+    <div id="video_post">
+        <div class="Status">
+            <a href="<\%-source\%>" target="_blank"></a>
+            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;"
+                 class="Photo">
+                <div class="PhotoContainer">
+                    <img src="<\%-'http://img.youtube.com/vi/' + url('?v',link) + '/mqdefault.jpg'\%>" />
+                </div>
+                <div class="TextContainer">
+                    <div class="DateContainer">
+                    </div>
+                    <div class="MessageContainer">
+                        <p><\%-name\%></p>
+                        <p><\%-description\%></p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p><\%-message?message:story\%></p>
+            </div>
+        </div>
     </div>
 </div>
 </body>

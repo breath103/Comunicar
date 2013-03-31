@@ -1,0 +1,112 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+header {height:40px; background: -webkit-linear-gradient(#7ec0e9 0%, #1872a7 100%); }
+header p{text-align: center;  color: white; vertical-align: middle;padding-top: 9px;}
+
+
+* {
+    font-size: 1em;
+    letter-spacing: -1px;
+    font-family: NanumGothic, "Apple SD Gothic Neo", "Malgun Gothic", AppleGothic, Dotum, sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+.site{
+    width:100%;
+    height:100%;
+}
+
+.site .left-pad{
+    float:left;
+    width:30%;
+    height:100%;
+    background-color:#df8505;
+}
+.site .right-pad{
+    float:right;
+    width:70%;
+    height:100%;
+    background-color:#2f96b4;
+    overflow-y:scroll;
+}
+
+.site-container {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+
+.date-container {
+    border-radius: 10px;
+    background-color: rgb(142, 194, 190);
+    width: 500px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.date-container .title {
+    text-align: center;
+    font-family: "맑은 고딕";
+    font-size: 40px;
+}
+
+.Photo {
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.28);
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+
+.Photo img {
+}
+
+.Photo .caption {
+}
+
+.Status {
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.28);
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+
+.Link {
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.28);
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+
+.Loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-color: black;
+    color: white;
+}
+.center-croped-image{
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.Photo{
+    background-color:rgb(240,240,240);
+}
+.Photo .PhotoContainer{
+    width:100%;
+    height:80%;
+}
+.Photo .PhotoContainer img{
+    width:100%;
+    height:100%;
+}

@@ -1,0 +1,6 @@
+function PostPresenter(){
+
+}
+PostPresenter.prototype = {
+
+};

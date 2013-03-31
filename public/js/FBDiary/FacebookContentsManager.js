@@ -1,4 +1,3 @@
-
 function FacebookContentsManager()
 {
     this.posts = null;
@@ -36,16 +35,32 @@ FacebookContentsManager.prototype = {
             if (response.status === 'connected') {
                 cb.call(self,null,response);
             } else if (response.status === 'not_authorized') {
+                self.clearCache();
                 startFacebookLogin();
             } else {
+                self.clearCache();
                 startFacebookLogin();
             }
         });
+    },
+    /**
+     *
+     * @param posts : Array
+     * @private
+     */
+    _generatePostCalendarMap : function(posts){
+        var dateToKey = function(v){
+            var post = new Post(v);
+            return post.dateKey;
+        }
+        this.postCalendarMap = _.groupBy(posts,dateToKey);
     },
     /***
      * @param posts : Array
      */
     setCachedPosts : function(posts){
+        this.posts = posts;
+        this._generatePostCalendarMap(posts);
         if(posts && posts.length > 0){
             localStorage.loaded_posts = JSON.stringify(posts);
             localStorage.latest_post  = JSON.stringify(_.first(posts));
@@ -77,17 +92,11 @@ FacebookContentsManager.prototype = {
 
         var loadingPrevFBPostLoop = function(response){
             //새로운 포스트를 로딩하는 것이기 때문에 추가한뒤에 다시 날짜순으로 정렬한다.
-            try{
-                loadedPosts =  _.chain(loadedPosts)
-                    .union(response.data)
-                    .uniq(function(v){return v.id;})
-                    .sortBy(function(v){return -(new Date(v.created_time)).getTime();})
-                    .value();
-            }
-
-            catch(e){
-                throw e;
-            }
+            loadedPosts =  _.chain(loadedPosts)
+                            .union(response.data)
+                            .uniq(function(v){return v.id;})
+                            .sortBy(function(v){return -(new Date(v.created_time)).getTime();})
+                            .value();
 
          //   _(response.data.reverse()).each(createPostDivAndPrepend);
             if (response.error){
@@ -100,7 +109,7 @@ FacebookContentsManager.prototype = {
             }
             else {
                 self.setCachedPosts(loadedPosts);
-                cb.call(self,null,response.data,loadCount++,true);
+                cb.call(self,null,loadedPosts,loadCount++,true);
             }
         }
         FB.api("me/posts",{
@@ -127,9 +136,14 @@ FacebookContentsManager.prototype = {
             }
             else {
                 self.setCachedPosts(loadedPosts);
-                cb.call(self,null,response.data,loadCount++,true);
+                cb.call(self,null,loadedPosts,loadCount++,true);
             }
         }
         FB.api("me/posts",{ limit:200 },loadingNextFBPostLoop);
+    },
+    searchPost : function(params){
+        if(params.query){
+
+        }
     }
 };
