@@ -15,5 +15,4 @@ ClipManager.prototype = {
         localStorage.setItem("clipedPosts",JSON.stringify(posts));
     }
 };
-
 var clipManager = new ClipManager();

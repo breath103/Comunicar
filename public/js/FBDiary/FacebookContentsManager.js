@@ -2,8 +2,23 @@ function FacebookContentsManager()
 {
     this.posts = null;
     this.postCalendarMap = {};
+    if (localStorage.outer_objects) {
+        this.outerObjects = JSON.parse(localStorage.outer_objects);
+    } else {
+        this.outerObjects = {};
+    }
 }
 FacebookContentsManager.prototype = {
+    setOuterObject : function(object,id){
+        this.outerObjects[id] = object;
+        localStorage.outer_objects = JSON.stringify(this.outerObjects);
+    },
+    getOuterObject : function(id){
+        return this.outerObjects[id];
+    },
+    facebookPermissions : function(){
+        return  'email,user_likes,read_stream,user_photos';
+    },
     /**
      * @param callbacks = {
      *    success : Function(response)
@@ -28,11 +43,14 @@ FacebookContentsManager.prototype = {
                 } else {
                     cb.call(self,new Error("facebook auth failed"));
                 }
-            }, {"scope": 'email,user_likes,read_stream'});
+            }, {"scope": self.facebookPermissions()});
         };
+
+        startFacebookLogin();
 
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
+                console.log(response);
                 cb.call(self,null,response);
             } else if (response.status === 'not_authorized') {
                 self.clearCache();

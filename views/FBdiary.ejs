@@ -20,24 +20,47 @@
     <script src="/js/FBDiary/template_loader.js"></script>
     <script src="/js/FBDiary/google_analytics.js"></script>
     <script>
-    /**
-    *
-    * @param id : String
-    */
+
     function getTemplate(template_selector){
-        var rawTemplateHtml = _.unescape( $("#templates").find(template_selector).html()).replace(/\\%/gi, '%');
+        _.templateSettings = {
+            interpolate : /\{\{(.+?)\}\}/g
+        };
+        var rawTemplateHtml = _.unescape( $("#templates").find(template_selector).html())
         return _.template(rawTemplateHtml);
     }
-
-    function PostPresenter(){
+    function PostPresenter(contentsManager){
+        this.contentsManager = contentsManager;
     }
     PostPresenter.prototype = {
         _presentVideo : function(post){
             var videoTemplate = getTemplate("#video_post");
-            return videoTemplate(post);
+            return videoTemplate({post : post});
         },
         _presentPhoto : function(post){
+            try{
+                var self = this;
+                var photoTemplate = getTemplate("#photo_post");
+                var $photo_post = $(photoTemplate({post : post}));
+                var photoSourceObject = this.contentsManager.getOuterObject(post.object_id);
+                if (photoSourceObject) {
+                    $photo_post.find("img").attr("src",photoSourceObject.source);
+                } else {
+                    FB.api("/"+post.object_id,function(response){
+                        if (response.error) {
+                            console.log(post.object_id);
+                            //console.error(response.error);
+                        } else {
+                            self.contentsManager.setOuterObject(response,response.id);
+                            $photo_post.find("img").attr("src",response.source);
+                        }
+                    });
+                }
 
+                return $photo_post;
+            }catch(e){
+                console.error(e);
+                console.log(post);
+            }
         },
         /**
          * @param post
@@ -53,11 +76,10 @@
         }
     };
 
-
+    var diaryController = new DiaryController();
+    var contentsManager = new FacebookContentsManager();
+    var postPresenter   = new PostPresenter(contentsManager);
     $(document).ready(function () {
-        var diaryController = new DiaryController();
-        var contentsManager = new FacebookContentsManager();
-        var postPresenter   = new PostPresenter();
 
         diaryController.fbContentsManager = contentsManager;
 
@@ -124,24 +146,41 @@
 <div id="templates" style="display:none;">
     <div id="video_post">
         <div class="Status">
-            <a href="<\%-source\%>" target="_blank"></a>
+            <a href="{{post.source}}" target="_blank"></a>
             <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;"
                  class="Photo">
                 <div class="PhotoContainer">
-                    <img src="<\%-'http://img.youtube.com/vi/' + url('?v',link) + '/mqdefault.jpg'\%>" />
+                    <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}" />
                 </div>
                 <div class="TextContainer">
                     <div class="DateContainer">
                     </div>
                     <div class="MessageContainer">
-                        <p><\%-name\%></p>
-                        <p><\%-description\%></p>
+                        <p>{{post.name}}</p>
+                        <p>{{post.description}}</p>
                     </div>
                 </div>
             </div>
 
             <div>
-                <p><\%-message?message:story\%></p>
+                <p>{{post.message?post.message:post.story}}</p>
+            </div>
+        </div>
+    </div>created_time: "2013-04-01T15:59:23+0000"
+    <div id="photo_post">
+        <div class="Status">
+            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;" class="Photo">
+                <div class="PhotoContainer">
+                    <img src="{{post.picture}}" />
+                </div>
+                <p>
+                    {{post.status_type}}
+                </p>
+            </div>
+            <div>
+                <p>
+                    {{post.message?post.message:post.story}}
+                </p>
             </div>
         </div>
     </div>
