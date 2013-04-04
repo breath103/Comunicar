@@ -17,7 +17,7 @@ FacebookContentsManager.prototype = {
         return this.outerObjects[id];
     },
     facebookPermissions : function(){
-        return  'email,user_likes,read_stream,user_photos';
+        return  'email,user_likes,user_status,user_photos,friends_photos,read_stream';
     },
     /**
      * @param callbacks = {
@@ -46,7 +46,7 @@ FacebookContentsManager.prototype = {
             }, {"scope": self.facebookPermissions()});
         };
 
-        startFacebookLogin();
+//        startFacebookLogin();
 
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {

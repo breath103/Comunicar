@@ -17,7 +17,6 @@
     <script src="/js/FBDiary/FacebookContentsManager.js"></script>
     <script src="/js/FBDiary/DiaryController.js"></script>
     <script src="/js/FBDiary/facebook_clip.js"></script>
-    <script src="/js/FBDiary/template_loader.js"></script>
     <script src="/js/FBDiary/google_analytics.js"></script>
     <script>
 
@@ -42,22 +41,28 @@
                 var photoTemplate = getTemplate("#photo_post");
                 var $photo_post = $(photoTemplate({post : post}));
                 var photoSourceObject = this.contentsManager.getOuterObject(post.object_id);
+
+                $photo_post.click(function(){
+                    console.log(post);
+                });
+
                 if (photoSourceObject) {
                     $photo_post.find("img").attr("src",photoSourceObject.source);
                 } else {
-                    FB.api("/"+post.object_id,function(response){
+                    var callback = function(response){
                         if (response.error) {
-                            console.log(post.object_id);
-                            //console.error(response.error);
+                            console.log(post,"/"+post.object_id,response.error,"Retry : "+post.object_id);
                         } else {
                             self.contentsManager.setOuterObject(response,response.id);
                             $photo_post.find("img").attr("src",response.source);
                         }
-                    });
+                    };
+
+                    FB.api("/"+post.object_id,callback);
                 }
 
                 return $photo_post;
-            }catch(e){
+            } catch(e) {
                 console.error(e);
                 console.log(post);
             }
