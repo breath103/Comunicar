@@ -24,7 +24,7 @@
         _.templateSettings = {
             interpolate : /\{\{(.+?)\}\}/g
         };
-        var rawTemplateHtml = _.unescape( $("#templates").find(template_selector).html())
+        var rawTemplateHtml = _.unescape($("#templates").find(template_selector).html());
         return _.template(rawTemplateHtml);
     }
     function PostPresenter(contentsManager){
@@ -39,26 +39,13 @@
             try{
                 var self = this;
                 var photoTemplate = getTemplate("#photo_post");
-                var $photo_post = $(photoTemplate({post : post}));
-                var photoSourceObject = this.contentsManager.getOuterObject(post.object_id);
-
-                $photo_post.click(function(){
-                    console.log(post);
+                var $photo_post = $(photoTemplate({post : post}));                var photoSourceObject = null;
+                photoSourceObject = this.contentsManager.getOuterObject(post.object_id,function(error,photo){
+                    if(error) {}
+                    else $photo_post.find("img").attr("src",photo.source);
                 });
-
                 if (photoSourceObject) {
                     $photo_post.find("img").attr("src",photoSourceObject.source);
-                } else {
-                    var callback = function(response){
-                        if (response.error) {
-                            console.log(post,"/"+post.object_id,response.error,"Retry : "+post.object_id);
-                        } else {
-                            self.contentsManager.setOuterObject(response,response.id);
-                            $photo_post.find("img").attr("src",response.source);
-                        }
-                    };
-
-                    FB.api("/"+post.object_id,callback);
                 }
 
                 return $photo_post;

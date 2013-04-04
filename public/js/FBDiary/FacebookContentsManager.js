@@ -13,8 +13,23 @@ FacebookContentsManager.prototype = {
         this.outerObjects[id] = object;
         localStorage.outer_objects = JSON.stringify(this.outerObjects);
     },
-    getOuterObject : function(id){
-        return this.outerObjects[id];
+    getOuterObject : function(id,callback){
+        if (this.outerObjects[id]) {
+            return this.outerObjects[id];
+        } else {
+            if (callback) {
+                var self = this;
+                FB.api("/"+id,function(response){
+                    if (response.error) {
+                        console.log(id);
+                        callback(response.error,null);
+                    } else {
+                        self.setOuterObject(response,response.id);
+                        callback(null,response);
+                    }
+                });
+            }
+        }
     },
     facebookPermissions : function(){
         return  'email,user_likes,user_status,user_photos,friends_photos,read_stream';
