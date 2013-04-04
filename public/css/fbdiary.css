@@ -22,17 +22,13 @@ header p{text-align: center;  color: white; vertical-align: middle;padding-top: 
 }
 
 .site .left-pad{
-    float:left;
-    width:30%;
-    height:100%;
     background-color:#df8505;
+    height:100%;
 }
 .site .right-pad{
-    float:right;
-    width:70%;
-    height:100%;
     background-color:#2f96b4;
     overflow-y:scroll;
+    height:100%;
 }
 
 .site-container {

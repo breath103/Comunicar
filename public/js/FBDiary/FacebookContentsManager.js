@@ -13,8 +13,15 @@ FacebookContentsManager.prototype = {
         this.outerObjects[id] = object;
         localStorage.outer_objects = JSON.stringify(this.outerObjects);
     },
+    /**
+     *
+     * @param id
+     * @param callback(error,outerObject,isCached)
+     * @returns {object->if it's cached. else nil;}
+     */
     getOuterObject : function(id,callback){
         if (this.outerObjects[id]) {
+            callback(null,this.outerObjects[id],true);
             return this.outerObjects[id];
         } else {
             if (callback) {
@@ -25,14 +32,14 @@ FacebookContentsManager.prototype = {
                         callback(response.error,null);
                     } else {
                         self.setOuterObject(response,response.id);
-                        callback(null,response);
+                        callback(null,response,false);
                     }
                 });
             }
         }
     },
     facebookPermissions : function(){
-        return  'email,user_likes,user_status,user_photos,friends_photos,read_stream';
+        return  'email,user_likes,user_status,user_photos,friends_photos,read_stream,offline_access';
     },
     /**
      * @param callbacks = {
@@ -61,8 +68,6 @@ FacebookContentsManager.prototype = {
             }, {"scope": self.facebookPermissions()});
         };
 
-//        startFacebookLogin();
-
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
                 console.log(response);
@@ -88,6 +93,22 @@ FacebookContentsManager.prototype = {
         }
         this.postCalendarMap = _.groupBy(posts,dateToKey);
     },
+    /**
+     * @param date
+     */
+    getPostsWithDate : function(date){
+        var dateKey = null;
+        if(_.isDate(date)){
+            dateKey = date.format("yyyy/mm/dd");
+        } else if (_.isString(date)) {
+            dateKey = date;
+        } else {
+            throw "Invalid Argument Type : "+typeof(date);
+        }
+
+        return this.postCalendarMap[dateKey];
+    },
+
     /***
      * @param posts : Array
      */

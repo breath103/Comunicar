@@ -30,6 +30,13 @@ describe("FacebookContentsManager", function() {
             mock.verify();
         });
     });
+
+    describe("-getPostsWithDate",function(){
+        it("should throw error",function(done){
+
+        });
+    });
+
     describe("get/set cached posts",function(){
         var posts = [
             1,2,3,4,5

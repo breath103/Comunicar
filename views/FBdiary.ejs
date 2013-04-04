@@ -3,78 +3,33 @@
 <head>
     <title>게임</title>
     <meta charset="utf-8">
+
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
     <link href="/css/fbdiary.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="/js/jquery-1.8.2.min.js"></script>
+    <script src="/js/jquery.transit.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <script src="/js/async.js"></script>
     <script src="/js/step.js"></script>
     <script src="/js/date_format.js"></script>
     <script src="/js/js-url.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
-    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-    <script src="http://ricostacruz.com/jquery.transit/jquery.transit.min.js"></script>
     <script src="/js/FBDiary/Post.js"></script>
+    <script src="/js/FBDiary/PostPresenter.js"></script>
     <script src="/js/FBDiary/FacebookContentsManager.js"></script>
     <script src="/js/FBDiary/DiaryController.js"></script>
     <script src="/js/FBDiary/facebook_clip.js"></script>
     <script src="/js/FBDiary/google_analytics.js"></script>
     <script>
 
-    function getTemplate(template_selector){
-        _.templateSettings = {
-            interpolate : /\{\{(.+?)\}\}/g
-        };
-        var rawTemplateHtml = _.unescape($("#templates").find(template_selector).html());
-        return _.template(rawTemplateHtml);
-    }
-    function PostPresenter(contentsManager){
-        this.contentsManager = contentsManager;
-    }
-    PostPresenter.prototype = {
-        _presentVideo : function(post){
-            var videoTemplate = getTemplate("#video_post");
-            return videoTemplate({post : post});
-        },
-        _presentPhoto : function(post){
-            try{
-                var self = this;
-                var photoTemplate = getTemplate("#photo_post");
-                var $photo_post = $(photoTemplate({post : post}));                var photoSourceObject = null;
-                photoSourceObject = this.contentsManager.getOuterObject(post.object_id,function(error,photo){
-                    if(error) {}
-                    else $photo_post.find("img").attr("src",photo.source);
-                });
-                if (photoSourceObject) {
-                    $photo_post.find("img").attr("src",photoSourceObject.source);
-                }
 
-                return $photo_post;
-            } catch(e) {
-                console.error(e);
-                console.log(post);
-            }
-        },
-        /**
-         * @param post
-         */
-        presentPost : function(post){
-            if(post.type == "video"){
-                return this._presentVideo(post);
-            } else if(post.type == "photo") {
-                return this._presentPhoto(post);
-            } else if(post.type == "status") {
-
-            }
-        }
-    };
-
-    var diaryController = new DiaryController();
     var contentsManager = new FacebookContentsManager();
-    var postPresenter   = new PostPresenter(contentsManager);
+    var diaryController = new DiaryController(contentsManager);
+
     $(document).ready(function () {
-
         diaryController.fbContentsManager = contentsManager;
-
         contentsManager.connectFacebook(function(error,response){
             if (error) {}
             var posts = this.getCachedPosts();
@@ -84,10 +39,6 @@
                     if(error){ throw error; }
                     if(isLast){
                         $(".Loading").fadeOut();
-                        $.each(posts,function(index,post){
-                            var postString = postPresenter.presentPost(post);
-                            $(".site-container").append(postString);
-                        });
                         diaryController.showToday();
                     } else {
                         console.log( _.first(posts).created_time , _.last(posts).created_time);
@@ -100,10 +51,6 @@
                     if (error) { throw error; }
                     if (isLast) {
                         $(".Loading").fadeOut();
-                        $.each(posts,function(index,post){
-                            var postString = postPresenter.presentPost(post);
-                            $(".site-container").append(postString);
-                        });
                         diaryController.showToday();
                     } else {
                         console.log( _.first(posts).created_time , _.last(posts).created_time);
@@ -117,27 +64,29 @@
 </head>
 <body>
 
-<div class="site">
-    <div class="left-pad">
+<div class="site container-fluid">
+    <div class="left-pad span3">
 
     </div>
-    <div class="right-pad">
-        <header>
-            <button onclick="clearCache();">clear Cache</button>
-            <button onclick="showPreviousDayContent();"><<</button>
-            <button id="showDayButton" onclick="showTodayContent();">오늘꺼 보기</button>
-            <button onclick="showNextDayContent();">>></button>
+    <div class="right-pad span9">
+        <header class="diary_header" style="height:auto">
+            <h3 style="display:inline-block" class="date_indicator"></h3>
+
             <input type="text" id="search_input"/>
+            <button onclick="clearCache();">clear Cache</button>
+            <button onclick="diaryController.moveDate(-1);"><<</button>
+            <button id="showDayButton" onclick="diaryController.showToday();">오늘꺼 보기</button>
+            <button onclick="diaryController.moveDate(+1);">>></button>
+
         </header>
         <div class="site-container">
         </div>
         <div class="Loading">Loading..</div>
     </div>
 </div>
-
 <div id="templates" style="display:none;">
     <div id="video_post">
-        <div class="Status">
+        <div class="Video">
             <a href="{{post.source}}" target="_blank"></a>
             <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;"
                  class="Photo">
@@ -158,7 +107,7 @@
                 <p>{{post.message?post.message:post.story}}</p>
             </div>
         </div>
-    </div>created_time: "2013-04-01T15:59:23+0000"
+    </div>
     <div id="photo_post">
         <div class="Status">
             <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;" class="Photo">
@@ -173,6 +122,31 @@
                 <p>
                     {{post.message?post.message:post.story}}
                 </p>
+            </div>
+        </div>
+    </div>
+    <div id="link_post">
+        <div class="Link">
+            <div class="thumbnail">
+                <p>{{post.name}}</p>
+
+                <a href="{{post.link}}">
+                    <img src="{{post.picture}}"/>
+                    <p>{{post.link}}</p>
+                </a>
+                <p>{{post.description}}</p>
+            </div>
+            <div>
+                <small>{{post.status_type}}</small>
+                <p>{{post.message}}</p>
+            </div>
+        </div>
+    </div>
+    <div id="status_post">
+        <div class="Status">
+            <div>
+                <small>{{post.status_type}}</small>
+                <p>{{post.message?post.message:post.story}}</p>
             </div>
         </div>
     </div>
