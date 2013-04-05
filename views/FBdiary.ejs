@@ -31,12 +31,18 @@
     $(document).ready(function () {
         diaryController.fbContentsManager = contentsManager;
         contentsManager.connectFacebook(function(error,response){
-            if (error) {}
+	        FB.api("/me/permissions",function(res){console.log(res);});
+            if (error) {
+	            console.log(error);
+            }
             var posts = this.getCachedPosts();
             if (posts && posts.length > 0) {
                 $(".Loading").html("마지막 데이터 로딩 이후에 새로 추가된 페이스북 컨텐츠를 로딩 중입니다...");
                 this.loadNewPosts(function(error,posts,stepCount,isLast){
-                    if(error){ throw error; }
+                	if(error){ 
+                		console.log(error);
+                		throw error; 
+                	}
                     if(isLast){
                         $(".Loading").fadeOut();
                         diaryController.showToday();
@@ -48,7 +54,10 @@
             else {
                 $(".Loading").html("초기 데이터를 로딩중입니다...");
                 this.loadAllPosts(function(error,posts,stepCount,isLast){
-                    if (error) { throw error; }
+                    if (error) { 
+                    	console.log(error); 
+                    	throw error; 
+                    }
                     if (isLast) {
                         $(".Loading").fadeOut();
                         diaryController.showToday();

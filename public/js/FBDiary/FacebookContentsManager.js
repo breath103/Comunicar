@@ -39,7 +39,7 @@ FacebookContentsManager.prototype = {
         }
     },
     facebookPermissions : function(){
-        return  'email,user_likes,user_status,user_photos,friends_photos,read_stream,offline_access';
+        return  'email,user_likes,user_status,user_photos,friends_photos,read_stream';
     },
     /**
      * @param callbacks = {
@@ -181,7 +181,9 @@ FacebookContentsManager.prototype = {
         var loadingNextFBPostLoop = function(response){
             loadedPosts = _.union(loadedPosts,response.data);
             if(response.error){
-                cb.call(self,new Error(response.error));
+            	console.log(response);
+            	console.log(response.error);
+                cb.call(self,response.error);
             }
 
             if (response.data && response.data.length > 0 && response.paging.next) {
@@ -193,7 +195,7 @@ FacebookContentsManager.prototype = {
                 cb.call(self,null,loadedPosts,loadCount++,true);
             }
         }
-        FB.api("me/posts",{ limit:200 },loadingNextFBPostLoop);
+        FB.api("me/posts",{ limit:25 },loadingNextFBPostLoop);
     },
     searchPost : function(params){
         if(params.query){
