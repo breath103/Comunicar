@@ -39,7 +39,7 @@ FacebookContentsManager.prototype = {
         }
     },
     facebookPermissions : function(){
-        return  'email,user_likes,user_status,user_photos,friends_photos,read_stream,offline_access';
+        return  'email,user_likes,user_status,user_photos,friends_photos,read_stream';
     },
     /**
      * @param callbacks = {
@@ -53,10 +53,10 @@ FacebookContentsManager.prototype = {
         var debug_app   = "358262920960112";
         var release_app = "333864290041286";
         FB.init({ "appId"  : debug_app,
-                  "status" : true,
-                  "cookie" : true,
-                  "xfbml"  : true,
-                  "oauth"  : true});
+                  "status" : false,
+                  "cookie" : false,
+                  "xfbml"  : false,
+                  "oauth"  : false});
 
         var startFacebookLogin = function() {
             FB.login(function (response) {
