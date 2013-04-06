@@ -28,7 +28,7 @@ header p{text-align: center;  color: white; vertical-align: middle;padding-top: 
     background-color: #dfc586;
     height:100%;
     display:block;
-    width:30%;
+    width:25%;
     position:absolute;
     left:0;
     top:0;
@@ -37,10 +37,10 @@ header p{text-align: center;  color: white; vertical-align: middle;padding-top: 
     background-color:#2f96b4;
     overflow-y:scroll;
     display:inline-block;
-    width:70%;
+    width:75%;
     height:100%;
     position:absolute;
-    left:30%;
+    left:25%;
     top:0;
 
 }

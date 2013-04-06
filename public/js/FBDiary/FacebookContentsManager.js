@@ -234,6 +234,7 @@ FacebookContentsManager.prototype = {
         }
         FB.api("me/posts",{
             limit : 25,
+            fields : "id,from,to,message,message_tags,picture,link,name,caption,description,source,properties,icon,privacy,type,likes,place,story,story_tags,with_tags,object_id,application,created_time,updated_time",
             since : (new Date(latest_post.created_time).getTime()) / 1000
         },loadingPrevFBPostLoop);
     },
@@ -259,7 +260,10 @@ FacebookContentsManager.prototype = {
                 cb.call(self,null,loadedPosts,loadCount++,true);
             }
         }
-        FB.api("me/posts",{ limit:200 },loadingNextFBPostLoop);
+        FB.api("me/posts",{
+            limit:200,
+            fields : "id,from,to,message,message_tags,picture,link,name,caption,description,source,properties,icon,privacy,type,likes,place,story,story_tags,with_tags,object_id,application,created_time,updated_time"
+        },loadingNextFBPostLoop);
     },
     searchPost : function(params){
         if(params.query){

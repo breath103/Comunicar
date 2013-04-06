@@ -117,10 +117,12 @@ describe("FacebookContentsManager", function() {
         });
     });
     describe("unclipPost",function(){
-        xit("should return false and do nothing if post is already cliped",function(){
+        beforeEach(function(){
+            localStorage.clear();
+        });
+        it("should return true and unclip post if it's already cliped.",function(){
             var post = posts[0];
-            expect(manager.clipPost(post.id)).to.be.ok();
-            expect(manager.clipPost(post.id)).to.not.be.ok();
+
         });
         xit("should return true and clipd post if not cliped yet",function(){
             var post = posts[0];
