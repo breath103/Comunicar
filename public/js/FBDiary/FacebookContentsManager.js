@@ -235,7 +235,7 @@ FacebookContentsManager.prototype = {
         FB.api("me/posts",{
             limit : 25,
             fields : "id,from,to,message,message_tags,picture,link,name,caption,description,source,properties,icon,privacy,type,likes,place,story,story_tags,with_tags,object_id,application,created_time,updated_time",
-            since : (new Date(latest_post.created_time).getTime()) / 1000
+            since : (moment(latest_post.created_time).toDate().getTime()) / 1000
         },loadingPrevFBPostLoop);
     },
     /**
