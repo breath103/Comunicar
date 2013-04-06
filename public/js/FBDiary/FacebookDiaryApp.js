@@ -9,8 +9,8 @@ var FacebookDiaryApp = function(){
         onConnectFacebookEnd();
     }
     var onPostsStepLoaded = function(posts){
-        var startDate = new Date(_.first(posts).created_time);
-        var endDate   = new Date(_.last(posts).created_time);
+        var startDate = moment(_.first(posts).created_time).toDate();
+        var endDate   = moment(_.last(posts).created_time).toDate();
         $(".Loading").html(
             $(".Loading").html() + "<br/>" + startDate.format("yyyy/mm/dd") + "부터 " + endDate.format("yyyy/mm/dd") + " 까지 데이터를 로딩중입니다...."
         );

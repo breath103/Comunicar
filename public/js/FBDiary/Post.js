@@ -5,11 +5,14 @@ function Post(dict){
 Post.prototype = {
     _generateDateKey : function(){
         if(this.created_time){
-            var date = new Date(this.created_time);
+            var date = moment(this.created_time).toDate();
             return date.format("yyyy/mm/dd");
         }
         else
             return "";
+    },
+    getVideoType : function(){
+
     },
     getYotubueThumbnail : function(){
         var video_id = url("?v",this.link);
