@@ -50,6 +50,12 @@ header p{text-align: center;  color: white; vertical-align: middle;padding-top: 
     height: 100%;
     overflow: scroll;
 }
+.site-container .date-page{
+    width:100%;
+    position:absolute;
+    top:0%:
+    left:0%;
+}
 
 .date-container {
     border-radius: 10px;

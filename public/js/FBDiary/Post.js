@@ -5,8 +5,7 @@ function Post(dict){
 Post.prototype = {
     _generateDateKey : function(){
         if(this.created_time){
-            var date = moment(this.created_time).toDate();
-            return date.format("yyyy/mm/dd");
+            return moment(this.created_time).format("YYYY/MM/DD");
         }
         else
             return "";

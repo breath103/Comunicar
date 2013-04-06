@@ -159,7 +159,7 @@ FacebookContentsManager.prototype = {
     getPostsWithDate : function(date){
         var dateKey = null;
         if(_.isDate(date)){
-            dateKey = date.format("yyyy/mm/dd");
+            dateKey = moment(date).format("YYYY/MM/DD");
         } else if (_.isString(date)) {
             dateKey = date;
         } else {
