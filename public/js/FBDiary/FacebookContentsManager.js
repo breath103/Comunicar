@@ -1,7 +1,9 @@
 function FacebookContentsManager()
 {
+    this.clipedPosts = [];
     this.posts = null;
     this.postCalendarMap = {};
+    this.postIDMap       = {};
     if (localStorage.outer_objects) {
         this.outerObjects = JSON.parse(localStorage.outer_objects);
     } else {
@@ -9,6 +11,52 @@ function FacebookContentsManager()
     }
 }
 FacebookContentsManager.prototype = {
+    /**
+     * @returns {posts : Array}
+     */
+    getClipedPosts : function(){
+        var raw = localStorage.getItem("clipedPosts");
+        if(raw)
+            return JSON.parse(raw);
+        else
+            return [];
+    },
+    /**
+     * @param post_id : Number
+     */
+    clipPost : function(post_id){
+        var posts = this.getClipedPosts();
+
+        if(_.indexOf(posts, post_id) >= 0){
+            return false;
+        } else {
+            posts.push(post_id);
+            posts = _.uniq(posts);
+            localStorage.setItem("clipedPosts",JSON.stringify(posts));
+            return true;
+        }
+    },
+    /**
+     * @param post_id : Number
+     * @returns {true : can unclip card , false : can't unclip card }
+     */
+    unclipPost : function(post_id){
+        var posts = this.getClipedPosts();
+
+        if(_.indexOf(posts, post_id) >= 0){
+            posts = _.reject(posts, function(num){ return num == post_id; });
+            localStorage.setItem("clipedPosts",JSON.stringify(posts));
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    /**
+     *
+     * @param object : Object
+     * @param id : String/Number
+     */
     setOuterObject : function(object,id){
         this.outerObjects[id] = object;
         localStorage.outer_objects = JSON.stringify(this.outerObjects);
@@ -94,6 +142,18 @@ FacebookContentsManager.prototype = {
         this.postCalendarMap = _.groupBy(posts,dateToKey);
     },
     /**
+     *
+     * @param posts
+     * @private
+     */
+    _generatePostIDMap : function(posts){
+        var self = this;
+        this.postIDMap = _.groupBy(posts,'id');
+        _.each(this.postIDMap,function(v,k,l){
+            self.postIDMap[k] = v[0];
+        });
+    },
+    /**
      * @param date
      */
     getPostsWithDate : function(date){
@@ -108,13 +168,19 @@ FacebookContentsManager.prototype = {
 
         return this.postCalendarMap[dateKey];
     },
-
+    /**
+     * @param id : Number
+     */
+    getPostWithID : function(id){
+        return this.postIDMap[id];
+    },
     /***
      * @param posts : Array
      */
     setCachedPosts : function(posts){
         this.posts = posts;
         this._generatePostCalendarMap(posts);
+        this._generatePostIDMap(posts);
         if(posts && posts.length > 0){
             localStorage.loaded_posts = JSON.stringify(posts);
             localStorage.latest_post  = JSON.stringify(_.first(posts));

@@ -21,20 +21,28 @@ header p{text-align: center;  color: white; vertical-align: middle;padding-top: 
     height:100%;
     margin-left:auto;
     margin-right:auto;
+    position:relative;
 }
 
 .site .left-pad{
-    background-color:#df8505;
+    background-color: #dfc586;
     height:100%;
-    display:inline-block;
+    display:block;
     width:30%;
+    position:absolute;
+    left:0;
+    top:0;
 }
 .site .right-pad{
     background-color:#2f96b4;
     overflow-y:scroll;
     display:inline-block;
-    width:69%;
+    width:70%;
     height:100%;
+    position:absolute;
+    left:30%;
+    top:0;
+
 }
 
 .site-container {

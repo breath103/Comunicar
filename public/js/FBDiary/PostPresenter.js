@@ -30,9 +30,6 @@ PostPresenter.prototype = {
     _presentStatus : function(post){
         var statusTemplate = getTemplate("#status_post");
         var $div = $(statusTemplate({post : post}));
-        $div.click(function(){
-            console.log(post);
-        });
         return $div;
     },
     _presentLink : function(post){

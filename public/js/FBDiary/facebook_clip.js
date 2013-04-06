@@ -4,14 +4,16 @@ function ClipManager(){
 ClipManager.prototype = {
     getClipedPosts : function(){
         var raw = localStorage.getItem("clipedPosts");
-        var posts = JSON.parse(raw);
-        return posts;
+        if(raw)
+            return JSON.parse(raw);
+        else
+            return [];
     },
-    addPost : function(post){
+    clipPost : function(post_id){
         var posts = this.getClipedPosts();
         if(!posts)
             posts = [];
-        posts.push(post);
+        posts.push(post_id);
         localStorage.setItem("clipedPosts",JSON.stringify(posts));
     }
 };
