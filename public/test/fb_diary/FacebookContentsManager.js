@@ -1,9 +1,9 @@
 describe("FacebookContentsManager", function() {
     var manager = null;
     var posts = [
-        {id:15125, created_time: "2012-07-29T14:12:28+0000"},
-        {id:23512 , created_time: "2012-08-21T14:12:28+0000"},
-        {id:34625 , created_time: "2012-08-21T14:12:28+0000"},
+        {id:15125   , created_time: "2012-07-29T14:12:28+0000" , message : "ㅁㄴㅎㅁㄴㅇㄹㅁㄴㅇㄹ"},
+        {id:23512   , created_time: "2012-08-21T14:12:28+0000"},
+        {id:34625   , created_time: "2012-08-21T14:12:28+0000"},
         {id:1513512 , created_time: "2012-10-03T14:12:28+0000"},
         {id:1251243 , created_time: "2012-12-29T14:12:28+0000"}
     ];
@@ -136,6 +136,7 @@ describe("FacebookContentsManager", function() {
         });
     });
 
+
     describe("-loadAllPosts",function(){
         var xhr      = null;
         var requests = [];
@@ -161,5 +162,11 @@ describe("FacebookContentsManager", function() {
         });
     });
     describe("-searchPost",function(){
+        context("if there is no result",function(){
+            it("should return empty object",function(){
+                var result = manager.searchPost({query:"안"});
+                expect(_.isEqual(result,{})).to.be.ok();
+            });
+        });
     });
 });

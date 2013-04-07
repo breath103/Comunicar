@@ -4,9 +4,41 @@ function DiaryController(contentsManager){
     this.fbContentsManager = contentsManager;
     this.postPresenter = new PostPresenter(this.fbContentsManager);
     this.currentDate = null;
+
+    this.query = null;
+    this.searchResult = {};
+    this.$searchInput = $("#search-input");
+
+    var self = this;
+
+    this.$searchInput.bind("change keyup",function(){
+        if($(this).val() == "") {
+            $(".site-container").clearQueue().fadeIn();
+        }
+        else {
+            $(".site-container").clearQueue().fadeOut();
+            self.showSearchResultMap($(this).val(),self.fbContentsManager.searchPost({query : $(this).val()}));
+        }
+    });
+
 }
 DiaryController.prototype = {
+    showSearchResultMap : function(query,searchResult){
+     //   var datePairs = _.pairs(searchResult);
+        var self = this;
 
+        $(".search-result-view").children().remove();
+        _.each(searchResult,function(v,k){
+          //  console.log(k,v);
+            var $div = $("<button class='result btn'></button>");
+            $div.html(k + " : " + v.length);
+            $(".search-result-view").append($div);
+            $div.click(function(){
+                $(".site-container").fadeIn();
+                self.showDay(moment(k, "YYYY/MM/DD").toDate());
+            });
+        });
+    },
     presentClipedPosts : function(){
         var self = this;
         _.each(self.fbContentsManager.getClipedPosts(),function(post_id,index){

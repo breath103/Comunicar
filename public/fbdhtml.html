@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Facebook Diary</title>
+<style>
+	html,body{
+		width: 100%;
+		height: 100%;
+		padding: 0px;
+		margin: 0px;
+	}
+/*basic option
+ *
+ */
+	.container{
+		width: 1585px;
+		height: 812px;
+		background-image:url("/images/background.png");
+	}
+/*container
+  chrome width 1600, height 812 or 780?
+*/
+	.left{
+		float: left;
+		position: relative;
+		top: 3%;
+		left: 0.5%;
+		width: 20%;
+		height: 97%;
+		background-image:url("/images/left.png");
+		background-size: 100% 100%;
+	}
+		
+/*left in container 
+ *
+ */
+	.right{
+		float: right;
+		position: relative;
+		top: 3%;
+		right: 14%;
+		width: 65%;
+		height: 97%;
+		background-size: 100% 100%;
+		background-image: url("/images/right-paper.png");
+	}
+/*right in container
+ * 
+ */
+	.scrap{
+		position: relative;
+		top: 8%;
+		width: 96%;
+		height: 6%;
+		background-size: 100% 100%;
+		background-image: url("/images/scrap_bar.png");
+	}
+	.scrap_con{
+		position:relative;
+		top: 10%;
+		left: 3%;
+		width: 91%;
+		height: 40%;
+		background-color: transparent;
+		overflow: scroll;
+		overflow-x: hidden;
+	}
+/*scrap in left
+ * 
+ */
+	.calender{
+		position: relative;
+		top: 8%;
+		left: 2%;
+		width: 92%;
+		height: 25%;
+		background-color: black;
+	}
+/*calender
+ * 
+ */
+	.left_panel{
+		float: left;
+		position: absolute;
+		left: 0.5%;
+		width: 20%;
+		height: 7%;
+		background-size: 100% 100%;
+		background-image: url("/images/left_panel.png");
+	}
+/*left panel
+ * 
+ */
+	.right_panel{
+		float: right;
+		position: absolute;
+		right: 14.7%;
+		width: 64.6%;
+		height: 7%;
+		background-size: 100% 100%;
+		background-image: url("/images/right_panel.png");
+	}
+/*right panel
+ * 
+ */
+	.main_post_con{
+		position: relative;
+		top: 20%;
+		left: 23%;
+		width: 61%;
+		height: 77%;
+		background-size: 100% 100%;
+		background-image: url("/images/line.png");
+	}
+	.post{
+		position: relative;
+		top: 2%;
+		left: 2%;
+		width: 96%;
+		height: 96%;
+		background-size: 100% 100%;
+		background-color: black;
+	}
+/*main_post
+ * 
+ */
+	.post_date{
+		position: absolute;
+		top: 10%;
+		left: 23%;
+		width: 60%;
+		height: 8%;
+		background-color: transparent;
+	}
+/*post date
+ * 
+ */
+	.date{
+		position:absolute;
+		left: 42%;
+		width: 20%;
+		height: 100%;
+		background-color: #FFFF88;
+		text-align: center;
+		font-weight: bold;
+		font-size: 200%;
+	}
+	.left_allow{
+		left: left;
+		position:absolute;
+		left: 32%;
+		width: 7%;
+		height: 100%;
+		background-color:#FFFF88;
+	}
+	.right_allow{
+		left: right;
+		position:absolute;
+		left: 65%;
+		width: 7%;
+		height: 100%;
+		background-color:#FFFF88;
+	}
+	.pre_date{
+		left: left;
+		position:absolute;
+		left: 8%;
+		width: 20%;
+		height: 100%;
+		background-color:#CCCC08;		
+	}
+	.late_date{
+		left: right;
+		position:absolute;
+		left: 76%;
+		width: 20%;
+		height: 100%;
+		background-color:#CCCC08;	
+	}
+/*dates in post_date
+ * date font size: 400%;
+ * pre or late date font size : maybe 300 or 350?
+ */
+	.profile{
+		position: relative;
+		top: 4.4%;
+		width: 100%;
+		height: 12%;
+		background-size: 100% 100%;
+		background-image: url("/images/profile_background.png");
+	}
+	.profile_image{
+		float: left;
+		position: relative;
+		top: 14%;
+		left: 4%;
+		width: 18%;
+		height: 63%;
+		background-size: 100% 100%;
+		background-image: url("/images/profile_image.png");
+	}
+	.profile_name{
+		float: right;
+		position: relative;
+		top: 34%;
+		right: 13%;
+		width: 60%;
+		height: 30%;
+		font-size: larger;
+		font-weight: bold;
+		color: white;
+	}
+/*profile
+ * and face image, name in profile
+ */
+	.search{
+		position: relative;
+		top: 6%;
+		left: 2%;
+		width: 92%;
+		height: 5%;
+		background-size: 100% 100%;
+		background-image: url("/images/search_bar.png");
+	}
+	.search_icon{
+		float: right;
+		position: relative;
+		top: 25%;
+		right: 3%;
+		width: 6%;
+		height: 49%;
+		background-size: 100% 100%;
+		background-image: url("/images/search_icon.png");
+	}
+/*search
+ * and search icon
+ */
+</style>	
+</head>
+<body>
+	<div class="container">
+		<div class="left">			
+			<div class="profile">
+				<div class="profile_image">
+					
+				</div>
+				<div class="profile_name">lalalala lalalalala</div>
+			</div>
+			<div class="search">
+				<div class="search_icon">
+					
+				</div>
+			</div>
+			<div class="calender">
+				
+			</div>
+			<div class="scrap">
+				
+			</div>
+			<div class="scrap_con">
+				
+			</div>
+		</div>
+		<div class="left_panel">
+			
+		</div>
+		<div class="right">
+			
+		</div>
+		<div class="right_panel">
+		</div>
+		<div class="post_date">
+			<div class="date">3.26</div>
+			
+			<div class="right_allow">
+				
+			</div>
+			<div class="left_allow">
+				
+			</div>
+			
+			<div class="pre_date">
+				
+			</div>
+			<div class="late_date">
+				
+			</div>
+		</div>
+		<div class="main_post_con">
+			<div class="post">
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

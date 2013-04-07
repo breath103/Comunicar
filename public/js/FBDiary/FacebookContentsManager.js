@@ -267,7 +267,13 @@ FacebookContentsManager.prototype = {
     },
     searchPost : function(params){
         if(params.query){
-
+            return _.chain(this.posts).
+                     filter(function(p){
+                         if(p.message) return p.message.indexOf(params.query) >= 0;
+                     }).groupBy(function(p){
+                         return moment(p.created_time).format("YYYY/MM/DD");
+                     }).value();
         }
+        return [];
     }
 };
