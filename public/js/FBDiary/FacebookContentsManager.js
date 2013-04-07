@@ -1,5 +1,6 @@
 function FacebookContentsManager()
 {
+    this.facebookMe = null;
     this.clipedPosts = [];
     this.posts = null;
     this.postCalendarMap = {};
@@ -90,6 +91,24 @@ FacebookContentsManager.prototype = {
         return  'email,user_likes,user_status,user_photos,friends_photos,read_stream';
     },
     /**
+     * @params cb : function
+     * @private
+     */
+    _updateFacebookMe : function(cb){
+        var self = this;
+        FB.api("/me",{fields:"id,name,gender,locale,languages,link,username,age_range,installed,timezone,updated_time,verified,bio,birthday,cover,devices,education,email,hometown,interested_in,location,political,favorite_athletes,favorite_teams,picture"},
+            function(response){
+            if(response.error){
+            } else {
+                self.facebookMe = response;
+                localStorage.facebookMe = JSON.stringify(response);
+                console.log(response.picture.data.url);
+                $(".profile_image img").attr("src",response.picture.data.url);
+                $(".profile_name").html(response.name);
+            }
+        });
+    },
+    /**
      * @param callbacks = {
      *    success : Function(response)
      *    failure : Function(error)
@@ -109,6 +128,7 @@ FacebookContentsManager.prototype = {
         var startFacebookLogin = function() {
             FB.login(function (response) {
                 if (response.authResponse) {
+                    self._updateFacebookMe(function(){});
                     cb.call(self,null,response);
                 } else {
                     cb.call(self,new Error("facebook auth failed"));
@@ -119,6 +139,7 @@ FacebookContentsManager.prototype = {
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
                 console.log(response);
+                self._updateFacebookMe(function(){});
                 cb.call(self,null,response);
             } else if (response.status === 'not_authorized') {
                 self.clearCache();

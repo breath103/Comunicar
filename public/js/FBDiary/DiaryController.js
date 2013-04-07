@@ -11,7 +11,7 @@ function DiaryController(contentsManager){
 
     var self = this;
 
-    this.$searchInput.bind("change keyup",function(){
+    this.$searchInput.bind("change focus",function(){
         if($(this).val() == "") {
             $(".site-container").clearQueue().fadeIn();
         }
@@ -20,6 +20,16 @@ function DiaryController(contentsManager){
             self.showSearchResultMap($(this).val(),self.fbContentsManager.searchPost({query : $(this).val()}));
         }
     });
+    $("#search-button").click(function(){
+        if($(this).val() == "") {
+            $(".site-container").clearQueue().fadeIn();
+        }
+        else {
+            $(".site-container").clearQueue().fadeOut();
+            self.showSearchResultMap($(this).val(),self.fbContentsManager.searchPost({query : $(this).val()}));
+        }
+    });
+
 
 }
 DiaryController.prototype = {
@@ -30,13 +40,14 @@ DiaryController.prototype = {
         $(".search-result-view").children().remove();
         _.each(searchResult,function(v,k){
           //  console.log(k,v);
-            var $div = $("<button class='result btn'></button>");
+            var $div = $("<div class='result btn'></div>");
             $div.html(k + " : " + v.length);
             $(".search-result-view").append($div);
             $div.click(function(){
                 $(".site-container").fadeIn();
                 self.showDay(moment(k, "YYYY/MM/DD").toDate());
             });
+
         });
     },
     presentClipedPosts : function(){
@@ -138,6 +149,12 @@ DiaryController.prototype = {
         _.each(posts,function(post,i){
             var $post = $(this.postPresenter.presentPost(post));
             $post.click(function(){
+           //     $("#facebook-popup").attr("href",post.link);
+           //     console.log(post);
+           //     location.href = post.link;
+           //     $("#facebook-popup").fancybox();
+           //     $("#facebook-popup").trigger('click');
+
                 if(self.fbContentsManager.clipPost(post.id)){
                     self.onClipPost(post);
                 }

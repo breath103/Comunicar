@@ -140,3 +140,46 @@ header p{text-align: center;  color: white; vertical-align: middle;}
     width:100%;
     height:100%;
 }
+.profile{
+
+}
+.profile .profile_image {
+    display:inline-block;
+}
+.profile .profile_image img {
+
+}
+.profile .profile_name {
+    display:inline-block;
+}
+   /*
+.profile{
+    position: relative;
+    width: 100%;
+    height: 12%;
+    background-size: 100% 100%;
+    background-image: url("/images/profile_background.png");
+}
+.profile .profile_image{
+    float: left;
+    width: 18%;
+    height: 63%;
+    background-size: 100% 100%;
+    background-image: url("/images/profile_image.png");
+}
+.profile .profile_image img {
+    width:100%;
+    height:100%;
+}
+.profile .profile_name{
+    float: right;
+    position: relative;
+    top: 34%;
+    right: 13%;
+    width: 60%;
+    height: 30%;
+    font-size: larger;
+    font-weight: bold;
+    color: white;
+}
+   */

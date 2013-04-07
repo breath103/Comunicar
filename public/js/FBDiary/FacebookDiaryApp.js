@@ -12,7 +12,8 @@ var FacebookDiaryApp = function(){
         var startDate = moment(_.first(posts).created_time)
         var endDate   = moment(_.last(posts).created_time)
         $(".Loading").html(
-            $(".Loading").html() + "<br/>" + startDate.format("YYYY/MM/DD") + "부터 " + endDate.format("YYYY/MM/DD") + " 까지 데이터를 로딩중입니다...."
+            $(".Loading").html() + "<br/>"
+                + startDate.format("YYYY/MM/DD") + "부터 " + endDate.format("YYYY/MM/DD") + " 까지 데이터를 로딩중입니다...."
         );
     }
     var onConnectFacebookEnd = function(){
