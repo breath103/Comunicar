@@ -26,11 +26,11 @@ describe("PostPresenter",function(){
         it("it should generate tagged string with post",function(){
             var taggedString =
                 postPresenter.generateTaggedString(post.message,post.message_tags,function(taginfo){
-                    return "<a href='www.facebook.com/" + taginfo.id + "'>" + taginfo.name + "</a>";
+                    return "<a href='https://www.facebook.com/" + taginfo.id + "'>" + taginfo.name + "</a>";
                 });
 
-            expect(taggedString).to.be("dgsad <a href='www.facebook.com/100001564628395'>이수영</a>" +
-                                        " ㅇㄴㅎㅁㄴㅇㅎ <a href='www.facebook.com/100001033134560'>Na Yeon Lee</a>");
+            expect(taggedString).to.be("dgsad <a href='https://www.facebook.com/100001564628395'>이수영</a>" +
+                                        " ㅇㄴㅎㅁㄴㅇㅎ <a href='https://www.facebook.com/100001033134560'>Na Yeon Lee</a>");
         });
     });
 });

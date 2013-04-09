@@ -7,6 +7,8 @@ function getTemplate(template_selector){
 }
 function PostPresenter(contentsManager){
     this.contentsManager = contentsManager;
+
+
 }
 PostPresenter.prototype = {
     generateTaggedString : function(message,message_tags,tagCovertor){
@@ -44,7 +46,7 @@ PostPresenter.prototype = {
             valid(post.message,post.story),
             valid(post.message_tags,post.story_tags),
             function(taginfo){
-            return "<a href='www.facebook.com/" + taginfo.id + "'>" + taginfo.name + "</a>";
+            return "<a href='https://www.facebook.com/" + taginfo.id + "'>" + taginfo.name + "</a>";
         });
         var $div = $(statusTemplate({post : post}));
         return $div;
