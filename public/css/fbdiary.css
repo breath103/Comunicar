@@ -141,7 +141,7 @@ header p{text-align: center;  color: white; vertical-align: middle;}
     height:100%;
 }
 .profile{
-
+    background-color: rgb(245, 167, 198);
 }
 .profile .profile_image {
     display:inline-block;
