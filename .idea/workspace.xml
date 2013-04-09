@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js" afterPath="$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Comunicar.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -20,7 +19,7 @@
     <file path="/dd.html" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1364311917251" ignored="false" />
     <file path="/template.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1364460759939" ignored="false" />
     <file path="/test.html" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365522684616" ignored="false" />
-    <file path="/FacebookContentsManager.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365525893921" ignored="false" />
+    <file path="/FacebookContentsManager.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365527663130" ignored="false" />
     <file path="/PostPresenter.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365525081915" ignored="false" />
     <file path="/DiaryController.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365521557405" ignored="false" />
     <file path="/Post.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365522784512" ignored="false" />
@@ -123,7 +122,7 @@
       <file leaf-file-name="FacebookContentsManager.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="66" selection-start="103" selection-end="103" vertical-scroll-proportion="0.048859935">
+            <state line="27" column="45" selection-start="844" selection-end="844" vertical-scroll-proportion="0.65960914">
               <folding />
             </state>
           </provider>
@@ -730,7 +729,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="66" selection-start="103" selection-end="103" vertical-scroll-proportion="0.048859935">
+        <state line="27" column="45" selection-start="844" selection-end="844" vertical-scroll-proportion="0.65960914">
           <folding />
         </state>
       </provider>
