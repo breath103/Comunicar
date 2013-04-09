@@ -31,6 +31,7 @@ describe("Post",function(){
             expect(post.isContainingString("sdgasgasgdsfasfsdfdf")).to.not.be.ok();
         });
     });
+
 });
 
 

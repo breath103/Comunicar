@@ -9,6 +9,14 @@ function PostPresenter(contentsManager){
     this.contentsManager = contentsManager;
 }
 PostPresenter.prototype = {
+    generateTaggedString : function(message,message_tags,tagCovertor){
+        _.chain(message_tags).values()
+        .flatten()
+        .each(function(v){
+            message = message.replace(v.name,tagCovertor(v));
+        });
+        return message;
+    },
     _presentVideo : function(post){
         var videoTemplate = getTemplate("#video_post");
         return videoTemplate({post : post});

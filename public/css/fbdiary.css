@@ -123,6 +123,7 @@ header p{text-align: center;  color: white; vertical-align: middle;}
     top: 0px;
     background-color: black;
     color: white;
+    overflow:scroll;
 }
 .center-croped-image{
     background-position: 50% 50%;
