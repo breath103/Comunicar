@@ -1,5 +1,11 @@
 function FacebookContentsManager()
 {
+    window.webkitStorageInfo.requestQuota(PERSISTENT, 1024*1024*10, function(grantedBytes) {
+        window.requestFileSystem(PERSISTENT, grantedBytes, onInitFs, errorHandler);
+    }, function(e) {
+        console.log('Error', e);
+    });
+
     this.facebookMe = null;
     this.clipedPosts = [];
     this.posts = null;
