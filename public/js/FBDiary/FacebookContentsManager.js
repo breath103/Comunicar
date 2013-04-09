@@ -203,8 +203,13 @@ FacebookContentsManager.prototype = {
         this._generatePostCalendarMap(posts);
         this._generatePostIDMap(posts);
         if(posts && posts.length > 0){
-            localStorage.loaded_posts = JSON.stringify(posts);
-            localStorage.latest_post  = JSON.stringify(_.first(posts));
+            try {
+                localStorage.loaded_posts = JSON.stringify(posts);
+                localStorage.latest_post  = JSON.stringify(_.first(posts));
+            } catch(e) {
+                localStorage.clear();
+                alert("데이터가 너무 많아서 캐쉬가 불가능합니다");
+            }
         }
     },
     getCachedPosts : function(){
