@@ -148,6 +148,7 @@ DiaryController.prototype = {
             $post.click(function(){
            //     $("#facebook-popup").attr("href",post.link);
                 console.log(post);
+                console.log(JSON.stringify(post));
            //     location.href = post.link;
            //     $("#facebook-popup").fancybox();
            //     $("#facebook-popup").trigger('click');

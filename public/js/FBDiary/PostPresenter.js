@@ -9,6 +9,14 @@ function PostPresenter(contentsManager){
     this.contentsManager = contentsManager;
 }
 PostPresenter.prototype = {
+    generateTaggedString : function(message,message_tags,tagCovertor){
+        _.chain(message_tags).values()
+        .flatten()
+        .each(function(v){
+            message = message.replace(v.name,tagCovertor(v));
+        });
+        return message;
+    },
     _presentVideo : function(post){
         var videoTemplate = getTemplate("#video_post");
         return videoTemplate({post : post});
@@ -28,7 +36,16 @@ PostPresenter.prototype = {
         return $photo_post;
     },
     _presentStatus : function(post){
+        function valid(x,y){
+            return x?x:y;
+        }
         var statusTemplate = getTemplate("#status_post");
+        post.main_text = this.generateTaggedString(
+            valid(post.message,post.story),
+            valid(post.message_tags,post.story_tags),
+            function(taginfo){
+            return "<a href='www.facebook.com/" + taginfo.id + "'>" + taginfo.name + "</a>";
+        });
         var $div = $(statusTemplate({post : post}));
         return $div;
     },
