@@ -17,5 +17,7 @@ pids
 logs
 results
 
+facebook_user_list.json
+
 npm-debug.log
 
