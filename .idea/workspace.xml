@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/js/FBDiary/PostSearcher.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/test/fb_diary/PostSearcher.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/FBDiary/DiaryController.js" afterPath="$PROJECT_DIR$/public/js/FBDiary/DiaryController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/FBdiary.ejs" afterPath="$PROJECT_DIR$/views/FBdiary.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js" afterPath="$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/test/fb_diary/FacebookContentsManager.js" afterPath="$PROJECT_DIR$/public/test/fb_diary/FacebookContentsManager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/FBDiary/PostPresenter.js" afterPath="$PROJECT_DIR$/public/js/FBDiary/PostPresenter.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/facebook_user_list.json" afterPath="$PROJECT_DIR$/facebook_user_list.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/test/test.html" afterPath="$PROJECT_DIR$/public/test/test.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Comunicar.iws" />
@@ -38,7 +30,7 @@
     <file path="/a.dummy" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365608273016" ignored="false" />
     <file path="/fbdhtml.html" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365356205645" ignored="false" />
     <file path="/site.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365603688233" ignored="false" />
-    <file path="/.gitignore" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365606183858" ignored="false" />
+    <file path="/.gitignore" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365612116711" ignored="false" />
     <file path="/PostSearcher.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365610886735" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -68,10 +60,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FacebookContentsManager.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="FacebookContentsManager.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="23" selection-start="597" selection-end="597" vertical-scroll-proportion="-4.734694">
+            <state line="22" column="23" selection-start="597" selection-end="597" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="23" column="6" selection-start="169" selection-end="169" vertical-scroll-proportion="0.46122995">
               <folding />
             </state>
           </provider>
@@ -152,7 +153,6 @@
         <option value="$PROJECT_DIR$/routes/site/index.js" />
         <option value="$PROJECT_DIR$/facebook_user_list.json" />
         <option value="$PROJECT_DIR$/public/js/FBDiary/keep-aspect-ratio.js" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/public/test/test.html" />
         <option value="$PROJECT_DIR$/views/FBdiary.ejs" />
         <option value="$PROJECT_DIR$/public/test/fb_diary/FacebookContentsManager.js" />
@@ -161,6 +161,7 @@
         <option value="$PROJECT_DIR$/public/js/FBDiary/DiaryController.js" />
         <option value="$PROJECT_DIR$/public/js/FBDiary/PostPresenter.js" />
         <option value="$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -667,13 +668,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="52" selection-start="18" selection-end="18" vertical-scroll-proportion="0.020053476">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/test/test.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="51" column="25" selection-start="2453" selection-end="2453" vertical-scroll-proportion="0.6685083">
@@ -711,7 +705,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/FBDiary/FacebookContentsManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="23" selection-start="597" selection-end="597" vertical-scroll-proportion="-4.734694">
+        <state line="22" column="23" selection-start="597" selection-end="597" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="6" selection-start="169" selection-end="169" vertical-scroll-proportion="0.46122995">
           <folding />
         </state>
       </provider>
