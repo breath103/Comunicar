@@ -11,6 +11,13 @@ function PostPresenter(contentsManager){
 
 }
 PostPresenter.prototype = {
+    /**
+     * generate <a> tagged message
+     * @param message : string
+     * @param message_tags : array
+     * @param tagCovertor : function
+     * @returns {*}
+     */
     generateTaggedString : function(message,message_tags,tagCovertor){
         _.chain(message_tags).values()
         .flatten()
@@ -19,10 +26,22 @@ PostPresenter.prototype = {
         });
         return message;
     },
+    /**
+     * generate video html
+     * @param post
+     * @returns {*}
+     * @private
+     */
     _presentVideo : function(post){
         var videoTemplate = getTemplate("#video_post");
         return videoTemplate({post : post});
     },
+    /**
+     * generate photo html
+     * @param post
+     * @returns {*|jQuery|HTMLElement}
+     * @private
+     */
     _presentPhoto : function(post){
         var self = this;
         var photoTemplate = getTemplate("#photo_post");
@@ -37,6 +56,12 @@ PostPresenter.prototype = {
         });
         return $photo_post;
     },
+    /**
+     * generate status html
+     * @param post
+     * @returns {*|jQuery|HTMLElement}
+     * @private
+     */
     _presentStatus : function(post){
         function valid(x,y){
             return x?x:y;
@@ -51,11 +76,18 @@ PostPresenter.prototype = {
         var $div = $(statusTemplate({post : post}));
         return $div;
     },
+    /**
+     * generate link html
+     * @param post
+     * @returns {*}
+     * @private
+     */
     _presentLink : function(post){
         var linkTemplate = getTemplate("#link_post");
         return linkTemplate({post : post});
     },
     /**
+     * generate html with a post data
      * @param post
      */
     presentPost : function(post){
@@ -68,7 +100,7 @@ PostPresenter.prototype = {
         } else if(post.type == "link") {
             return this._presentLink(post);
         } else {
-            //   console.log(post.type);
+            console.log(post.type);
         }
     }
 };

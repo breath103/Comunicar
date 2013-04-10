@@ -161,12 +161,4 @@ describe("FacebookContentsManager", function() {
             xhr.restore();
         });
     });
-    describe("-searchPost",function(){
-        context("if there is no result",function(){
-            it("should return empty object",function(){
-                var result = manager.searchPost({query:"안"});
-                expect(_.isEqual(result,{})).to.be.ok();
-            });
-        });
-    });
 });

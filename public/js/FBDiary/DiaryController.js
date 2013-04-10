@@ -3,6 +3,7 @@
 function DiaryController(contentsManager){
     this.fbContentsManager = contentsManager;
     this.postPresenter = new PostPresenter(this.fbContentsManager);
+    this.postSearcher  = new PostSearcher(this.fbContentsManager);
     this.currentDate = null;
 
     this.query = null;
@@ -18,7 +19,7 @@ function DiaryController(contentsManager){
         else {
             $(".site-container").clearQueue().fadeOut();
             self.showSearchResultMap($(this).val(),
-                                     self.fbContentsManager.searchPost({query : $(this).val()}));
+                                     self.postSearcher.searchPost({query : $(this).val()}));
         }
     });
     $("#search-button").click(function(){
@@ -28,7 +29,7 @@ function DiaryController(contentsManager){
         else {
             $(".site-container").clearQueue().fadeOut();
             self.showSearchResultMap(self.$searchInput.val(),
-                                     self.fbContentsManager.searchPost({query : self.$searchInput.val()}));
+                                     self.postSearcher.searchPost({query : self.$searchInput.val()}));
         }
     });
 }
@@ -67,7 +68,7 @@ DiaryController.prototype = {
             $(this).remove();
         });
 
-        $(".clip-container").prepend( $post );
+        $(".clip-container").prepend($post);
     },
     _setCurrentDate : function(date){
         this.currentDate = date;
@@ -126,32 +127,12 @@ DiaryController.prototype = {
             $page.fadeIn();
         }
 
-        /*if(date > 0)
-        {
-            $(".site-container .date-page").css({ transformOrigin: '0 0' })
-                .transit({
-                    perspective: "10000px",
-                    rotateY: '-90deg'
-                },500,"ease",function(){
-                    $(this).remove();
-                });
-        } else if(date < 0){
-
-        } else {
-
-        }*/
-
-
         var posts = this.fbContentsManager.getPostsWithDate(date);
         _.each(posts,function(post,i){
             var $post = $(this.postPresenter.presentPost(post));
             $post.click(function(){
-           //     $("#facebook-popup").attr("href",post.link);
                 console.log(post);
                 console.log(JSON.stringify(post));
-           //     location.href = post.link;
-           //     $("#facebook-popup").fancybox();
-           //     $("#facebook-popup").trigger('click');
                 if(self.fbContentsManager.clipPost(post.id)){
                     self.onClipPost(post);
                 }

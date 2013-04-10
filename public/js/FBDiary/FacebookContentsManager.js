@@ -1,13 +1,5 @@
 function FacebookContentsManager()
 {
-    /*
-    window.webkitStorageInfo.requestQuota(PERSISTENT, 1024*1024*10, function(grantedBytes) {
-        console.log(grantedBytes);
-       //       window.requestFileSystem(PERSISTENT, grantedBytes, onInitFs, errorHandler);
-    }, function(e) {
-        console.log('Error', e);
-    });
-    */
     this.facebookMe = null;
     this.clipedPosts = [];
     this.posts = null;
@@ -301,19 +293,5 @@ FacebookContentsManager.prototype = {
             limit:200,
             fields : "id,from,to,message,message_tags,picture,link,name,caption,description,source,properties,icon,privacy,type,likes,place,story,story_tags,with_tags,object_id,application,created_time,updated_time"
         },loadingNextFBPostLoop);
-    },
-    searchPost : function(params){
-        if(params.query){
-            return _.chain(this.posts)
-                .filter(function(p){
-                    var b = false;
-                    if(p.message) b = b || p.message.indexOf(params.query) >= 0;
-                    if(p.story)   b = b || p.story.indexOf(params.query) >= 0;
-                    return b;
-                }).groupBy(function(p){
-                    return moment(p.created_time).format("YYYY/MM/DD");
-                }).value();
-        }
-        return [];
     }
 };
