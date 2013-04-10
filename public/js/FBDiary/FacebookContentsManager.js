@@ -8,7 +8,6 @@ function FacebookContentsManager()
         console.log('Error', e);
     });
     */
-
     this.facebookMe = null;
     this.clipedPosts = [];
     this.posts = null;
@@ -310,6 +309,7 @@ FacebookContentsManager.prototype = {
                     var b = false;
                     if(p.message) b = b || p.message.indexOf(params.query) >= 0;
                     if(p.story)   b = b || p.story.indexOf(params.query) >= 0;
+                    return b;
                 }).groupBy(function(p){
                     return moment(p.created_time).format("YYYY/MM/DD");
                 }).value();
