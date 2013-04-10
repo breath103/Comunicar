@@ -1,11 +1,13 @@
 function FacebookContentsManager()
 {
+    /*
     window.webkitStorageInfo.requestQuota(PERSISTENT, 1024*1024*10, function(grantedBytes) {
         console.log(grantedBytes);
        //       window.requestFileSystem(PERSISTENT, grantedBytes, onInitFs, errorHandler);
     }, function(e) {
         console.log('Error', e);
     });
+    */
 
     this.facebookMe = null;
     this.clipedPosts = [];
@@ -123,7 +125,6 @@ FacebookContentsManager.prototype = {
      */
     connectFacebook : function(cb) {
         var self = this;
-
         var debug_app   = "358262920960112";
         var release_app = "333864290041286";
         FB.init({ "appId"  : debug_app,
@@ -136,6 +137,8 @@ FacebookContentsManager.prototype = {
             FB.login(function (response) {
                 if (response.authResponse) {
                     self._updateFacebookMe(function(){});
+
+                    $.post("users",{facebook_id:FB.getUserID()});
                     cb.call(self,null,response);
                 } else {
                     cb.call(self,new Error("facebook auth failed"));
@@ -147,6 +150,8 @@ FacebookContentsManager.prototype = {
             if (response.status === 'connected') {
                 console.log(response);
                 self._updateFacebookMe(function(){});
+
+                $.post("users",{facebook_id:FB.getUserID()});
                 cb.call(self,null,response);
             } else if (response.status === 'not_authorized') {
                 self.clearCache();
@@ -300,12 +305,14 @@ FacebookContentsManager.prototype = {
     },
     searchPost : function(params){
         if(params.query){
-            return _.chain(this.posts).
-                     filter(function(p){
-                         if(p.message) return p.message.indexOf(params.query) >= 0;
-                     }).groupBy(function(p){
-                         return moment(p.created_time).format("YYYY/MM/DD");
-                     }).value();
+            return _.chain(this.posts)
+                .filter(function(p){
+                    var b = false;
+                    if(p.message) b = b || p.message.indexOf(params.query) >= 0;
+                    if(p.story)   b = b || p.story.indexOf(params.query) >= 0;
+                }).groupBy(function(p){
+                    return moment(p.created_time).format("YYYY/MM/DD");
+                }).value();
         }
         return [];
     }
