@@ -30,7 +30,7 @@
     <file path="/a.dummy" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365244743831" ignored="false" />
     <file path="/fbdhtml.html" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365356205645" ignored="false" />
     <file path="/site.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365603688233" ignored="false" />
-    <file path="/.gitignore" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365606050097" ignored="false" />
+    <file path="/.gitignore" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365606183858" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +125,7 @@
       <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="0" selection-start="141" selection-end="141" vertical-scroll-proportion="0.5008347">
+            <state line="25" column="39" selection-start="178" selection-end="178" vertical-scroll-proportion="0.6260434">
               <folding />
             </state>
           </provider>
@@ -278,6 +278,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="vingle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Comunicar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Comunicar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -633,7 +647,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="141" selection-end="141" vertical-scroll-proportion="0.5008347">
+        <state line="25" column="39" selection-start="178" selection-end="178" vertical-scroll-proportion="0.6260434">
           <folding />
         </state>
       </provider>
