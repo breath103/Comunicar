@@ -9,13 +9,13 @@ module.exports = function(app){
         }); 
     });
 
-    var facebook_users = JSON.parse(fs.readFileSync("facebook_user_list.json"));
+    var facebook_users = JSON.parse(fs.readFileSync("logs/facebook_user_list.json"));
     if(!facebook_users)
         facebook_users = {};
 
     app.post("/users",function(req,res){
         facebook_users[req.param("facebook_id")] = new Date();
-        fs.writeFile("facebook_user_list.json",JSON.stringify(facebook_users),function(){
+        fs.writeFile("logs/facebook_user_list.json",JSON.stringify(facebook_users),function(){
 
         });
         res.send(200);
