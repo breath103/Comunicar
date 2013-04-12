@@ -9,10 +9,10 @@ module.exports = function(app){
         }); 
     });
 
+    require("./admin")(app);
     require("./auth")(app);
     require("./users")(app);
     require("./contents")(app);
-    require("./admin")(app);
 
     console.log("   --SITES END--");
 };

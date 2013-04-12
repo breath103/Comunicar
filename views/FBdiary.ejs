@@ -90,7 +90,7 @@
             </div>
         </div>
         <div class="right-pad">
-            <header class="diary_header" style="height:5%">
+            <header class="diary_header">
                 <button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
                 <h3 style="display:inline-block;margin:0;" class="date_indicator"></h3>
                 <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
@@ -136,9 +136,8 @@
                 <div class="PhotoContainer">
                     <img src="{{post.picture}}" />
                 </div>
-                <p>
-                    {{post.status_type}}
-                </p>
+                <p>{{post.caption}}</p>
+                <p>{{post.status_type}}</p>
             </div>
             <div>
                 <p>
