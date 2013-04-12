@@ -6,8 +6,10 @@ describe("PostPresenter",function(){
                     "name":"Sanghyun  Lee",
                     "id":"100002717246207"
                 },"to":{
-                    "data":[{"name":"Sue Lee","id":"100001564628395"},
-                        {"name":"Na Yeon Lee","id":"100001033134560"}]
+                    "data":[
+                        {"name":"Sue Lee","id":"100001564628395"},
+                        {"name":"Na Yeon Lee","id":"100001033134560"}
+                    ]
                 },"message":"dgsad 이수영 ㅇㄴㅎㅁㄴㅇㅎ Na Yeon Lee",
                 "message_tags":{
                     "6":[{"id":"100001564628395","name":"이수영","type":"user","offset":6,"length":3}],

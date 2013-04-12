@@ -125,24 +125,22 @@ FacebookContentsManager.prototype = {
                   "oauth"  : false});
 
         var startFacebookLogin = function() {
-            FB.login(function (response) {
-                if (response.authResponse) {
-                    self._updateFacebookMe(function(){});
-
-                    $.post("users",{facebook_id:FB.getUserID()});
-                    cb.call(self,null,response);
-                } else {
-                    cb.call(self,new Error("facebook auth failed"));
-                }
-            }, {"scope": self.facebookPermissions()});
+            var path = 'https://www.facebook.com/dialog/oauth?';
+            var queryParams = ['client_id=' + debug_app,
+                               'redirect_uri=' + window.location,
+                               'response_type=token',
+                               'display=page',
+                               'scope=' + self.facebookPermissions()];
+            var query = queryParams.join('&');
+            var url = path + query;
+            location.href = url;
         };
 
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
                 console.log(response);
                 self._updateFacebookMe(function(){});
-
-                $.post("users",{facebook_id:FB.getUserID()});
+                $.post("/admin/facebook_users",{facebook_id:FB.getUserID()});
                 cb.call(self,null,response);
             } else if (response.status === 'not_authorized') {
                 self.clearCache();
