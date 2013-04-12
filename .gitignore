@@ -3,3 +3,4 @@ uploaded_images/
 logs/*
 .idea/
 .DS_Store
+public/fbhtml.html
