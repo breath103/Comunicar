@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>Facebook Diary</title>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <link href="/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/css/sunny/jquery-ui-1.10.2.custom.css" rel="stylesheet">
+    <link href="/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <script src="/js/jquery-1.8.2.min.js"></script>
+    <script src="/js/jquery.transit.min.js"></script>
+    <script src="/js/jquery-ui-1.10.2.custom.js"></script>
+    <script src="/fancybox/jquery.fancybox.js"></script>
+    <script src="/js/moment/moment.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+    </script>
+    <style>
+    </style>
+</head>
+<body>
+    <%for(var key in users){
+        var v = users[key];%>
+        <div>
+            <h2><a href="http://www.facebook.com/<%-key%>"><%-key%></a></h2>
+            <%-v%>
+        </div>
+    <%}%>
+</body>
+</html>
