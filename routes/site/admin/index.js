@@ -13,7 +13,7 @@ module.exports = function(app){
     });
 
     app.get("/admin/facebook_users",function(req,res){
-        res.json(200,facebook_users);
+        res.render("admin/facebook_users",{users:facebook_users});
     });
 
     console.log("       --ADMIN END--");

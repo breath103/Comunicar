@@ -15,6 +15,8 @@ PostSearcher.prototype = {
     searchPost : function(params){
         this._addSearchLogs(params);
         if(params.query){
+            _gaq.push(['_trackEvent', 'Search', 'with keyword', params.query]);
+
             var posts =  _.chain(this.contentsManager.posts).filter(function(p){
                 var b = false;
                 if(p.message) b = b || p.message.indexOf(params.query) >= 0;
