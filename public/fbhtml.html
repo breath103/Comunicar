@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>Facebook Diary</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    
+    <link href="/css/sunny/jquery-ui-1.10.2.custom.css" rel="stylesheet">
+    <link href="/fancybox/jquery.fancybox.css" rel="stylesheet">
+    
+	<script src="/js/jquery-1.8.2.min.js"></script>
+    <script src="/js/jquery.transit.min.js"></script>
+    <script src="/js/jquery-ui-1.10.2.custom.js"></script>
+    <script src="/fancybox/jquery.fancybox.js"></script>
+    <script src="/js/moment/moment.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/async.js"></script>
+    <script src="/js/step.js"></script>
+    <script src="/js/js-url.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script src="/js/FBDiary/Post.js"></script>
+    <script src="/js/FBDiary/PostPresenter.js"></script>
+    <script src="/js/FBDiary/FacebookContentsManager.js"></script>
+    <script src="/js/FBDiary/PostSearcher.js"></script>
+    <script src="/js/FBDiary/DiaryController.js"></script>
+    <script src="/js/FBDiary/facebook_clip.js"></script>
+    <script src="/js/FBDiary/google_analytics.js"></script>
+    <script src="/js/FBDiary/FacebookDiaryApp.js"></script>
+    <script src="/js/FBDiary/keep-aspect-ratio.js"></script>
+    <script>
+        $(document).ready(function () {
+            FacebookDiaryApp();
+        });
+    </script>
+    
+	  <style>
+		html,body{
+			font-size: 0.9em;
+    		letter-spacing: -0.5px;
+    		font-family: NanumGothic, "Apple SD Gothic Neo", "Malgun Gothic", AppleGothic, Dotum, sans-serif;
+			width: 100%;
+			height: 100%; 
+			padding: 0px;
+			margin: 0px;
+			line-height:150%;
+			overflow-x: none;
+			}
+			
+		.site{
+			width:100%;
+			height:100%;
+			margin-left:auto;
+			margin-right:auto;
+			position:relative;
+			background-image: url("/images/background.png");
+			overflow-x: none;
+			overflow-y: none;
+			}
+			
+		.diary{
+			width:100%;
+			height:100%;
+			margin-left:auto;
+			margin-right:auto;
+			position:relative;
+			}
+			
+		.left-pad{
+		    float:left;
+		    position:relative;
+		    padding: 0px;
+			margin: 0px;
+			overflow-x: none;
+			width:18%;
+			height:100%;
+			left:10%;
+			background-size:100% 100%;
+			
+	    }
+	
+	    .right-pad{
+			float: right;
+			position:relative;
+			padding: 0px;
+			margin: 0px;
+			overflow-x: none;
+			width:61.5%;
+			height:100%;
+			right:10%;
+			background-color: none;
+		}	
+	
+	    .left_board{
+			float: right;
+			position:relative;
+			padding: 0px;
+			margin: 0px;
+			overflow-x: none;
+			top:5%;
+			width:100%;
+			height:85%;
+			background-color: none;
+			background-size: 100% 100%;
+			background-image: url("/images/left.png");
+		}	
+	
+		.site-container{
+			float: right;
+			position: relative;
+			top:5%;
+			width: 100%;
+			height: 85%;
+			background-size: 100% 100%;
+			background-image: url("/images/paper.png");
+			overflow-y:scroll;
+		}
+		
+		.search-view{
+			float: right;
+			position: relative;
+			top:5%;
+			width: 100%;
+			height: 85%;
+			background-size: 100% 100%;
+			background-image: url("/images/paper.png");
+		}
+	
+		.fbdiary_logo{
+			float:left;
+			position:relative;
+			top:5%;
+			width:100%;
+			height:5%;
+			background-size: 100% 100%;
+			background-image: url("/images/name.png");
+		}
+		
+		.profile{
+			float:left;
+			position: relative;
+			top:3.5%;
+			left:6%;
+			width:88%;
+			height:8%;
+			background-color:transparent;
+		}
+		
+		.profile_image{
+			float: left;
+			position: relative;
+			width: auto%;
+			height: 100%;
+			border-radius: 10%;
+	        overflow: hidden;
+			border-radius:10%;
+		}
+		.profile_name{
+			float: right;
+			position: relative;
+			right: 3%;
+			margin-left: 1%;
+			width:auto;
+			height:100%;
+			color: grey;
+			background-color:transparent; 
+		}
+		img.input{ vertical-align: middle;}
+		
+		.search_bar{
+			position: relative;
+			top:5%;
+			left:6%;
+			width:90%;
+			height:5%;
+			background-size: 100% 100%;
+			background-color: transparent;
+			border:none;
+			font-size:10px;
+			color:white;
+		}
+		
+		.search{
+			position: relative;
+			width:88%;
+			height:100%;
+			background-size: 100% 100%;
+			background:url('images/searchbar/search_bar.png') no-repeat;
+			border:none;
+			font-size:10px;
+			color:white;
+		}
+		
+		.search_icon{
+			position:relative;
+			float:right;
+			width:8%;
+			height:100%;
+			background-size: 100% 100%;
+			background-image: url("images/searchbar/search_icon.png");
+			border:0px;
+			background-color:transparent;
+		}
+	
+		.scrap_name{
+			position:relative;
+			float:left;
+			width:100%;
+			height:5%;
+			top:7%;
+			background-size: 100% 100%;
+			background-image: url("images/scrap_icon.png");		
+		}
+		.clip-container{
+			position:relative;
+			float:left;
+			left:3%;
+			top:8%;
+			width:94%;
+			height:73%;
+			background-color:transparent;
+			overflow-x:scroll;
+		}
+		
+		.date-container{
+			float:left;
+			position:relative;
+			top:5%;
+			width:100%;
+			height:5%;
+			background-image: transparent;
+		}
+		
+        .keep-aspect-ratio{
+            position: absolute;
+        }
+        
+        .profile_image .image{
+            width:100%;
+            height:100%;
+        }
+        .profile_image img{
+            width:100%;
+            height:100%;
+        }
+        
+        .status{
+        	margin-top:1.3%;
+        	margin-left: 5%;
+        	width: 85%;
+        	height: auto;
+        	padding-left:1%;
+        	padding-right:1%;
+        	padding-top:0.5%;
+        	padding-bottom: 0.5%;
+        	border-radius: 5px; 
+        	background-color:rgba(216,216,216,0.78)
+	     }
+	     
+	     .link{
+        	margin-top:1.3%;
+        	margin-left: 5%;
+        	margin-bottom:1.3%;
+        	width: 85%;
+        	height: auto;
+        	padding-left:1%;
+        	padding-right:1%;
+        	padding-top:0.5%;
+        	padding-bottom: 0.5%;
+        	border-radius: 5px; 
+        	background-color:rgba(216,216,216,0.78)
+	     }
+	     
+	     .link-title{
+        	width: 100%;
+        	margin-bottom:1%; 
+         }
+	     
+	     .link-thumbnail img{
+	     	width:15%;
+	     	height:auto;
+	     	text-align:left;
+	        height:10%;
+	     	border-radius: 3px;
+	     }
+	     
+	     .link-url{
+	     	position:relative;
+		     width:80%;
+		     height:auto;
+		     font-size:0.9em;
+		     line-height:130%;
+	     }
+	     
+	     .link-title{
+            width: 100%;
+        	height: auto;
+        	padding-top:1%;
+        	padding-bottom: 0.5%;
+	     }
+	     
+	     
+	     
+	     .video{
+        	margin-top:1.3%;
+        	margin-left: 5%;
+        	margin-bottom:1.3%;
+        	width: 85%;
+        	height: auto;
+        	padding-left:1%;
+        	padding-right:1%;
+        	padding-top:0.5%;
+        	padding-bottom: 0.5%;
+        	border-radius: 5px; 
+        	background-color:rgba(216,216,216,0.78)
+	     }
+	     
+	     .thumbnail img{
+	     	width:auto;
+	     	text-align:center;
+	        height:20%;
+	     	border-radius: 3px;
+	     }
+	     
+	     
+	     
+	    
+	     .photocontainer img{
+	     	width:auto;
+	     	text-align:center;
+	        height:20%;
+	     	border-radius: 3px;
+	     }
+	     
+
+</style>	
+</head>
+<body>		
+<div class="site">
+	<div class="diary keep-aspect-ratio" aspect-ratio="0.58">
+	
+	    <div class="left-pad">
+	        <div class="fbdiary_logo"></div>	
+			<div class="left_board">
+				<div class="profile">
+					<div class="profile_image">
+						<img/>
+					</div>
+					<h4 div class="profile_name">
+					</h4>	
+				</div>
+				<div class="search_bar">
+					<input type="text" id="search-input" class="search" placeholder="Search">
+					<button class="search_icon" id="search-button"></button>
+				</div>
+                <div class="scrap_name"></div>
+				<div class="clip-container">
+				</div>
+			</div>
+	    </div>	
+		<div class="right-pad">
+			<div class="date-container">
+				<button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
+                <h3 style="display:inline-block;margin:0;" class="date_indicator"></h3>
+                <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
+            </div>
+			<div class="site-container">
+			</div>
+		</div>
+		<div class="Loading">Loading...</div>
+	</div>	
+
+<div id="templates" style="display:none;">
+    <div id="video_post">
+        <div class="video">
+            <a href="{{post.source}}" target="_blank"></a>
+            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;"
+                 class="photo">
+                <div class="photocontainer">
+                    <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}" />
+                </div>
+                <div class="TextContainer">
+                    <div class="DateContainer">
+                    </div>
+                    <div class="MessageContainer">
+                        <p>{{post.name}}</p>
+                        <p>{{post.description}}</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p>{{post.message?post.message:post.story}}</p>
+            </div>
+        </div>
+    </div>
+    <div id="photo_post">
+        <div class="status">
+            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;" class="Photo">
+                <div class="photocontainer">
+                    <img src="{{post.picture}}" />
+                </div>
+                <p>
+                    {{post.status_type}}
+                </p>
+            </div>
+            <div>
+                <p>
+                    {{post.message?post.message:post.story}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="link_post">
+        <div class="link">
+        	<div class="link-title">
+        		<p style="text-align:left; font-weight:bold;">{{post.name}}</p>
+        	</div>	
+            <div class="link-thumbnail">
+                <a href="{{post.link}}">
+                	<img src="{{post.picture}}"/></p>  
+                </a>
+            <div class="link-url">
+                <a href="{{post.link}}">     
+                    <p>{{post.link}}</p>
+                </a>
+            </div>     
+            <div class="link-caption">
+                <small>{{post.status_type}}</small>
+                <p>{{post.message}}</p>
+            </div>    
+             </div>  
+            </div>
+        </div>
+    <div id="status_post">
+        <div class="status">
+            <div>
+                <small>{{post.status_type}}</small>
+                <p>{{post.main_text}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<a class = "fancybox.iframe" id="facebook-popup"></a>
+</body>
+</html>
+
