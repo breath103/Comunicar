@@ -76,7 +76,7 @@ html, body {
     padding: 0px;
     margin: 0px;
     overflow-x: none;
-    top: 5%;
+    top: 2%;
     width: 100%;
     height: 90%;
     background-color: none;
@@ -87,7 +87,7 @@ html, body {
 .site-container {
     float: left;
     position: relative;
-    top: 5%;
+    top: 2%;
     width: 100%;
     height: 90%;
     background-size: 100% 100%;
@@ -135,7 +135,15 @@ html, body {
     top:0%:
     left:0%;
 }
-
+.search-result {
+	width:15%;
+	height:auto;
+	border-radius: 5px;
+	font-align:center;
+	font-size:0.7em;
+	line-height: 100%;
+	background-color:rgba(207,206,206,0.91);
+}
 .search-view {
     float: right;
     position: relative;
@@ -149,7 +157,7 @@ html, body {
 .fbdiary_logo {
     float: left;
     position: relative;
-    top: 5%;
+    top: 2%;
     width: 100%;
     height: 5%;
     background-size: 100% 100%;
@@ -157,8 +165,7 @@ html, body {
 }
 
 .profile {
-    position: relative;
-    margin-top: 5.5%;
+    margin-top: 8%;
     margin-left: 5.5%;
     margin-bottom:5.5%;
     width: 88%;
@@ -169,19 +176,20 @@ html, body {
 .profile_image {
     float: left;
     position: relative;
-    width: auto;
-    height: 100%;
+    width: 20%;
+    height: auto;
     border-radius: 10%;
+    border-style:solid;
+    border-width: 2px;
+    border-color:rgba(255,255,255,0.73);
     overflow: hidden;
-    border-radius: 10%;
 }
 
 .profile_name {
     float: right;
     position: relative;
-    right: 3%;
-    margin-left: 1%;
-    width: auto;
+    margin-left: 2%;
+    width: 75%;
     height: 100%;
     color: grey;
     background-color: transparent;
@@ -192,7 +200,6 @@ img.input {
 }
 
 .search_bar {
-    position: relative;
     margin-left:5.5%;
     width: 90%;
     height: 5%;
@@ -226,8 +233,7 @@ img.input {
 }
 
 .scrap_name {
-    position: relative;
-    float: left;
+    margin-top:5%;
     width: 100%;
     height: 5%;
     background-size: 100% 100%;
@@ -244,11 +250,11 @@ img.input {
 }
 
 .date-container {
-    float: left;
     position: relative;
-    top: 5%;
+    top:1%;
     width: 100%;
     height: 5%;
+    margin-left:30%;
     background-image: transparent;
 }
 
