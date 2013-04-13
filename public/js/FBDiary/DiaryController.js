@@ -133,7 +133,6 @@ DiaryController.prototype = {
             var $post = $(this.postPresenter.presentPost(post));
             $post.click(function(){
                 console.log(post);
-                console.log(JSON.stringify(post));
                 if(self.fbContentsManager.clipPost(post.id)){
                     self.onClipPost(post);
                 }

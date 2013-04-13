@@ -35,6 +35,30 @@ describe("PostPresenter",function(){
                                         " ㅇㄴㅎㅁㄴㅇㅎ <a href='https://www.facebook.com/100001033134560'>Na Yeon Lee</a>");
         });
     });
+    describe("getStatusPostType",function(){
+        context("if is there any message",function(){
+            it("should return 'likes' if it's type is likes",function(){
+                expect(postPresenter.getStatusPostType({
+                    type  : "status",
+                    message : "wggsgwdgdsg"
+                })).to.be("status");
+            });
+        });
+        context("if is there any story",function(){
+            it("should return 'likes' if it's type is likes",function(){
+                expect(postPresenter.getStatusPostType({
+                    type  : "status",
+                    story : "me likes him"
+                })).to.be("likes");
+            });
+            it("should return 'comment' if it's type is comment",function(){
+                expect(postPresenter.getStatusPostType({
+                    type  : "status",
+                    story : "mesdga on him"
+                })).to.be("comment");
+            });
+        });
+    });
 });
 
 

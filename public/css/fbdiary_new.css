@@ -78,6 +78,12 @@ html, body {
     background-image: url("../images/paper.png");
     overflow-y: scroll;
 }
+.site-container .date-page{
+    width:100%;
+    position:absolute;
+    top:0%:
+    left:0%;
+}
 
 .search-view {
     float: right;
