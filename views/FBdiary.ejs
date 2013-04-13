@@ -44,7 +44,7 @@
     </head>
     <body>
     <div class="site">
-        <div class="diary keep-aspect-ratio" aspect-ratio="0.58">
+        <div class="diary keep-aspect-ratio" aspect-ratio="0.73">
 
             <div class="left-pad">
                 <div class="fbdiary_logo"></div>
@@ -108,12 +108,11 @@
                         <div class="photo-container">
                             <img class="img-rounded" src="{{post.picture}}"/>
                             <div class="caption-overlay">
-                                {{post.caption}}
+                                <pre>
+                                    {{post.caption}}
+                                </pre>
                             </div>
                         </div>
-                        <p>
-                            {{post.status_type}}
-                        </p>
                     </div>
                     <div>
                         <p>
@@ -137,11 +136,6 @@
                                 {{post.name}}
                             </h5>
                             <small class="muted">{{post.description}}</small>
-                            <!--div class="link-url">
-                                <a href="{{post.link}}">
-                                    <p>{{post.link}}</p>
-                                </a>
-                            </div-->
                             <div class="link-caption">
                                 <small>{{post.status_type}}</small>
                                 <p>{{post.message}}</p>

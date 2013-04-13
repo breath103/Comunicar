@@ -100,6 +100,7 @@ PostPresenter.prototype = {
             function(taginfo){
             return "<a href='https://www.facebook.com/" + taginfo.id + "'>" + taginfo.name + "</a>";
         });
+        //post.main_text = post.main_text.split("\n").join("<br/>");
         var $div = $(statusTemplate({post : post}));
         return $div;
     },
@@ -155,7 +156,7 @@ PostPresenter.prototype = {
      * generate html with a post data
      * @param post
      */
-    __prsentPost : function(post){
+    __presentPost : function(post){
         if(post.type == "video"){
             return this._presentVideo(post);
         } else if(post.type == "photo") {
@@ -177,7 +178,7 @@ PostPresenter.prototype = {
         }
     },
     presentPost : function(post){
-        var $post = $(this.__prsentPost(post));
+        var $post = $(this.__presentPost(post));
         if(post.application){
             $post.append(this._presentApplication(post.application));
         }
