@@ -24,13 +24,20 @@ TimelineController.prototype = {
         });
     },
     addTimeTag : function(time){
+        var self = this;
         var verticalPos = this._timeToVerticalPos(time);
-        var $tag = $("<div class='time-tag'></div>");
+        var $tag = $("<div class='time-tag'><a></a></div>");
         $tag.css({
             "top":verticalPos*100+"%"
         });
+        $tag.click(function(){
+            self.setCurrentTime(time);
+        });
+
         this.$container.append($tag);
         this.$timeTags = this.$container.children(".time-tag");
+
+        return $tag;
     },
     removeAllTimeTags : function() {
         $(".vertical-timeline .time-tag").fadeOut(function(){

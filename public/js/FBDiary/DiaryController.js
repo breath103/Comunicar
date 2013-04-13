@@ -12,40 +12,42 @@ function DiaryController(contentsManager){
     this.$searchInput = $("#search-input");
 
     var self = this;
-                 /*
+
+    var searchResultList = $(".search-results-list");
+
     this.$searchInput.bind("change focus",function(){
         if($(this).val() == "") {
-            $(".site-container").clearQueue().fadeIn();
+            searchResultList.clearQueue().transit({"left":"-100%"});
         }
         else {
-            $(".site-container").clearQueue().fadeOut();
+            searchResultList.clearQueue().transit({"left":"0%"});
             self.showSearchResultMap($(this).val(),
                                      self.postSearcher.searchPost({query : $(this).val()}));
         }
     });
     $("#search-button").click(function(){
         if(self.$searchInput.val() == "") {
-            $(".site-container").clearQueue().fadeIn();
+            searchResultList.clearQueue().transit({"left":"-100%"});
         }
         else {
-            $(".site-container").clearQueue().fadeOut();
+            searchResultList.clearQueue().transit({"left":"0%"});
             self.showSearchResultMap(self.$searchInput.val(),
                                      self.postSearcher.searchPost({query : self.$searchInput.val()}));
         }
     });
-    */
 }
 DiaryController.prototype = {
     showSearchResultMap : function(query,searchResult){
      //   var datePairs = _.pairs(searchResult);
         var self = this;
-        $(".search-result-view").children().remove();
+        $(".search-results-list").children("date").remove();
         _.each(searchResult,function(v,k){
-            var $div = $("<div class='result btn'></div>");
-            $div.html(k + " : " + v.length);
-            $(".search-result-view").append($div);
+            var keyDate = moment(k,"YYYY/MM/DD");
+            var $div = $('<div class="date"><h5 style="padding: 0;margin: 0;display :inline;"></h5><span class="badge badge-info"></span><i class="icon-arrow-right"></i></div>');
+            $div.children(".badge").html(v.length);
+            $div.children("h5").html(keyDate.format("M월 D일"));
+            $(".search-results-list").append($div);
             $div.click(function(){
-                $(".site-container").fadeIn();
                 self.showDay(moment(k, "YYYY/MM/DD").toDate());
             });
         });
@@ -139,7 +141,9 @@ DiaryController.prototype = {
         }
         _.each(posts,function(post,i){
             var $post = $(this.postPresenter.presentPost(post));
-            self.timelineController.addTimeTag(post.created_time);
+            var $timetag = self.timelineController.addTimeTag(post.created_time);
+            $timetag.find("a").attr("href","#post_"+post.id);
+
             $post.click(function(){
                 console.log(post.created_time);
                 console.log(moment(post.created_time).local().format("YYYY-MM-DD-HH-MM-SS"));
