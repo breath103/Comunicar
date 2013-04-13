@@ -111,10 +111,16 @@ html, body {
 }
 .site-container .left-navigation .vertical-timeline .indicator{
     position: absolute;
-    left:40%;
+    left:27%;
     top:0%
 }
 .site-container .left-navigation .vertical-timeline .time-tag{
+    position: absolute;
+    left:40%;
+    background-image: url("../images/icons/tag.png");
+    background-size: 100% 100%;
+    width: 33%;
+    height: 2.3%;
 }
 .site-container .post-container{
     width:85%;

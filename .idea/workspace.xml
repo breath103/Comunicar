@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/js/FBDiary/TimelineController.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/test/fb_diary/TimelineController.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/ling_icon.png" afterPath="$PROJECT_DIR$/public/images/icons/link.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/tag-icon.png" afterPath="$PROJECT_DIR$/public/images/icons/tag.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/FBDiary/DiaryController.js" afterPath="$PROJECT_DIR$/public/js/FBDiary/DiaryController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/FBdiary.ejs" afterPath="$PROJECT_DIR$/views/FBdiary.ejs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/FBDiary/TimelineController.js" afterPath="$PROJECT_DIR$/public/js/FBDiary/TimelineController.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/fbdiary_new.css" afterPath="$PROJECT_DIR$/public/css/fbdiary_new.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/test/test.html" afterPath="$PROJECT_DIR$/public/test/test.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Comunicar.iws" />
@@ -27,7 +26,7 @@
     <file path="/test.html" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365864640840" ignored="false" />
     <file path="/FacebookContentsManager.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365784631029" ignored="false" />
     <file path="/PostPresenter.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365851266600" ignored="false" />
-    <file path="/DiaryController.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365862688922" ignored="false" />
+    <file path="/DiaryController.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365865659368" ignored="false" />
     <file path="/Post.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365785974477" ignored="false" />
     <file path="/TemplateLoader.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1364640441747" ignored="false" />
     <file path="/fbdiary.css" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365523669944" ignored="false" />
@@ -40,8 +39,8 @@
     <file path="/facebook_user_list.json" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365686448628" ignored="false" />
     <file path="/facebook_users.ejs" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365783604977" ignored="false" />
     <file path="/VideoPresenter.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365786524637" ignored="false" />
-    <file path="/fbdiary_new.css" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365864729221" ignored="false" />
-    <file path="/TimelineController.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365864771924" ignored="false" />
+    <file path="/fbdiary_new.css" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365865181544" ignored="false" />
+    <file path="/TimelineController.js" changelist="eb8eb91b-88e4-4fae-9532-4eabb3be6f6a" time="1365866605951" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,110 +59,73 @@
     <favorites_list name="Comunicar" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="VideoPresenter.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/test/fb_diary/VideoPresenter.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="9" selection-start="209" selection-end="209" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FBdiary.ejs" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/FBdiary.ejs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="50" selection-start="1074" selection-end="1074" vertical-scroll-proportion="6.25">
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#h3#0;n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#div#7;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TimelineController.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/public/js/FBDiary/TimelineController.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="30" selection-start="922" selection-end="922" vertical-scroll-proportion="0.7744361">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TimelineController.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/test/fb_diary/TimelineController.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="9" selection-start="199" selection-end="199" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/test/test.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="32" selection-start="1469" selection-end="1469" vertical-scroll-proportion="-20.625">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PostSearcher.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/test/fb_diary/PostSearcher.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PostPresenter.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/FBDiary/PostPresenter.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="87" selection-start="330" selection-end="330" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DiaryController.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/FBDiary/DiaryController.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="125" column="68" selection-start="4133" selection-end="4133" vertical-scroll-proportion="-49.615383">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fbdiary_new.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/css/fbdiary_new.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="116" column="53" selection-start="2255" selection-end="2263" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FacebookDiaryApp.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/FBDiary/FacebookDiaryApp.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="122" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="FBdiary.ejs" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/views/FBdiary.ejs">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="57" column="9" selection-start="2585" selection-end="2585" vertical-scroll-proportion="-13.125">
+                  <folding>
+                    <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#h3#0;n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#div#7;n#div#1;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="DiaryController.js" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/public/js/FBDiary/DiaryController.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="126" column="32" selection-start="4166" selection-end="4166" vertical-scroll-proportion="0.39655173">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="TimelineController.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/public/js/FBDiary/TimelineController.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="25" column="27" selection-start="939" selection-end="939" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="fbdiary_new.css" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/public/css/fbdiary_new.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="111" column="62" selection-start="2140" selection-end="2149" vertical-scroll-proportion="-8.576923">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="TimelineController.js" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/public/js/FBDiary/TimelineController.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="43" column="48" selection-start="1489" selection-end="1489" vertical-scroll-proportion="0.92672414">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -197,18 +159,18 @@
         <option value="$PROJECT_DIR$/public/js/FBDiary/PostPresenter.js" />
         <option value="$PROJECT_DIR$/public/js/FBDiary/FacebookDiaryApp.js" />
         <option value="$PROJECT_DIR$/views/FBdiary.ejs" />
-        <option value="$PROJECT_DIR$/public/js/FBDiary/DiaryController.js" />
         <option value="$PROJECT_DIR$/public/test/fb_diary/TimelineController.js" />
         <option value="$PROJECT_DIR$/public/test/test.html" />
         <option value="$PROJECT_DIR$/public/css/fbdiary_new.css" />
         <option value="$PROJECT_DIR$/public/js/FBDiary/TimelineController.js" />
+        <option value="$PROJECT_DIR$/public/js/FBDiary/DiaryController.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1440" />
-    <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="y" value="22" />
+    <option name="width" value="1920" />
+    <option name="height" value="1054" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -371,7 +333,29 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
+              <option name="myItemId" value="images" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Comunicar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Comunicar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="images" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icons" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -432,11 +416,11 @@
       <recent name="$PROJECT_DIR$/public/images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/images/icons" />
       <recent name="$PROJECT_DIR$/public/js" />
       <recent name="$PROJECT_DIR$/public/css" />
       <recent name="$PROJECT_DIR$/public" />
       <recent name="$PROJECT_DIR$/public/test/lib" />
-      <recent name="$PROJECT_DIR$/public/test" />
     </key>
   </component>
   <component name="RunManager" selected="Node.js.server.js">
@@ -547,14 +531,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1440" y="0" width="1440" height="900" extended-state="6" />
+    <frame x="0" y="22" width="1920" height="1054" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1388889" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2525641" sideWeight="0.941302" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21092077" sideWeight="0.9903949" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.022411954" sideWeight="0.96794873" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2482066" sideWeight="0.74743587" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18463181" sideWeight="0.78907925" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3991323" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -631,102 +615,73 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="6" />
+      <option name="time" value="7" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/routes/site/contents.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="8" selection-start="784" selection-end="784" vertical-scroll-proportion="0.0" />
+    <entry file="file://$PROJECT_DIR$/public/images/demo/browser.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/test/fb_diary/PostPresenter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="46" selection-start="1225" selection-end="1225" vertical-scroll-proportion="0.1152815">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/demo/browser-pic-3.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/FBDiary/Post.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="31" selection-start="648" selection-end="648" vertical-scroll-proportion="0.4477612">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/demo/html-icon.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/fbdiary.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="99" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.27631578">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/demo/video.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/fbhtml.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="64" selection-start="346" selection-end="346" vertical-scroll-proportion="-1.9347826">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/demo/logo-mask.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/admin/facebook_users.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="40" selection-start="625" selection-end="625" vertical-scroll-proportion="-8.125">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/demo/logo-mask-2x.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/FBDiary/PostPresenter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="87" selection-start="330" selection-end="330" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/favicon.ico">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/FBDiary/DiaryController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="68" selection-start="4133" selection-end="4133" vertical-scroll-proportion="-49.615383">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/icons/link.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/test/fb_diary/PostSearcher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/icons/tag.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/FBDiary/FacebookDiaryApp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="122" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/left.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/test/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="32" selection-start="1469" selection-end="1469" vertical-scroll-proportion="-20.625">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/main-logo.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/test/fb_diary/TimelineController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="9" selection-start="199" selection-end="199" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/fbdiary_new.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="53" selection-start="2255" selection-end="2263" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/public/images/scrap_icon.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/FBdiary.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="50" selection-start="1074" selection-end="1074" vertical-scroll-proportion="6.25">
+        <state line="57" column="9" selection-start="2585" selection-end="2585" vertical-scroll-proportion="-13.125">
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h3#0;n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#head#0;n#html#0;n#!!top" expanded="true" />
@@ -743,16 +698,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/test/fb_diary/VideoPresenter.js">
+    <entry file="file://$PROJECT_DIR$/public/css/fbdiary_new.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="9" selection-start="209" selection-end="209" vertical-scroll-proportion="0.0">
+        <state line="111" column="62" selection-start="2140" selection-end="2149" vertical-scroll-proportion="-8.576923">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/FBDiary/TimelineController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="30" selection-start="922" selection-end="922" vertical-scroll-proportion="0.7744361">
+        <state line="25" column="27" selection-start="939" selection-end="939" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/FBDiary/DiaryController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="126" column="32" selection-start="4166" selection-end="4166" vertical-scroll-proportion="0.39655173">
           <folding />
         </state>
       </provider>

@@ -129,12 +129,14 @@ DiaryController.prototype = {
             $(".post-container").append($page);
             $page.fadeIn();
         }
-
         var posts = this.fbContentsManager.getPostsWithDate(date);
+        self.timelineController.removeAllTimeTags();
+
         _.each(posts,function(post,i){
             var $post = $(this.postPresenter.presentPost(post));
+            self.timelineController.addTimeTag(moment(post.created_time).toDate());
+
             $post.click(function(){
-           //     console.log(post);
                 console.log(post.created_time);
                 self.timelineController.setCurrentTime(moment(post.created_time).toDate());
                 if(self.fbContentsManager.clipPost(post.id)){
