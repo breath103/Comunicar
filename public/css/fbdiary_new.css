@@ -111,6 +111,7 @@ p{
     top:0px;
     background-color: #bbd8e9;
     overflow:scroll;
+    text-align: right;
 }
 .site-container .left-navigation .search-results-list .title{
     text-align:center;
@@ -206,8 +207,8 @@ p{
 .profile_image {
     float: left;
     position: relative;
-    width: 20%;
-    height: auto;
+    width: auto;
+    height: 100%;
     border-radius: 10%;
     border-style:solid;
     border-width: 2px;
@@ -219,7 +220,7 @@ p{
     float: right;
     position: relative;
     margin-left: 2%;
-    width: 75%;
+    width: 70%;
     height: 100%;
     color: grey;
     background-color: transparent;
