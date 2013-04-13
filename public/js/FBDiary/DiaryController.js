@@ -4,6 +4,7 @@ function DiaryController(contentsManager){
     this.fbContentsManager = contentsManager;
     this.postPresenter = new PostPresenter(this.fbContentsManager);
     this.postSearcher  = new PostSearcher(this.fbContentsManager);
+    this.timelineController = new TimelineController();
     this.currentDate = null;
 
     this.query = null;
@@ -11,7 +12,7 @@ function DiaryController(contentsManager){
     this.$searchInput = $("#search-input");
 
     var self = this;
-
+                 /*
     this.$searchInput.bind("change focus",function(){
         if($(this).val() == "") {
             $(".site-container").clearQueue().fadeIn();
@@ -32,6 +33,7 @@ function DiaryController(contentsManager){
                                      self.postSearcher.searchPost({query : self.$searchInput.val()}));
         }
     });
+    */
 }
 DiaryController.prototype = {
     showSearchResultMap : function(query,searchResult){
@@ -95,36 +97,36 @@ DiaryController.prototype = {
         var $page = $("<div class='date-page'></div>");
 
         if(delta > 0) {
-            $(".site-container .date-page").transit({
+            $(".post-container .date-page").transit({
                 left : "-100%",
                 opacity : 0
             },function(){
                 $(this).remove();
             });
-            $(".site-container").append($page);
+            $(".post-container").append($page);
             $page.css({left:"100%",opacity:0}).transit({
                 left : "0%",
                 opacity : 1
             });
         } else if (delta < 0) {
-            $(".site-container .date-page").transit({
+            $(".post-container .date-page").transit({
                 left : "100%",
                 opacity : 0
             },function(){
                 $(this).remove();
             });
-            $(".site-container").append($page);
+            $(".post-container").append($page);
             $page.css({left:"-100%",opacity:0}).transit({
                 left : "0%",
                 opacity : 1
             });
         } else {
-            $(".site-container .date-page").transit({
+            $(".post-container .date-page").transit({
                 opacity : 0
             },function(){
                 $(this).remove();
             });
-            $(".site-container").append($page);
+            $(".post-container").append($page);
             $page.fadeIn();
         }
 
@@ -132,12 +134,14 @@ DiaryController.prototype = {
         _.each(posts,function(post,i){
             var $post = $(this.postPresenter.presentPost(post));
             $post.click(function(){
-                console.log(post);
+           //     console.log(post);
+                console.log(post.created_time);
+                self.timelineController.setCurrentTime(moment(post.created_time).toDate());
                 if(self.fbContentsManager.clipPost(post.id)){
                     self.onClipPost(post);
                 }
             });
-            $page.append($post);
+            $page.prepend($post);
         },this);
     },
     showToday : function(){
