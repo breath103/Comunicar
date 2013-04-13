@@ -40,10 +40,19 @@ DiaryController.prototype = {
     showSearchResultMap : function(query,searchResult){
      //   var datePairs = _.pairs(searchResult);
         var self = this;
-        $(".search-results-list").children("date").remove();
+        $(".search-results-list").find(".date").remove();
+        $(".search-results-list").find(".year").remove();
+        var prevYear = 0;
+
         _.each(searchResult,function(v,k){
             var keyDate = moment(k,"YYYY/MM/DD");
-            var $div = $('<div class="date"><h5 style="padding: 0;margin: 0;display :inline;"></h5><span class="badge badge-info"></span><i class="icon-arrow-right"></i></div>');
+
+            if(prevYear != keyDate.year()){
+                $(".search-results-list").append('<h4 class="year" >'+keyDate.year()+'</h4>');
+                prevYear = keyDate.year();
+            }
+
+            var $div = $('<div class="date"><h5 style="padding: 0;margin: 0;display :inline;"></h5><span style="float:right;margin-right:15%" class="badge badge-info"></span></div>');
             $div.children(".badge").html(v.length);
             $div.children("h5").html(keyDate.format("M월 D일"));
             $(".search-results-list").append($div);
