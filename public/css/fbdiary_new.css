@@ -10,6 +10,22 @@ html, body {
     overflow-x: none;
 }
 
+.Loading{
+    width:100%;
+    height:100%;
+    position:absolute;
+    left:0px;
+    top:0px;
+    background-color:rgba(0,0,0,0.81);
+    text-align: center;
+    padding-top: 10%;
+    box-sizing: border-box;
+    color:rgb(228, 228, 228);
+}
+.Loading h2 {
+    color :rgb(203, 224, 255);
+}
+
 .site {
     width: 100%;
     height: 100%;
@@ -62,7 +78,7 @@ html, body {
     overflow-x: none;
     top: 5%;
     width: 100%;
-    height: 85%;
+    height: 90%;
     background-color: none;
     background-size: 100% 100%;
     background-image: url("/images/left.png");
@@ -73,10 +89,11 @@ html, body {
     position: relative;
     top: 5%;
     width: 100%;
-    height: 85%;
+    height: 90%;
     background-size: 100% 100%;
     background-image: url("../images/paper.png");
     overflow-y: scroll;
+
 }
 .site-container .date-page{
     width:100%;
@@ -316,32 +333,34 @@ img.input {
     left:0%;
 }
 .photo-container:hover .caption-overlay{
-    height:100%;
-    max-height: 10000000px;
+    height:auto;
+    max-height: 100%;
     overflow:scroll;
 }
 .photo-container .caption-overlay{
     width:100%;
     height:auto;
-    min-height: 2em;
-    max-height: 4em;
+    min-height: 1em;
+    max-height: 1em;
     bottom:0%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     position:absolute;
-    background-color: rgba(255, 222, 173, 0.52);
 
-    transition:height 0.5s;
-    -webkit-transition:height 0.5s; /* Safari */
+    transition:max-height 0.5s;
+    -webkit-transition:max-height 0.5s; /* Safari */
 }
 .photo-container .caption-overlay pre{
     width:100%;
-    height:100%;
+    height:auto;
     margin:0;
     border:0;
     padding:0;
-    background-color: transparent;
+    background-color: rgba(0,0,0,0.76);
+    color:white;
+    padding: 10px;
+    box-sizing: border-box;
 }
 .photo-container img {
     width: 100%;

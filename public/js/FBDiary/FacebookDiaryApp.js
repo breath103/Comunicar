@@ -25,7 +25,7 @@ var FacebookDiaryApp = function(){
             if (error) {}
             var posts = this.getCachedPosts();
             if (posts && posts.length > 0) {
-                $(".Loading").html("마지막 데이터 로딩 이후에 새로 추가된 페이스북 컨텐츠를 로딩 중입니다...");
+                $(".Loading").html("<h2>마지막 데이터 로딩 이후에 새로 추가된 페이스북 컨텐츠를 로딩 중입니다...</h2>");
                 this.loadNewPosts(function(error,posts,stepCount,isLast){
                     if(error){ throw error; }
 
@@ -34,7 +34,7 @@ var FacebookDiaryApp = function(){
                 });
             }
             else {
-                $(".Loading").html("초기 데이터를 로딩중입니다...");
+                $(".Loading").html("<h2>초기 데이터를 로딩중입니다...</h2>");
                 this.loadAllPosts(function(error,posts,stepCount,isLast){
                     if (error) { throw error; }
 

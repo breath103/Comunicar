@@ -43,159 +43,157 @@
         </script>
     </head>
     <body>
-    <div class="site">
-        <div class="diary keep-aspect-ratio" aspect-ratio="0.73">
-
-            <div class="left-pad">
-                <div class="fbdiary_logo"></div>
-                <div class="left_board">
-                    <div class="profile">
-                        <div class="profile_image">
-                            <img/>
+        <div class="site">
+            <div class="diary keep-aspect-ratio" style="min-width:1024px" aspect-ratio="0.73">
+                <div class="left-pad">
+                    <div class="fbdiary_logo"></div>
+                    <div class="left_board">
+                        <div class="profile">
+                            <div class="profile_image">
+                                <img/>
+                            </div>
+                            <h4 div class="profile_name">
+                            </h4>
                         </div>
-                        <h4 div class="profile_name">
-                        </h4>
+                        <div class="search_bar">
+                            <input type="text" id="search-input" class="search" placeholder="Search">
+                            <button class="search_icon" id="search-button"></button>
+                        </div>
+                        <div class="scrap_name"></div>
+                        <div class="clip-container">
+                        </div>
                     </div>
-                    <div class="search_bar">
-                        <input type="text" id="search-input" class="search" placeholder="Search">
-                        <button class="search_icon" id="search-button"></button>
+                </div>
+                <div class="right-pad">
+                    <div class="date-container">
+                        <button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
+                        <h3 style="display:inline-block;margin:0;" class="date_indicator"></h3>
+                        <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
                     </div>
-                    <div class="scrap_name"></div>
-                    <div class="clip-container">
+                    <div class="site-container">
                     </div>
                 </div>
             </div>
-            <div class="right-pad">
-                <div class="date-container">
-                    <button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
-                    <h3 style="display:inline-block;margin:0;" class="date_indicator"></h3>
-                    <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
-                </div>
-                <div class="site-container">
-                </div>
-            </div>
-            <div class="Loading">Loading...</div>
-        </div>
 
-        <div id="templates" style="display:none;">
-            <div id="video_post">
-                <div class="video">
-                    <div style="width:100%;float:left">
-                        <div style="width:30%;height:auto;display:inline-block;float:left">
+            <div id="templates" style="display:none;">
+                <div id="video_post">
+                    <div class="video">
+                        <div style="width:100%;float:left">
+                            <div style="width:30%;height:auto;display:inline-block;float:left">
+                                <div class="photo-container">
+                                    <a href="{{post.source}}" target="_blank">
+                                        <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="width:68%;display:inline-block;float:left;margin-left:2%">
+                                <h5 class="link-title">
+                                    {{post.name}}
+                                </h5>
+                                <small class="muted">{{post.description}}</small>
+                                <div class="link-caption">
+                                    <small>{{post.status_type}}</small>
+                                    <p>{{post.message?post.message:post.story}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="icon-film"></i>
+                    </div>
+                </div>
+                <div id="photo_post">
+                    <div class="status">
+                        <div style="-webkit-transform: rotate(0deg);" class="Photo">
                             <div class="photo-container">
-                                <a href="{{post.source}}" target="_blank">
-                                    <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}"/>
+                                <img class="img-rounded" src="{{post.picture}}"/>
+
+                                <div class="caption-overlay">
+                                        <pre>
+                                            {{post.caption}}
+                                        </pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p>
+                                {{post.message?post.message:post.story}}
+                            </p>
+                        </div>
+                        <i class="icon-camera"></i>
+                    </div>
+                </div>
+                <div id="link_post">
+                    <div class="link">
+                        <div style="width:100%;float:left">
+                            <div style="width:20%;height:auto;display:inline-block;float:left">
+                                <div class="photo-container">
+                                    <img src="{{post.picture}}"/>
+                                </div>
+                            </div>
+                            <div style="width:78%;display:inline-block;float:left;margin-left:2%">
+                                <h5 class="link-title">
+                                    {{post.name}}
+                                </h5>
+                                <small class="muted">{{post.description}}</small>
+                                <div class="link-caption">
+                                    <small>{{post.status_type}}</small>
+                                    <p>{{post.message}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="icon-globe"></i>
+                    </div>
+                </div>
+                <div id="comment_post">
+                    <div class="status">
+                        <p>{{post.main_text}}</p>
+                        <i class="icon-comment"></i>
+                    </div>
+                </div>
+                <div id="likes_post">
+                    <div class="status">
+                        <p>{{post.main_text}}</p>
+                        <i class="icon-heart"></i>
+                    </div>
+                </div>
+                <div id="status_post">
+                    <div class="status">
+                        <div>
+                            <small>{{post.status_type}}</small>
+                            <p>{{post.main_text}}</p>
+                        </div>
+                        <i class="icon-pencil"></i>
+                    </div>
+                </div>
+
+                <div id="cliped_photo_post">
+                    <div class="cliped_photo">
+                        <img class="img-rounded" src="{{post.picture}}"/>
+                        {{post.status_type}}</br>
+                        {{post.caption}}</br>
+                        {{post.message?post.message:post.story}}
+                    </div>
+                </div>
+                <div id="cliped_link_post">
+                    <div class="link">
+                        <div class="link-thumbnail">
+                            <img class="img-rounded" src="{{post.picture}}"/></p>
+                            <p style="text-align:left; font-weight:bold;">{{post.name}}</p>
+
+                            <div class="link-url">
+                                <a href="{{post.link}}">
+                                    <p>{{post.link}}</p>
                                 </a>
                             </div>
-                        </div>
-                        <div style="width:68%;display:inline-block;float:left;margin-left:2%">
-                            <h5 class="link-title">
-                                {{post.name}}
-                            </h5>
-                            <small class="muted">{{post.description}}</small>
-                            <div class="link-caption">
-                                <small>{{post.status_type}}</small>
-                                <p>{{post.message?post.message:post.story}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <i class="icon-film"></i>
-                </div>
-            </div>
-            <div id="photo_post">
-                <div class="status">
-                    <div style="-webkit-transform: rotate(0deg);" class="Photo">
-                        <div class="photo-container">
-                            <img class="img-rounded" src="{{post.picture}}"/>
-                            <div class="caption-overlay">
-                                <pre>
-                                    {{post.caption}}
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <p>
-                            {{post.message?post.message:post.story}}
-                        </p>
-                    </div>
-                    <i class="icon-camera"></i>
-                </div>
-            </div>
-
-            <div id="link_post">
-                <div class="link">
-                    <div style="width:100%;float:left">
-                        <div style="width:20%;height:auto;display:inline-block;float:left">
-                            <div class="photo-container">
-                                <img src="{{post.picture}}"/>
-                            </div>
-                        </div>
-                        <div style="width:78%;display:inline-block;float:left;margin-left:2%">
-                            <h5 class="link-title">
-                                {{post.name}}
-                            </h5>
-                            <small class="muted">{{post.description}}</small>
                             <div class="link-caption">
                                 <small>{{post.status_type}}</small>
                                 <p>{{post.message}}</p>
                             </div>
                         </div>
                     </div>
-                    <i class="icon-globe"></i>
                 </div>
             </div>
-            <div id="comment_post">
-                <div class="status">
-                    <p>{{post.main_text}}</p>
-                    <i class="icon-comment"></i>
-                </div>
-            </div>
-            <div id="likes_post">
-                <div class="status">
-                    <p>{{post.main_text}}</p>
-                    <i class="icon-heart"></i>
-                </div>
-            </div>
-            <div id="status_post">
-                <div class="status">
-                    <div>
-                        <small>{{post.status_type}}</small>
-                        <p>{{post.main_text}}</p>
-                    </div>
-                    <i class="icon-pencil"></i>
-                </div>
-            </div>
-
-
-
-            <div id="cliped_photo_post">
-                <div class="cliped_photo">
-                    <img class="img-rounded" src="{{post.picture}}"/>
-                    {{post.status_type}}</br>
-                    {{post.caption}}</br>
-                    {{post.message?post.message:post.story}}
-                </div>
-            </div>
-            <div id="cliped_link_post">
-                <div class="link">
-                    <div class="link-thumbnail">
-                        <img class="img-rounded" src="{{post.picture}}"/></p>
-                        <p style="text-align:left; font-weight:bold;">{{post.name}}</p>
-                        <div class="link-url">
-                            <a href="{{post.link}}">
-                                <p>{{post.link}}</p>
-                            </a>
-                        </div>
-                        <div class="link-caption">
-                            <small>{{post.status_type}}</small>
-                            <p>{{post.message}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <a class="fancybox.iframe" id="facebook-popup"></a>
         </div>
-
-        <a class="fancybox.iframe" id="facebook-popup"></a>
+        <div class="Loading"></div>
     </body>
 </html>
