@@ -29,7 +29,7 @@ PostSearcher.prototype = {
             };
 
             return _.groupBy(posts,function(p){
-                return moment(p.created_time).format("YYYY/MM/DD");
+                return moment(p.created_time).local().format("YYYY/MM/DD");
             });
         }
         return [];

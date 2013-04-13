@@ -5,14 +5,18 @@ function TimelineController(){
     this.$timeTags  = $(".vertical-timeline .time-tag");
 }
 TimelineController.prototype = {
-    _timeToVerticalPos : function(time){
-        if( !(time instanceof Date) )
-            throw "unexpected time type " + typeof(time);
-        else {
-            var daySeconds = (time.getTime() + moment().zone() * 60 * 1000) % (60 * 60 * 24 * 1000);
-            var verticalPos = daySeconds / (60 * 60 * 24 * 1000);
-            return verticalPos;
-        }
+    _timeToVerticalPos : function(t){
+        var time = null;
+        if(_.isDate(t))
+            time = moment(t);
+        else if(_.isString(t))
+            time = moment(t);
+        else
+            throw "unexpected time type " + typeof(t);
+
+        var daySeconds  = time.hours() * 60 * 60 + time.minute() * 60 + time.second();
+        var verticalPos = daySeconds / (60 * 60 * 24);
+        return verticalPos * 0.96 + 0.02;
     },
     setCurrentTime : function(time){
         this.$indicator.transit({
@@ -38,9 +42,9 @@ TimelineController.prototype = {
         return this.$timeTags;
     },
     hideIndicator : function(){
-        this.$indicator.transit({"opacity" : 1.0});
+        this.$indicator.transit({"opacity" : 0.0},0.2);
     },
     showIndicator : function(){
-        this.$indicator.transit({"opacity" : 0.0});
+        this.$indicator.transit({"opacity" : 1.0},0.2);
     }
 };

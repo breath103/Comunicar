@@ -75,7 +75,7 @@ DiaryController.prototype = {
     },
     _setCurrentDate : function(date){
         this.currentDate = date;
-        $(".date_indicator").html(moment(this.currentDate).format("YYYY/MM/DD"));
+        $(".date_indicator").html(moment(this.currentDate).local().format("YYYY/MM/DD"));
     },
     getCurrentDate : function(){
         return this.currentDate;
@@ -131,14 +131,19 @@ DiaryController.prototype = {
         }
         var posts = this.fbContentsManager.getPostsWithDate(date);
         self.timelineController.removeAllTimeTags();
-
+        if(posts && posts.length > 0){
+            self.timelineController.showIndicator();
+            self.timelineController.setCurrentTime(_.last(posts).created_time);
+        } else {
+            self.timelineController.hideIndicator();
+        }
         _.each(posts,function(post,i){
             var $post = $(this.postPresenter.presentPost(post));
-            self.timelineController.addTimeTag(moment(post.created_time).toDate());
-
+            self.timelineController.addTimeTag(post.created_time);
             $post.click(function(){
                 console.log(post.created_time);
-                self.timelineController.setCurrentTime(moment(post.created_time).toDate());
+                console.log(moment(post.created_time).local().format("YYYY-MM-DD-HH-MM-SS"));
+                self.timelineController.setCurrentTime(post.created_time);
                 if(self.fbContentsManager.clipPost(post.id)){
                     self.onClipPost(post);
                 }
