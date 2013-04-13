@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>Facebook Diary</title>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <link href="/css/fbdiary.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/css/sunny/jquery-ui-1.10.2.custom.css" rel="stylesheet">
+    <link href="/fancybox/jquery.fancybox.css" rel="stylesheet">
+
+    <script src="/js/jquery-1.8.2.min.js"></script>
+    <script src="/js/jquery.transit.min.js"></script>
+    <script src="/js/jquery-ui-1.10.2.custom.js"></script>
+    <script src="/fancybox/jquery.fancybox.js"></script>
+    <script src="/js/moment/moment.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/async.js"></script>
+    <script src="/js/step.js"></script>
+    <script src="/js/js-url.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script src="/js/FBDiary/Post.js"></script>
+    <script src="/js/FBDiary/PostPresenter.js"></script>
+    <script src="/js/FBDiary/FacebookContentsManager.js"></script>
+    <script src="/js/FBDiary/PostSearcher.js"></script>
+    <script src="/js/FBDiary/DiaryController.js"></script>
+    <script src="/js/FBDiary/facebook_clip.js"></script>
+    <script src="/js/FBDiary/google_analytics.js"></script>
+    <script src="/js/FBDiary/FacebookDiaryApp.js"></script>
+    <script src="/js/FBDiary/keep-aspect-ratio.js"></script>
+    <script>
+        $(document).ready(function () {
+            FacebookDiaryApp();
+        });
+    </script>
+    <style>
+        .profile{
+            width: 100%;
+            height: 10%;
+        }
+        .profile_image{
+            float: left;
+            width:23%;
+            height:100%;
+            border-radius: 10%;
+            overflow: hidden;
+        }
+        .profile_image .image{
+            width:100%;
+            height:100%;
+        }
+        .profile_image img{
+            width:100%;
+            height:100%;
+        }
+        .profile_name{
+            float: right;
+            width: 77%;
+            color: white;
+        }
+        .diary{
+            min-width:1024px;
+            min-height:614.4px;
+            max-width:1600px;
+            max-height:900px;
+        }
+        .keep-aspect-ratio{
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="site">
+    <div class="diary keep-aspect-ratio" aspect-ratio="0.6">
+        <div class="left-pad">
+            <header style="text-align: center;box-sizing: border-box;padding-top: 5px;">
+                <input type="text" id="search-input" style="width:66%" placeholder="Search">
+                <button class="btn" id="search-button"style="margin-top:-9px;width:21%;margin-left:3px;">검색</button>
+            </header>
+            <div class="profile">
+                <div class="profile_image">
+                    <img/>
+                </div>
+                <h3 class="profile_name">
+                </h3>
+            </div>
+            <div class="clip-container" style="width:100%;height:100%;overflow:scroll">
+            </div>
+        </div>
+        <div class="right-pad">
+            <header class="diary_header">
+                <button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
+                <h3 style="display:inline-block;margin:0;" class="date_indicator"></h3>
+                <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
+            </header>
+            <div style="position: relative;height:95%;">
+                <div class="search-result-view">
+                </div>
+                <div class="site-container">
+                </div>
+            </div>
+        </div>
+        <div class="Loading">Loading....</div>
+    </div>
+</div>
+
+
+<div id="templates" style="display:none;">
+    <div id="video_post">
+        <div class="Video">
+            <a href="{{post.source}}" target="_blank"></a>
+            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;"
+                 class="Photo">
+                <div class="PhotoContainer">
+                    <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}" />
+                </div>
+                <div class="TextContainer">
+                    <div class="DateContainer">
+                    </div>
+                    <div class="MessageContainer">
+                        <p>{{post.name}}</p>
+                        <p>{{post.description}}</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p>{{post.message?post.message:post.story}}</p>
+            </div>
+        </div>
+    </div>
+    <div id="photo_post">
+        <div class="Status">
+            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;" class="Photo">
+                <div class="PhotoContainer">
+                    <img src="{{post.picture}}" />
+                </div>
+                <p>{{post.caption}}</p>
+                <p>{{post.status_type}}</p>
+            </div>
+            <div>
+                <p>
+                    {{post.message?post.message:post.story}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="link_post">
+        <div class="Link">
+            <div class="thumbnail">
+                <p>{{post.name}}</p>
+
+                <a href="{{post.link}}">
+                    <img src="{{post.picture}}"/>
+                    <p>{{post.link}}</p>
+                </a>
+                <p>{{post.description}}</p>
+            </div>
+            <div>
+                <small>{{post.status_type}}</small>
+                <p>{{post.message}}</p>
+            </div>
+        </div>
+    </div>
+    <div id="status_post">
+        <div class="Status">
+            <div>
+                <small>{{post.status_type}}</small>
+                <p>{{post.main_text}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<a class = "fancybox.iframe" id="facebook-popup"></a>
+</body>
+</html>

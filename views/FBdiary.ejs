@@ -12,6 +12,11 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
     
     <link href="/css/fbdiary_new.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/link-post.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/status-post.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/photo-post.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/video-post.css" rel="stylesheet" type="text/css"/>
+    
     <link href="/css/sunny/jquery-ui-1.10.2.custom.css" rel="stylesheet">
     <link href="/fancybox/jquery.fancybox.css" rel="stylesheet">
     
@@ -43,8 +48,7 @@
 </head>
 <body>		
 <div class="site">
-	<div class="diary keep-aspect-ratio" aspect-ratio="0.58">
-	
+	<div class="diary keep-aspect-ratio" aspect-ratio="0.56">	
 	    <div class="left-pad">
 	        <div class="fbdiary_logo"></div>	
 			<div class="left_board">
@@ -70,28 +74,26 @@
                 <h3 style="display:inline-block;margin:0;" class="date_indicator"></h3>
                 <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
             </div>
-			<div class="site-container">
+            <div class="container">
+				<div class="left-site-container"></div>
+				<div class="site-container"></div>
+				<div class="right-site-container"></div>
 			</div>
-		</div>
 		<div class="Loading">Loading...</div>
 	</div>	
 
 <div id="templates" style="display:none;">
     <div id="video_post">
-        <div class="video">
+        <div class="video-post">
             <a href="{{post.source}}" target="_blank"></a>
-            <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;"
+            <div style="-webkit-transform: rotate(0deg); width: 60%; height: auto; display: block;"
                  class="photo">
-                <div class="photocontainer">
+                <div class="video-container">
                     <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}" />
                 </div>
-                <div class="TextContainer">
-                    <div class="DateContainer">
-                    </div>
-                    <div class="MessageContainer">
-                        <p>{{post.name}}</p>
-                        <p>{{post.description}}</p>
-                    </div>
+                <div class="video-text-Container">
+                	<p style="font-weight: bold;">{{post.name}}</p>
+                    <p>{{post.description}}</p>
                 </div>
             </div>
             <div>
@@ -100,43 +102,35 @@
         </div>
     </div>
     <div id="photo_post">
-        <div class="status">
+        <div class="photo-status">
             <div style="-webkit-transform: rotate(0deg); width: 269px; height: 303px; display: block;" class="Photo">
                 <div class="photocontainer">
                     <img src="{{post.picture}}" />
                 </div>
-                <p>
-                    {{post.status_type}}
-                </p>
+                <div class="photo-shared-post">
+                 <p style="font-size:0.8em;">{{post.caption}}</p>
+                 <p>{{post.status_type}}</p>
+                </div> 
             </div>
-            <div>
+             <div>
                 <p>
                     {{post.message?post.message:post.story}}
                 </p>
             </div>
-        </div>
+          </div>
     </div>
     <div id="link_post">
         <div class="link">
-        	<div class="link-title">
         		<p style="text-align:left; font-weight:bold;">{{post.name}}</p>
-        	</div>	
-            <div class="link-thumbnail">
                 <a href="{{post.link}}">
-                	<img src="{{post.picture}}"/></p>  
+                	<img src="{{post.picture}}"/></p> 
+                	<p style="font-size:0.8em;">링크 바로가기</p>
                 </a>
-            <div class="link-url">
-                <a href="{{post.link}}">     
-                    <p>{{post.link}}</p>
-                </a>
-            </div>     
-            <div class="link-caption">
                 <small>{{post.status_type}}</small>
-                <p>{{post.message}}</p>
-            </div>    
-             </div>  
-            </div>
-        </div>
+                <p>{{post.message}}</p>  
+        </div>   
+    </div>  
+      
     <div id="status_post">
         <div class="status">
             <div>

@@ -1,0 +1,44 @@
+		.link{
+			position:relative;
+        	margin-top:1.3%;
+        	margin-bottom:1.3%;
+        	width: 60%;
+        	height: auto;
+        	padding-left:1%;
+        	padding-right:1%;
+        	padding-top:0.5%;
+        	padding-bottom: 0.5%;
+        	border-radius: 5px; 
+        	background-color:rgba(239,238,238,0.93);
+	     }
+	     
+	     .link img{
+	     	width:20%;
+	     	height:auto;
+	     	text-align:left;
+	     	border-radius: 3px;
+	     	background-color:white;
+	     }
+	     
+	     .time-container{
+	     	position:relative;
+	     	float:left;
+		    width:10%;
+		    height:auto;
+		    margin:0px;
+		    padding:0px;
+		    background-color:green;
+	     }
+	     
+	     .like-container{
+		     width:10%;
+		     height:auto;
+		     float:right;
+		     margin:0px;
+		     padding:0px;
+		     position:relative;
+		     background-color:purple;
+	     }
+	     
+	
+	    
