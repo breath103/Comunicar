@@ -62,7 +62,8 @@ DiaryController.prototype = {
     onClipPost : function(post){
         var self = this;
 
-        var $post = $(this.postPresenter.presentPost(post));
+        var $post = $(this.postPresenter.presentClipedPost(post));
+
         $post.click(function(){
             self.fbContentsManager.unclipPost(post.id);
             $(this).remove();

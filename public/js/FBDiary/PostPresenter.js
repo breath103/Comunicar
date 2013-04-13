@@ -45,6 +45,8 @@ PostPresenter.prototype = {
     _presentPhoto : function(post){
         var self = this;
         var photoTemplate = getTemplate("#photo_post");
+//        post.caption = post.caption.split("\n").join("<br/>")
+
         var $photo_post = $(photoTemplate({post : post}));
         this.contentsManager.getOuterObject(post.object_id,function(error,photo,isCached){
             if(error) {
@@ -99,6 +101,34 @@ PostPresenter.prototype = {
             return this._presentStatus(post);
         } else if(post.type == "link") {
             return this._presentLink(post);
+        } else {
+            console.log(post.type);
+        }
+    },
+    _presentClipedPhoto : function(post){
+        var self = this;
+        var photoTemplate = getTemplate("#cliped_photo_post");
+    //    post.caption = post.caption.split("\n").join("<br/>")
+        var $photo_post = $(photoTemplate({post : post}));
+        this.contentsManager.getOuterObject(post.object_id,function(error,photo,isCached){
+            if(error)  console.log(error);
+            else $photo_post.find("img").attr("src",photo.source);
+        });
+        return $photo_post;
+    },
+    _presentClipedLink : function(post){
+        var linkTemplate = getTemplate("#cliped_link_post");
+        return linkTemplate({post : post});
+    },
+    presentClipedPost : function(post){
+        if(post.type == "video"){
+            return this._presentClipedVideo(post);
+        } else if(post.type == "photo") {
+            return this._presentClipedPhoto(post);
+        } else if(post.type == "status") {
+            return this._presentClipedStatus(post);
+        } else if(post.type == "link") {
+            return this._presentClipedLink(post);
         } else {
             console.log(post.type);
         }
