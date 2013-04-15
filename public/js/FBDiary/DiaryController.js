@@ -38,7 +38,6 @@ function DiaryController(contentsManager){
 }
 DiaryController.prototype = {
     showSearchResultMap : function(query,searchResult){
-     //   var datePairs = _.pairs(searchResult);
         var self = this;
         $(".search-results-list").find(".date").remove();
         $(".search-results-list").find(".year").remove();
@@ -46,12 +45,10 @@ DiaryController.prototype = {
 
         _.each(searchResult,function(v,k){
             var keyDate = moment(k,"YYYY/MM/DD");
-
             if(prevYear != keyDate.year()){
                 $(".search-results-list").append('<h4 class="year" >'+keyDate.year()+'</h4>');
                 prevYear = keyDate.year();
             }
-
             var $div = $('<div class="date"><h5 style="padding: 0;margin: 0;display :inline;"></h5><span style="float:right;margin-right:15%" class="badge badge-info"></span></div>');
             $div.children(".badge").html(v.length);
             $div.children("h5").html(keyDate.format("M월 D일"));
@@ -151,8 +148,15 @@ DiaryController.prototype = {
         _.each(posts,function(post,i){
             var $post = $(this.postPresenter.presentPost(post));
             var $timetag = self.timelineController.addTimeTag(post.created_time);
-            $timetag.find("a").attr("href","#post_"+post.id);
-
+            $timetag.find("a").attr("href","#post_"+post.id)
+                              .click(function(){
+                    var color = $post.css("background-color");
+                    $post.transit({
+                        "background-color" : "#E9E861"
+                    }).transit({
+                        "background-color" : color
+                    });
+                });
             $post.click(function(){
                 console.log(post.created_time);
                 console.log(moment(post.created_time).local().format("YYYY-MM-DD-HH-MM-SS"));

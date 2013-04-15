@@ -23,10 +23,11 @@ TimelineController.prototype = {
             "top" : this._timeToVerticalPos(time) * 100 + "%"
         });
     },
-    addTimeTag : function(time){
+    addTimeTag : function(time,tag_id){
         var self = this;
         var verticalPos = this._timeToVerticalPos(time);
         var $tag = $("<div class='time-tag'><a></a></div>");
+        $tag.attr("tag_id",tag_id);
         $tag.css({
             "top":verticalPos*100+"%"
         });
@@ -35,6 +36,7 @@ TimelineController.prototype = {
         });
 
         this.$container.append($tag);
+
         this.$timeTags = this.$container.children(".time-tag");
 
         return $tag;
