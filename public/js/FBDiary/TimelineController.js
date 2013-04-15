@@ -19,7 +19,7 @@ TimelineController.prototype = {
         return verticalPos * 0.96 + 0.02;
     },
     setCurrentTime : function(time){
-        this.$indicator.transit({
+        this.$indicator.clearQueue().transit({
             "top" : this._timeToVerticalPos(time) * 100 + "%"
         });
     },

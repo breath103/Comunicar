@@ -150,20 +150,23 @@ DiaryController.prototype = {
             var $timetag = self.timelineController.addTimeTag(post.created_time);
             $timetag.find("a").attr("href","#post_"+post.id)
                               .click(function(){
-                    var color = $post.css("background-color");
-                    $post.transit({
-                        "background-color" : "#E9E861"
-                    }).transit({
-                        "background-color" : color
-                    });
-                });
+                                    var color = $post.css("background-color");
+                                    $post.clearQueue().transit({
+                                        "background-color" : "#E9E861"
+                                    },function(){
+                                        $(this).transit({
+                                            "background-color" : color
+                                        });
+                                    });
+                                });
             $post.click(function(){
-                console.log(post.created_time);
-                console.log(moment(post.created_time).local().format("YYYY-MM-DD-HH-MM-SS"));
                 self.timelineController.setCurrentTime(post.created_time);
                 if(self.fbContentsManager.clipPost(post.id)){
                     self.onClipPost(post);
                 }
+            });
+            $post.hover(function(){
+                self.timelineController.setCurrentTime(post.created_time);
             });
             $page.prepend($post);
         },this);

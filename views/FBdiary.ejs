@@ -25,7 +25,7 @@
         <script src="/js/async.js"></script>
         <script src="/js/step.js"></script>
         <script src="/js/js-url.js"></script>
-        <script src="http://underscorejs.org/underscore-min.js"></script>
+        <script src="/js/underscore-min.js"></script>
         <script src="http://connect.facebook.net/en_US/all.js"></script>
         <script src="/js/FBDiary/Post.js"></script>
         <script src="/js/FBDiary/PostPresenter.js"></script>
@@ -117,7 +117,8 @@
                             <div style="width:30%;height:auto;display:inline-block;float:left">
                                 <div class="photo-container">
                                     <a href="{{post.source}}" target="_blank">
-                                        <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}"/>
+                                        <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}"
+                                             class="loading-image" onload="$(this).removeClass('loading-image');"/>
                                     </a>
                                 </div>
                             </div>
@@ -140,12 +141,12 @@
                     <div class="status">
                         <div style="-webkit-transform: rotate(0deg);" class="Photo">
                             <div class="photo-container">
-                                <img class="img-rounded" src="{{post.picture}}"/>
+                                <img src="{{post.picture}}"
+                                     class="img-rounded loading-image"
+                                     onload="$(this).removeClass('loading-image');" />
 
                                 <div class="caption-overlay">
-                                        <pre>
-                                            {{post.caption}}
-                                        </pre>
+                                    <pre>{{post.caption}}</pre>
                                 </div>
                             </div>
                         </div>
@@ -163,13 +164,15 @@
                         <div style="width:100%;float:left">
                             <div style="width:20%;height:auto;display:inline-block;float:left">
                                 <div class="photo-container">
-                                    <img src="{{post.picture}}"/>
+                                    <a href="{{post.link}}" target=_blank>
+                                    <img src="{{post.picture}}"
+                                         class="loading-image" onload="$(this).removeClass('loading-image');"/>
+                                    </a>
                                 </div>
                             </div>
                             <div style="width:78%;display:inline-block;float:left;margin-left:2%">
-                                <h5 class="link-title">
-                                    {{post.name}}
-                                </h5>
+
+                                <h5 class="link-title"> <a href="{{post.link}}" target=_blank>{{post.name}}</a></h5>
                                 <small class="muted">{{post.description}}</small>
                                 <div class="link-caption">
                                     <small>{{post.status_type}}</small>
@@ -205,6 +208,8 @@
                         <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
                     </div>
                 </div>
+
+
 
                 <div id="cliped_photo_post">
                     <div class="cliped_photo">
