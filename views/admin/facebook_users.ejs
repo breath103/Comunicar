@@ -20,14 +20,24 @@
     </style>
 </head>
 <body>
-    <%users.forEach(function(v,k){%>
-        <div>
-            <h2><a href="<%-v.link%>"><%-v.name%></a></h2>
-            <%-v.facebook_id%></br>
-            <img src="<%-v.picture%>"/></br>
-            <%-v.email%></br>
-            <%-v.last_use_date%></br>
-        </div>
-    <%});%>
+    <ul class="media-list">
+        <%users.forEach(function(v,k){%>
+            <li class="media">
+                <a class="pull-left" href="#">
+                    <img class="media-object" src="<%-v.picture%>">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <%-v.name%>
+                    </h4>
+                    <div class="media">
+                        <a href="<%-v.link%>"><%-v.facebook_id%></a>
+                        <%-v.email%></br>
+                        <%-v.last_use_date%></br>
+                    </div>
+                </div>
+            </li>
+        <%});%>
+    </ul>
 </body>
 </html>

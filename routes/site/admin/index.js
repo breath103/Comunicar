@@ -30,7 +30,6 @@ module.exports = function(app){
             user.email = req.param("email");
             user.picture = req.param("picture").data.url;
             user.last_use_date = new Date();
-            console.log(user);
             user.save();
             res.send(200);
         });
