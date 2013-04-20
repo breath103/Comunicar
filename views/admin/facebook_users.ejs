@@ -20,12 +20,14 @@
     </style>
 </head>
 <body>
-    <%for(var key in users){
-        var v = users[key];%>
+    <%users.forEach(function(v,k){%>
         <div>
-            <h2><a href="http://www.facebook.com/<%-key%>"><%-key%></a></h2>
-            <%-v%>
+            <h2><a href="<%-v.link%>"><%-v.name%></a></h2>
+            <%-v.facebook_id%></br>
+            <img src="<%-v.picture%>"/></br>
+            <%-v.email%></br>
+            <%-v.last_use_date%></br>
         </div>
-    <%}%>
+    <%});%>
 </body>
 </html>

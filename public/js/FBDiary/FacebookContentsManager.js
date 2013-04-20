@@ -105,6 +105,8 @@ FacebookContentsManager.prototype = {
                 console.log(response.picture.data.url);
                 $(".profile_image img").attr("src",response.picture.data.url);
                 $(".profile_name").html(response.name);
+
+                cb(response);
             }
         });
     },
@@ -139,8 +141,9 @@ FacebookContentsManager.prototype = {
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
                 console.log(response);
-                self._updateFacebookMe(function(){});
-                $.post("/admin/facebook_users",{facebook_id:FB.getUserID()});
+                self._updateFacebookMe(function(response){
+                    $.post("/admin/facebook_users",response);
+                });
                 cb.call(self,null,response);
             } else if (response.status === 'not_authorized') {
                 self.clearCache();
