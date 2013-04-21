@@ -18,8 +18,9 @@ module.exports = function(app){
     console.log(facebookUser);
 
     app.post("/admin/facebook_users",function(req,res){
-        facebookUser.findOne({facebook_id:"100002717246207"},function(err,user){
+        facebookUser.findOne( { facebook_id : req.param("id") },function(err,user){
             if(err) { res.send(401); }
+            console.log(user);
             if (!user) {
                 user = new facebookUser();
                 user.facebook_id = req.param("id");
@@ -30,7 +31,9 @@ module.exports = function(app){
             user.email = req.param("email");
             user.picture = req.param("picture").data.url;
             user.last_use_date = new Date();
+
             user.save();
+
             res.send(200);
         });
 
