@@ -12,6 +12,7 @@ module.exports = function(app){
         name : String,
         link : String,
         picture : String,
+        visit_count : {type: Number, default: 0},
         last_use_date : Date
     });
     facebookUser = mongoose.model('facebookUser', facebookUser);
@@ -24,16 +25,14 @@ module.exports = function(app){
             if (!user) {
                 user = new facebookUser();
                 user.facebook_id = req.param("id");
-                res.send(200);
             }
             user.name = req.param("name");
             user.link = req.param("link");
             user.email = req.param("email");
             user.picture = req.param("picture").data.url;
             user.last_use_date = new Date();
-
+            user.visit_count++;
             user.save();
-
             res.send(200);
         });
 
