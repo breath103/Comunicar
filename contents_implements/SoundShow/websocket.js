@@ -7,14 +7,11 @@ module.exports = function(content,io){
 			console.log("new Color : ", data);
 			socket.broadcast.emit("screen_color",data);
 		});
-		
 		socket.on('message', function (data) {
 			console.log(data);
         });
-		
-        socket.on('disconnect', function () {
-    
+	    socket.on('disconnect', function () {
+			
         });
-
-    }); 
+	}); 
 };	
