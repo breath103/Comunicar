@@ -41,7 +41,7 @@
     <body>
         <div class="site">
             <div class="diary keep-aspect-ratio" style="min-width:1024px" aspect-ratio="0.73">
-                <div class="left-pad">
+                <!--div class="left-pad">
                     <div class="fbdiary_logo"></div>
                     <div class="left_board">
                         <div class="profile">
@@ -59,19 +59,23 @@
                         <div class="clip-container">
                         </div>
                     </div>
-                </div>
-                <div class="right-pad">
-                    <div class="date-container">
-                        <button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
-                        <h5 style="display:inline-block;margin:0;" class="date_indicator"></h5>
-                        <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
+                </div-->
+                <!--div class="right-pad"-->
+                    <div class="diary-header">
+                        <div class="date-container">
+                            <button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
+                            <h5 style="display:inline-block;margin:0;" class="date_indicator"></h5>
+                            <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
+                        </div>
                     </div>
                     <div class="site-container">
-                        <div class="post-container"></div>
-                        <div class="search-results-list">
-                            <h3 class="title">검색 결과</h3>
+                        <div class="post-container">
+
                         </div>
-                        <div class="left-navigation">
+                        <!--div class="search-results-list">
+                            <h3 class="title">검색 결과</h3>
+                        </div-->
+                        <!--div class="left-navigation">
                             <div class="vertical-timeline">
                                 <div class="icon-time indicator"></div>
                                 <div class="hour">00</div>
@@ -100,9 +104,9 @@
                                 <div class="hour">23</div>
                                 <div class="hour">24</div>
                             </div>
-                        </div>
+                        </div-->
                     </div>
-                </div>
+                <!--/div-->
             </div>
 
             <div id="templates" style="display:none;">

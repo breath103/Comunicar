@@ -135,6 +135,36 @@ describe("FacebookContentsManager", function() {
 
         });
     });
+    describe("getInfoForDate",function(){
+        beforeEach(function(){
+            localStorage.clear();
+            manager.setCachedPosts([
+                {type:"video"  , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"video"  , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"video"  , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"photo"  , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"photo"  , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"link"   , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"link"   , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"link"   , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"status" , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"status" , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"status" , created_time: "2012-07-29T14:12:28+0000"},
+                {type:"status" , created_time: "2012-07-29T14:12:28+0000"}
+            ]);
+        });
+        it("should return information about specific date",function(){
+            var info = manager.getInfoForDate("2012/07/29");
+            expect(info.types.video.count).to.be(3);
+            expect(info.types.photo.count).to.be(2);
+            expect(info.types.link.count).to.be(3);
+            expect(info.types.status.count).to.be(4);
+        });
+        afterEach(function(){
+            localStorage.clear();
+        });
+    });
+
 
 
     describe("-loadAllPosts",function(){

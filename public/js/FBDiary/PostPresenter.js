@@ -152,6 +152,18 @@ PostPresenter.prototype = {
         var linkTemplate = getTemplate("#link_post");
         return linkTemplate({post : post});
     },
+    parseType : function(post){
+        if(post.type == "video"){
+            return post.type;
+        } else if(post.type == "photo") {
+            return post.type;
+        } else if(post.type == "status") {
+            var statusType = this.getStatusPostType(post);
+            return statusType;
+        } else if(post.type == "link") {
+            return post.type;
+        }
+    },
     /**
      * generate html with a post data
      * @param post

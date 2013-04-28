@@ -268,6 +268,19 @@ FacebookContentsManager.prototype = {
             since : (moment(latest_post.created_time).toDate().getTime()) / 1000
         },loadingPrevFBPostLoop);
     },
+    getInfoForDate : function(date){
+        var posts = this.getPostsWithDate(date);
+//        var types = _.groupBy(posts,function(post){
+//            return (new PostPresenter()).parseType(post);
+//        });
+//        _.each(types,function(v,k,l){
+//            types[k] = {};
+//            types[k].count = v.length;
+//        });
+
+
+        return {types : {}};
+    },
     /**
      * @param cb : Function(error,posts,stepCount,isLastPosts)
      */
