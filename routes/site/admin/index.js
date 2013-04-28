@@ -16,7 +16,6 @@ module.exports = function(app){
         last_use_date : Date
     });
     facebookUser = mongoose.model('facebookUser', facebookUser);
-    console.log(facebookUser);
 
     app.post("/admin/facebook_users",function(req,res){
         facebookUser.findOne( { facebook_id : req.param("id") },function(err,user){
@@ -26,9 +25,9 @@ module.exports = function(app){
                 user = new facebookUser();
                 user.facebook_id = req.param("id");
             }
-            user.name = req.param("name");
-            user.link = req.param("link");
-            user.email = req.param("email");
+            user.name  	 = req.param("name");
+            user.link  	 = req.param("link");
+            user.email	 = req.param("email");
             user.picture = req.param("picture").data.url;
             user.last_use_date = new Date();
             user.visit_count++;

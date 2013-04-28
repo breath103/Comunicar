@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/paper.css">
+        <link rel="shortcut icon" href="/icons/logo3.ico">
+        <!--script src="/js/require.js"/-->
+        <script src="/js/jquery-1.7.1.js"></script>
+        <script src="/js/jquery.transit.min.js"></script>
+        <script src="/js/google_analytics.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+			var socket = null;
+            function connectWS() {
+                console.log('Connecting to local server...');
+                if (socket == null) {
+
+                    socket = io.connect("/SoundShow");
+					socket.on('message', function(data) {
+                    	
+                    });
+                    socket.on('disconnect', function() {
+						
+                    });
+                }
+                socket.socket.connect();
+            }
+			
+			function get_random_color() {
+			    var letters = '0123456789ABCDEF'.split('');
+			    var color = '#';
+			    for (var i = 0; i < 6; i++ ) {
+			        color += letters[Math.round(Math.random() * 15)];
+			    }
+			    return color;
+			}
+			
+			function sendColor(){
+				socket.emit("screen_color",{
+					color : get_random_color()
+				});
+			}
+
+            $(document).ready(function() {
+                connectWS();
+            });
+        </script>
+        <style>
+        
+        </style>
+        <title>Comunicar</title>
+    </head>
+    <body>
+		<button onclick="sendColor();">send color</button>
+	</body>
+</html>

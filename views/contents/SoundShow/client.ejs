@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/paper.css">
+        <link rel="shortcut icon" href="/icons/logo3.ico">
+        <script src="/js/jquery-1.7.1.js"></script>
+        <script src="/js/jquery.transit.min.js"></script>
+        <script src="/js/jgestures.min.js"></script>
+        <script src="/js/google_analytics.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = null;
+            function connectWS() {
+                console.log('Connecting to local server...');
+				var connecting_handle = null;
+                if (socket == null) {
+                    socket = io.connect("/SoundShow");
+                    socket.on("connect", function() {
+                        clearInterval(connecting_handle);
+                    });
+                    socket.on('message', function(data) {});
+                    socket.on('disconnect', function() {
+                        connecting_handle = setInterval(function() {
+                            socket.socket.connect();
+                        }, 500);
+                    });
+					socket.on('screen_color',function(data){
+						$(".site").css("background-color",data.color);
+					});
+                }
+                socket.socket.connect();
+            }
+
+            $(document).ready(function() {
+                connectWS();
+            });
+        </script>
+        <style>
+		body{
+			width:100%;
+			height:100%;
+		}
+		body .site {
+			width:100%;
+			height:100%;
+		}
+        </style>
+        <title>Rolling Paper</title>
+    </head>
+    
+    <body>
+    	<div class="site"> 
+        </div>
+    </body>
+
+</html>
