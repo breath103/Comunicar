@@ -5,7 +5,8 @@ function FacebookContentsManager()
     this.posts = null;
     this.postCalendarMap = {};
     this.postIDMap       = {};
-    if (localStorage.outer_objects) {
+	
+	if (localStorage.outer_objects) {
         this.outerObjects = JSON.parse(localStorage.outer_objects);
     } else {
         this.outerObjects = {};
@@ -270,16 +271,19 @@ FacebookContentsManager.prototype = {
     },
     getInfoForDate : function(date){
         var posts = this.getPostsWithDate(date);
-//        var types = _.groupBy(posts,function(post){
-//            return (new PostPresenter()).parseType(post);
-//        });
-//        _.each(types,function(v,k,l){
-//            types[k] = {};
-//            types[k].count = v.length;
-//        });
-
-
-        return {types : {}};
+        var types = _.groupBy(posts,function(post){
+            return (new PostPresenter()).parseType(post);
+        });
+        var totalCount = 0;
+        _.each(types,function(v,k,l){
+            types[k] = {};
+            types[k].count = v.length;
+            totalCount += types[k].count;
+        });
+        return {
+            totalCount : totalCount,
+            types      : types
+        };
     },
     /**
      * @param cb : Function(error,posts,stepCount,isLastPosts)

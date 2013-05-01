@@ -159,6 +159,7 @@ describe("FacebookContentsManager", function() {
             expect(info.types.photo.count).to.be(2);
             expect(info.types.link.count).to.be(3);
             expect(info.types.status.count).to.be(4);
+            expect(info.totalCount).to.be(12);
         });
         afterEach(function(){
             localStorage.clear();

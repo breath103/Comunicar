@@ -15,6 +15,7 @@
         <script src="/js/jquery-ui-1.10.2.custom.js"></script>
         <script src="/fancybox/jquery.fancybox.js"></script>
         <script src="/js/moment/moment.min.js"></script>
+        <script src="/js/FBDiary/date.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/async.js"></script>
         <script src="/js/step.js"></script>
@@ -41,72 +42,21 @@
     <body>
         <div class="site">
             <div class="diary keep-aspect-ratio" style="min-width:1024px" aspect-ratio="0.73">
-                <!--div class="left-pad">
-                    <div class="fbdiary_logo"></div>
-                    <div class="left_board">
-                        <div class="profile">
-                            <div class="profile_image">
-                                <img/>
-                            </div>
-                            <h4 div class="profile_name">
-                            </h4>
-                        </div>
-                        <div class="search_bar">
-                            <input type="text" id="search-input" class="search" placeholder="Search">
-                            <button class="search_icon" id="search-button"></button>
-                        </div>
-                        <div class="scrap_name"></div>
-                        <div class="clip-container">
-                        </div>
+                <div class="diary-header">
+                    <div class="diary-graph">
+						<div class="container">
+						</div>
                     </div>
-                </div-->
-                <!--div class="right-pad"-->
-                    <div class="diary-header">
-                        <div class="date-container">
-                            <button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
-                            <h5 style="display:inline-block;margin:0;" class="date_indicator"></h5>
-                            <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
-                        </div>
+                </div>
+                <div class="site-container">
+                    <div class="date-container">
+                        <button class="btn btn-inverse" onclick="diaryController.moveDate(-1);"><<-</button>
+                        <h5 style="display:inline-block;margin:0;" class="date_indicator"></h5>
+                        <button class="btn btn-inverse" onclick="diaryController.moveDate(+1);">->></button>
                     </div>
-                    <div class="site-container">
-                        <div class="post-container">
-
-                        </div>
-                        <!--div class="search-results-list">
-                            <h3 class="title">검색 결과</h3>
-                        </div-->
-                        <!--div class="left-navigation">
-                            <div class="vertical-timeline">
-                                <div class="icon-time indicator"></div>
-                                <div class="hour">00</div>
-                                <div class="hour">01</div>
-                                <div class="hour">02</div>
-                                <div class="hour">03</div>
-                                <div class="hour">04</div>
-                                <div class="hour">05</div>
-                                <div class="hour">06</div>
-                                <div class="hour">07</div>
-                                <div class="hour">08</div>
-                                <div class="hour">09</div>
-                                <div class="hour">10</div>
-                                <div class="hour">11</div>
-                                <div class="hour">12</div>
-                                <div class="hour">13</div>
-                                <div class="hour">14</div>
-                                <div class="hour">15</div>
-                                <div class="hour">16</div>
-                                <div class="hour">17</div>
-                                <div class="hour">18</div>
-                                <div class="hour">19</div>
-                                <div class="hour">20</div>
-                                <div class="hour">21</div>
-                                <div class="hour">22</div>
-                                <div class="hour">23</div>
-                                <div class="hour">24</div>
-                            </div>
-                        </div-->
+				    <div class="post-container">
                     </div>
-                <!--/div-->
+                </div>
             </div>
 
             <div id="templates" style="display:none;">
@@ -237,8 +187,9 @@
                     </div>
                 </div>
             </div>
+			
             <a class="fancybox.iframe" id="facebook-popup"></a>
         </div>
-        <div class="Loading"></div>
+        <div class="Loading" ></div>
     </body>
 </html>

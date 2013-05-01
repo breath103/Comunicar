@@ -11,7 +11,6 @@ function PostPresenter(contentsManager){
 
 }
 PostPresenter.prototype = {
-
     getStatusPostType : function(post){
         if(post.message){
             return "status";

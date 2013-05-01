@@ -5,6 +5,7 @@ var FacebookDiaryApp = function(){
 
     var postLoadingEnded = function(){
         $(".Loading").fadeOut();
+        diaryController.generateGraph();
         diaryController.showToday();
         onConnectFacebookEnd();
     }
