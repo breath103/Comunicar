@@ -1,4 +1,3 @@
-
 "use strict"
 function DiaryController(contentsManager){
     this.fbContentsManager = contentsManager;
@@ -6,7 +5,6 @@ function DiaryController(contentsManager){
     this.postSearcher  = new PostSearcher(this.fbContentsManager);
     this.timelineController = new TimelineController();
     this.currentDate = null;
-
     this.query = null;
     this.searchResult = {};
     this.$searchInput = $("#search-input");
@@ -37,6 +35,14 @@ function DiaryController(contentsManager){
                                      self.postSearcher.searchPost({query : self.$searchInput.val()}));
         }
     });
+	
+	$("body").keyup(function(event) {
+		if(event.keyCode == 37){
+			self.moveDate(-1);
+		} else if(event.keyCode == 39) {
+			self.moveDate(+1);
+		}
+	});
 }
 
 function get_random_color() {
@@ -78,10 +84,15 @@ DiaryController.prototype = {
 			line.attr("date",k);
 			line.attr("graph-index",dateCount);
 			if(v){
-				_.each(v.types,function(v,k){
+				var component = $("<div class='component'></div>");
+	            component.css({"height" : (1-v.totalCount/maxCount)*100+"%"});
+	            line.append(component);
+			
+			    _.each(v.types,function(v,type){
 					var component = $("<div class='component'></div>");
 		            component.css({"height" : v.count/maxCount*100+"%"});
-					component.css({"background-color":get_random_color()});
+					component.attr("type",type);
+//					component.css({"background-color":get_random_color()});
 		            line.append(component);
 				});
 			}
@@ -90,15 +101,18 @@ DiaryController.prototype = {
 			dateCount++;
         }
 	},
-	highlightDate : function(date){
+	highlightDateInGraph : function(date){
 		$(".diary-graph .container .hightlight").removeClass("hightlight");
 		var line = $(".diary-graph .container .line[date='" + date.toKey() + "']");
 		line.addClass("hightlight");
 		var index = Number(line.attr("graph-index"));
 		
-		$(".diary-graph").animate({
-			"scrollLeft" : ( index * 10 - $(".diary-graph").width() / 2.0  )
-		});
+		if(line){
+			var targetOffset = ( index * line.width()  - $(".diary-graph").width() / 2.0 );
+			$(".diary-graph").clearQueue().animate({
+				"scrollLeft" : targetOffset >= 0 ? targetOffset : 0
+			});
+		}
 	},
     showSearchResultMap : function(query,searchResult){
         var self = this;
@@ -173,36 +187,39 @@ DiaryController.prototype = {
     showDay : function(date){
         var self = this;
 
-		this.highlightDate(date);
+		this.highlightDateInGraph(date);
+		
         var dateKey = date.toKey();
 
         var delta = 0;
-        var deltaSign = delta>0?1:-1;
-
         if(this.getCurrentDate())
             delta = date.getTime() - this.getCurrentDate().getTime();
-
+		var deltaSign = delta>0?1:-1;
+				
+				
         this._setCurrentDate(date);
 
-        //var prevPage = this.renderDay(moment(date).add('days',-1).toDate());
         var datePage = this.renderDay(date);
-        //var nextPage = this.renderDay(moment(date).add('days',1).toDate());
 
         if(this.$currentDatePage) {
-            this.$currentDatePage.transit({
-               opacity : 0
-            },function(){
-                $(this).remove();
-            });
+			var width = this.$currentDatePage.width();
+			this.$currentDatePage.css("left",0);
+			// transit({
+// 				"left" : "+=" + -deltaSign * width + "px"
+//             });	
         }
-		
-
-        $(".post-container").append(datePage);
-        datePage.css({
-            opacity : 0
-        }).transit({
-            opacity : 1
+			
+		$(".post-container").append(datePage);
+		datePage.css("left", deltaSign * datePage.width() + "px");
+		$(".date-page").transit({
+			"left" : "+=" + -deltaSign * width + "px"
         });
+				//.transit({"left":"0px"});
+			//         datePage.css({
+			// "left" : deltaSign * datePage.width() + "px"
+			//         }).transit({
+			// "left" : 0
+			//         });
         this.$currentDatePage = datePage;
 
     },

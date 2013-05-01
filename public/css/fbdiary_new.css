@@ -56,7 +56,7 @@ p{
 .diary .diary-header .diary-graph{
     width:100%;
     height:100%;
-	overflow:scroll;
+	overflow:hidden;
 }
 .diary .diary-header .diary-graph .container{
 	width:100000%;
@@ -64,7 +64,7 @@ p{
 	position:relative;
 }
 .diary .diary-header .diary-graph .container > .line{
-    width:10px;
+    width:15px;
     height:100%;
     display:inline-block;
 	float:left;
@@ -72,9 +72,28 @@ p{
 .diary .diary-header .diary-graph .container > .hightlight {
 	background-color:blue;
 }
-.diary .diary-header .diary-graph .container > .line .component{
-    background-color:indianred;
+.diary .diary-header .diary-graph .container > .line > .component{
+	margin-left:15%;
+	margin-right:15%;
+	width:70%;
+    background-color:transparent;
 }
+.diary .diary-header .diary-graph .container > .line > .component[type='photo']{
+    background-color:green;
+}
+.diary .diary-header .diary-graph .container > .line > .component[type='video']{
+    background-color:orange;
+}
+.diary .diary-header .diary-graph .container > .line > .component[type='status']{
+    background-color:yellow;
+}
+.diary .diary-header .diary-graph .container > .line > .component[type='comment']{
+    background-color:gray;
+}
+.diary .diary-header .diary-graph .container > .line > .component[type='link']{
+    background-color:skyblue;
+}
+
 
 .diary .site-container {
     float: left;
@@ -171,9 +190,9 @@ p{
     height:100%;
 }
 .site-container .post-container{
-    width: 64%;
+    width: 100%;
     height:100%;
-    margin-left: 18%;
+    margin-left: 0%;
     float:left;
     position: relative;
     overflow-y: scroll;
