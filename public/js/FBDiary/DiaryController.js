@@ -221,20 +221,30 @@ DiaryController.prototype = {
         var dateKey = date.toKey();
 
  		if(this.getCurrentDate()) {
+			var self = this;
+						
+			
             var delta = date.getTime() - this.getCurrentDate().getTime();
  			var deltaSign = delta>0?1:-1;
  			var index = 0;
+			
+			if(delta > 0){
+				$(".date-page[view-index='-1']").remove();
+			} else {
+				$(".date-page[view-index='1']").remove();
+			}
+			
 			
 			for(var d = new Date(this.getCurrentDate());
 				d.toKey() != moment(date).add('d', deltaSign*2).toDate().toKey();
 				d.setDate(d.getDate() + deltaSign)) {
  				var page = this.renderDay(d);
  				var leftOffset = getLeftOffset(index * deltaSign);
- 				if(page.parent().length <= 0)
- 				{
+ 				
+				if(page.parent().length <= 0)
  					$(".post-container").append(page);
- 				}
- 				page.css({
+				//page.attr("view-index",index);
+				page.css({
  					left:leftOffset
  				});
 //				console.log(d.toKey(),index * deltaSign,leftOffset);
@@ -244,17 +254,38 @@ DiaryController.prototype = {
 			
 			var count = index - (visibleIndexMargin/2);
 			var j = 0;
+			
 			for(var d = new Date(this.getCurrentDate());
 				d.toKey() != moment(date).add('d', deltaSign*2).toDate().toKey();
 				d.setDate(d.getDate() + deltaSign)) {
-				var leftOffset = getLeftOffset((count - j-1) * -deltaSign);
- 				var page = this.renderDay(d);
-				page.clearQueue().transit({
-					left : leftOffset 
-				});
+				(function(index,d){
+					var leftOffset = getLeftOffset(index);
+	 				var page = self.renderDay(d);
+					
+					//이미 기존에 같은 인덱스를 가진 페이지가 있는경우 삭제
+					
+					//$(".date-page[view-index='"+index+"']").remove();
+					page.attr("view-index",index);
+					
+					page.clearQueue().transit({
+						left : leftOffset 
+					},function(){
+						$(this).attr("view-index",index);
+						if (Math.abs(index) < 2) {
+						} else {
+							console.log(this);
+							$(this).remove();
+						}
+					});	
+				})((count-j-1) * -deltaSign, d);
+				
 //				console.log(d.toKey(),(count - j-1) * deltaSign,leftOffset);
 				j++;
 			}
+			
+			console.log($(".date-page").length);
+			
+			
 			
  		} else {
 			//initializing
@@ -265,6 +296,10 @@ DiaryController.prototype = {
 			$(".post-container").append(prevPage);
 			$(".post-container").append(datePage);
 			$(".post-container").append(nextPage);
+			
+			prevPage.attr("view-index",-1);
+			datePage.attr("view-index", 0);
+			nextPage.attr("view-index", 1);
 		
 			prevPage.css({opacity:0,left:getLeftOffset(-1)}).clearQueue().transit({opacity:1});
 			datePage.css({opacity:0,left:getLeftOffset(0)}).clearQueue().transit({opacity:1});
