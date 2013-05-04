@@ -42,9 +42,9 @@ function DiaryController(contentsManager){
 	
 	$("body").keyup(function(event) {
 		if(event.keyCode == 37){
-			self.moveDate(-1);
+	    	self.showPrevAvailableDate();
 		} else if(event.keyCode == 39) {
-			self.moveDate(+1);
+			self.showNextAvailableDate();
 		}
 	});
 }
