@@ -176,6 +176,7 @@ DiaryController.prototype = {
         var dateKey = date.toKey();
         if(!this.datePages[dateKey]){
             var $page = $("<div class='date-page'></div>");
+			$page.attr("date-key",dateKey);
             var posts = this.fbContentsManager.getPostsWithDate(date);
             _.each(posts,function(post,i){
                 var $post = $(this.postPresenter.presentPost(post));
@@ -190,7 +191,6 @@ DiaryController.prototype = {
 		var visibleIndexMargin = 2;
 		var pageWidth = 70;
         
-		
 		var getLeftOffset = function(index){
         	return 50 - pageWidth * 0.5 + index * pageWidth + "%";
         }
@@ -202,10 +202,10 @@ DiaryController.prototype = {
             var delta = date.getTime() - this.getCurrentDate().getTime();
  			var deltaSign = delta>0?1:-1;
  			var index = 0;
- 			for(var d = this.getCurrentDate();
- 				d.toKey() != date.toKey();
- 				d.setDate(d.getDate() + deltaSign))
- 			{
+			
+			for(var d = new Date(this.getCurrentDate());
+				d.toKey() != moment(date).add('d', deltaSign*2).toDate().toKey();
+				d.setDate(d.getDate() + deltaSign)) {
  				var page = this.renderDay(d);
  				var leftOffset = getLeftOffset(index * deltaSign);
  				if(page.parent().length <= 0)
@@ -214,10 +214,28 @@ DiaryController.prototype = {
  				}
  				page.css({
  					left:leftOffset
- 				})
- 				index++;
- 			}
+ 				});
+				console.log(d.toKey(),index * deltaSign,leftOffset);
+				index++;
+			}
+			console.log("------");
+			
+			var count = index - (visibleIndexMargin/2);
+			var j = 0;
+			for(var d = new Date(this.getCurrentDate());
+				d.toKey() != moment(date).add('d', deltaSign*2).toDate().toKey();
+				d.setDate(d.getDate() + deltaSign)) {
+				var leftOffset = getLeftOffset((count - j-1) * -deltaSign);
+ 				var page = this.renderDay(d);
+				page.clearQueue().transit({
+					left : leftOffset 
+				});
+				console.log(d.toKey(),(count - j-1) * deltaSign,leftOffset);
+				j++;
+			}
+			
  		} else {
+			//initializing
 			var prevPage = this.renderDay(moment(date).add('days', -1).toDate());
 			var datePage = this.renderDay(date);
 			var nextPage = this.renderDay(moment(date).add('days', +1).toDate());

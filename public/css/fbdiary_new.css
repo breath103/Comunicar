@@ -205,11 +205,14 @@ p{
     overflow:hidden;
 }
 .site-container .post-container .date-page{
-    width:70%;
+    width:65%;
+	margin-left:2.5%;
+	margin-right:2.5%;
     height:90%;
     float:left;
     display:block;
     position: absolute;
+	background-color:gray;
     left:0px;
     top:10%;
 }
