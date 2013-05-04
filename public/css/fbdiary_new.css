@@ -46,6 +46,13 @@ p{
     margin-right: auto;
     position: relative;
 }
+.diary .search-bar{
+	height:50px;
+	background-color:skyblue;
+}
+.diary .search-bar{
+	
+}
 .diary .diary-header{
     float:left;
     width:100%;
@@ -194,11 +201,11 @@ p{
     height:100%;
     margin-left: 0%;
     float:left;
-    position: relative;
-    overflow-y: scroll;
+    position:relative;
+    overflow:hidden;
 }
 .site-container .post-container .date-page{
-    width:100%;
+    width:70%;
     height:90%;
     float:left;
     display:block;

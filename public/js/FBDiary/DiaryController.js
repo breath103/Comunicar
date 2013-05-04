@@ -9,6 +9,10 @@ function DiaryController(contentsManager){
     this.searchResult = {};
     this.$searchInput = $("#search-input");
     this.datePages = {};
+	
+	this.$prevPage 	  = null;
+	this.$currentPage = null;
+	this.$nextPage 	  = null;
 
     this.$currentDatePage = null;
     var self = this;
@@ -69,8 +73,7 @@ DiaryController.prototype = {
 		
 		var maxCount  = _.max(calendarInfoMap, function(info){return info.totalCount;}).totalCount;
 		var startDate = Date.fromKey( _.last( _.keys(calendarInfoMap)) );
-		var endDate   = new Date();//Date.fromKey( _.first(_.keys(calendarInfoMap)) );
-		
+		var endDate   = new Date();
 		var dateCount = 0;
 		for(var d = startDate ; d.getTime() < endDate.getTime() ; d.setDate(d.getDate()+1))
 		{
@@ -83,6 +86,7 @@ DiaryController.prototype = {
 			});
 			line.attr("date",k);
 			line.attr("graph-index",dateCount);
+			
 			if(v){
 				var component = $("<div class='component'></div>");
 	            component.css({"height" : (1-v.totalCount/maxCount)*100+"%"});
@@ -92,12 +96,10 @@ DiaryController.prototype = {
 					var component = $("<div class='component'></div>");
 		            component.css({"height" : v.count/maxCount*100+"%"});
 					component.attr("type",type);
-//					component.css({"background-color":get_random_color()});
 		            line.append(component);
 				});
 			}
 			$(".diary-graph .container").append(line);
-		
 			dateCount++;
         }
 	},
@@ -185,42 +187,127 @@ DiaryController.prototype = {
     },
 
     showDay : function(date){
-        var self = this;
-
-		this.highlightDateInGraph(date);
+		var visibleIndexMargin = 2;
+		var pageWidth = 70;
+        
 		
+		var getLeftOffset = function(index){
+        	return 50 - pageWidth * 0.5 + index * pageWidth + "%";
+        }
+		var self = this;
+		this.highlightDateInGraph(date);
         var dateKey = date.toKey();
 
-        var delta = 0;
-        if(this.getCurrentDate())
-            delta = date.getTime() - this.getCurrentDate().getTime();
-		var deltaSign = delta>0?1:-1;
-				
-				
-        this._setCurrentDate(date);
+ 		if(this.getCurrentDate()) {
+            var delta = date.getTime() - this.getCurrentDate().getTime();
+ 			var deltaSign = delta>0?1:-1;
+ 			var index = 0;
+ 			for(var d = this.getCurrentDate();
+ 				d.toKey() != date.toKey();
+ 				d.setDate(d.getDate() + deltaSign))
+ 			{
+ 				var page = this.renderDay(d);
+ 				var leftOffset = getLeftOffset(index * deltaSign);
+ 				if(page.parent().length <= 0)
+ 				{
+ 					$(".post-container").append(page);
+ 				}
+ 				page.css({
+ 					left:leftOffset
+ 				})
+ 				index++;
+ 			}
+ 		} else {
+			var prevPage = this.renderDay(moment(date).add('days', -1).toDate());
+			var datePage = this.renderDay(date);
+			var nextPage = this.renderDay(moment(date).add('days', +1).toDate());
+		
+			$(".post-container").append(prevPage);
+			$(".post-container").append(datePage);
+			$(".post-container").append(nextPage);
+		
+			prevPage.css({opacity:0,left:getLeftOffset(-1)}).clearQueue().transit({opacity:1});
+			datePage.css({opacity:0,left:getLeftOffset(0)}).clearQueue().transit({opacity:1});
+			nextPage.css({opacity:0,left:getLeftOffset(+1)}).clearQueue().transit({opacity:1});
+		}
+		this._setCurrentDate(date);
+		// 	 	if(this.getCurrentDate()){
+		//  			var delta = date.getTime() - this.getCurrentDate().getTime();
+		//  		    var deltaDate = delta/1000/60/60/24;
+		// 	var deltaSign = delta>0?1:-1;
+		// 	console.log(deltaDate);
+		// 	$(".date-page").transit({
+		// 		left :  getLeftOffset(-deltaDate)
+		// 	});
+		// 	// var prevPage = this.renderDay(moment(this.getCurrentDate()).add('days', -1).toDate());
+		// 	// var datePage = this.renderDay(this.getCurrentDate());
+		// 	// var nextPage = this.renderDay(moment(this.getCurrentDate()).add('days', +1).toDate());
+		// 	// 
+		// 	//  			prevPage.clearQueue().transit({left:getLeftOffset(-1)});
+		// 	//  			datePage.clearQueue().transit({left:getLeftOffset(0)});
+		// 	//  			nextPage.clearQueue().transit({left:getLeftOffset(+1)});
+		// }
+		// this._setCurrentDate(date);
+		//         {
+		// 	var prevPage = this.renderDay(moment(date).add('days', -1).toDate());
+		// 	var datePage = this.renderDay(date);
+		// 	var nextPage = this.renderDay(moment(date).add('days', +1).toDate());
+		// 	if(prevPage.parent().length <= 0)
+		// 	{
+		// 		$(".post-container").append(prevPage);
+		// 		prevPage.css("left",getLeftOffset(-2));
+		// 	}
+		// 	if(datePage.parent().length <= 0)
+		// 	{
+		// 		$(".post-container").append(datePage);
+		// 		datePage.css("left",getLeftOffset(0));
+		// 	
+		// 	}
+		// 	if(nextPage.parent().length <= 0)
+		// 	{
+		// 		$(".post-container").append(nextPage);
+		// 		nextPage.css("left",getLeftOffset(+2));
+		// 	}
+		// 	prevPage.clearQueue().transit({
+		// 		left:getLeftOffset(-1)
+		// 	},function(){
+		// 		
+		// 	});
+		// 	datePage.clearQueue().transit({
+		// 		left:getLeftOffset(0)
+		// 	},function(){
+		// 		
+		// 	});
+		// 	nextPage.clearQueue().transit({
+		// 		left:getLeftOffset(+1)
+		// 	},function(){
+		// 		
+		// 	});
+		// }
+		
 
-        var datePage = this.renderDay(date);
-
-        if(this.$currentDatePage) {
-			var width = this.$currentDatePage.width();
-			this.$currentDatePage.css("left",0);
-			// transit({
-// 				"left" : "+=" + -deltaSign * width + "px"
-//             });	
-        }
-			
-		$(".post-container").append(datePage);
-		datePage.css("left", deltaSign * datePage.width() + "px");
-		$(".date-page").transit({
-			"left" : "+=" + -deltaSign * width + "px"
-        });
-				//.transit({"left":"0px"});
-			//         datePage.css({
-			// "left" : deltaSign * datePage.width() + "px"
-			//         }).transit({
-			// "left" : 0
-			//         });
-        this.$currentDatePage = datePage;
+		//    if(this.$currentDatePage) {
+		// 	var width = this.$currentDatePage.width();
+		// 	this.$currentDatePage.css("left",0);
+		// }
+		// 	
+		// var pageWidth = 50;
+		// prevPage.clearQueue().transit({
+		// 	"left" : 50 - pageWidth * 1.5 + "%"
+		// });
+		// datePage.clearQueue().transit({
+		// 	"left" : 50 - pageWidth * 0.5 + "%"
+		// });
+		// nextPage.clearQueue().transit({
+		// 	"left" : 50 + pageWidth * 0.5 + "%"
+		// });
+		// // $(".post-container").append(datePage);
+		// // datePage.css("left", deltaSign * 100 + "%");
+		// // $(".date-page").clearQueue().transit({
+		// // 	"left" : "+=" + -deltaSign * 100 + "%"
+		// //         });
+		// 
+		//         this.$currentDatePage = datePage;
 
     },
     showToday : function(){
