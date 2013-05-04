@@ -88,6 +88,22 @@ FacebookContentsManager.prototype = {
             }
         }
     },
+	getFirstAvailableDay : function(date,direction){
+		var keys = _.keys(this.postCalendarMap);
+		if(direction > 0){
+			for(var i=0;i<keys.length;i++){
+				if(Date.fromKey(keys[i]) > Date.fromKey(date))
+					return keys[i];
+			}	
+		} else {
+			for(var i=0;i<keys.length;i++){
+				if(Date.fromKey(keys[keys.length - i - 1]) < Date.fromKey(date))
+					return keys[keys.length - i - 1];
+			}	
+		}
+		
+		return null;
+	},
     facebookPermissions : function(){
         return  'email,user_likes,user_status,user_photos,friends_photos,read_stream';
     },

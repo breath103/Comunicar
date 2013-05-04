@@ -186,8 +186,12 @@ DiaryController.prototype = {
         }
         return this.datePages[dateKey];
     },
-
+	
     showDay : function(date){
+		if(_.isString(date)){
+			date = Date.fromKey(date);
+		}
+		
 		var visibleIndexMargin = 2;
 		var pageWidth = 70;
         
@@ -215,10 +219,10 @@ DiaryController.prototype = {
  				page.css({
  					left:leftOffset
  				});
-				console.log(d.toKey(),index * deltaSign,leftOffset);
+//				console.log(d.toKey(),index * deltaSign,leftOffset);
 				index++;
 			}
-			console.log("------");
+//			console.log("------");
 			
 			var count = index - (visibleIndexMargin/2);
 			var j = 0;
@@ -230,7 +234,7 @@ DiaryController.prototype = {
 				page.clearQueue().transit({
 					left : leftOffset 
 				});
-				console.log(d.toKey(),(count - j-1) * deltaSign,leftOffset);
+//				console.log(d.toKey(),(count - j-1) * deltaSign,leftOffset);
 				j++;
 			}
 			
@@ -249,84 +253,6 @@ DiaryController.prototype = {
 			nextPage.css({opacity:0,left:getLeftOffset(+1)}).clearQueue().transit({opacity:1});
 		}
 		this._setCurrentDate(date);
-		// 	 	if(this.getCurrentDate()){
-		//  			var delta = date.getTime() - this.getCurrentDate().getTime();
-		//  		    var deltaDate = delta/1000/60/60/24;
-		// 	var deltaSign = delta>0?1:-1;
-		// 	console.log(deltaDate);
-		// 	$(".date-page").transit({
-		// 		left :  getLeftOffset(-deltaDate)
-		// 	});
-		// 	// var prevPage = this.renderDay(moment(this.getCurrentDate()).add('days', -1).toDate());
-		// 	// var datePage = this.renderDay(this.getCurrentDate());
-		// 	// var nextPage = this.renderDay(moment(this.getCurrentDate()).add('days', +1).toDate());
-		// 	// 
-		// 	//  			prevPage.clearQueue().transit({left:getLeftOffset(-1)});
-		// 	//  			datePage.clearQueue().transit({left:getLeftOffset(0)});
-		// 	//  			nextPage.clearQueue().transit({left:getLeftOffset(+1)});
-		// }
-		// this._setCurrentDate(date);
-		//         {
-		// 	var prevPage = this.renderDay(moment(date).add('days', -1).toDate());
-		// 	var datePage = this.renderDay(date);
-		// 	var nextPage = this.renderDay(moment(date).add('days', +1).toDate());
-		// 	if(prevPage.parent().length <= 0)
-		// 	{
-		// 		$(".post-container").append(prevPage);
-		// 		prevPage.css("left",getLeftOffset(-2));
-		// 	}
-		// 	if(datePage.parent().length <= 0)
-		// 	{
-		// 		$(".post-container").append(datePage);
-		// 		datePage.css("left",getLeftOffset(0));
-		// 	
-		// 	}
-		// 	if(nextPage.parent().length <= 0)
-		// 	{
-		// 		$(".post-container").append(nextPage);
-		// 		nextPage.css("left",getLeftOffset(+2));
-		// 	}
-		// 	prevPage.clearQueue().transit({
-		// 		left:getLeftOffset(-1)
-		// 	},function(){
-		// 		
-		// 	});
-		// 	datePage.clearQueue().transit({
-		// 		left:getLeftOffset(0)
-		// 	},function(){
-		// 		
-		// 	});
-		// 	nextPage.clearQueue().transit({
-		// 		left:getLeftOffset(+1)
-		// 	},function(){
-		// 		
-		// 	});
-		// }
-		
-
-		//    if(this.$currentDatePage) {
-		// 	var width = this.$currentDatePage.width();
-		// 	this.$currentDatePage.css("left",0);
-		// }
-		// 	
-		// var pageWidth = 50;
-		// prevPage.clearQueue().transit({
-		// 	"left" : 50 - pageWidth * 1.5 + "%"
-		// });
-		// datePage.clearQueue().transit({
-		// 	"left" : 50 - pageWidth * 0.5 + "%"
-		// });
-		// nextPage.clearQueue().transit({
-		// 	"left" : 50 + pageWidth * 0.5 + "%"
-		// });
-		// // $(".post-container").append(datePage);
-		// // datePage.css("left", deltaSign * 100 + "%");
-		// // $(".date-page").clearQueue().transit({
-		// // 	"left" : "+=" + -deltaSign * 100 + "%"
-		// //         });
-		// 
-		//         this.$currentDatePage = datePage;
-
     },
     showToday : function(){
         this.showDay(new Date());

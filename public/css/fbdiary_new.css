@@ -205,16 +205,21 @@ p{
     overflow:hidden;
 }
 .site-container .post-container .date-page{
-    width:65%;
-	margin-left:2.5%;
-	margin-right:2.5%;
-    height:90%;
-    float:left;
-    display:block;
-    position: absolute;
-	background-color:gray;
-    left:0px;
-    top:10%;
+	width: 60%;
+	margin-left: 5%;
+	margin-right: 5%;
+	height: 73%;
+	padding: 2%;
+	float: left;
+	display: block;
+	position: absolute;
+	background-color: rgb(246, 248, 195);
+	left: 0px;
+	top: 10%;
+	overflow-y: scroll;
+	margin-bottom: 2%;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px gray;
 }
 .search-result {
 	width:15%;

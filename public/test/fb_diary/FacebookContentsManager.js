@@ -135,6 +135,43 @@ describe("FacebookContentsManager", function() {
 
         });
     });
+	describe("getFirstAvailableDay",function(){
+		beforeEach(function(){
+            manager.setCachedPosts([
+		        {id:15125   , created_time: "2012-07-29T14:12:28+0000" , message : "ㅁㄴㅎㅁㄴㅇㄹㅁㄴㅇㄹ"},
+		        {id:23512   , created_time: "2012-08-21T14:12:28+0000"},
+		        {id:34625   , created_time: "2012-08-21T14:12:28+0000"},
+		        {id:1513512 , created_time: "2012-10-03T14:12:28+0000"},
+		        {id:1251243 , created_time: "2012-12-29T14:12:28+0000"}
+	    	]);
+		});
+		context("direction is right",function(){
+			it("should return first availabe day(which has contents) after passed day",function(){
+				expect(manager.getFirstAvailableDay("2012/08/21",+1)).to.be("2012/10/03"); 
+				expect(manager.getFirstAvailableDay("2012/10/02",+1)).to.be("2012/10/03");
+				expect(manager.getFirstAvailableDay("2012/10/03",+1)).to.be("2012/12/29"); 
+				expect(manager.getFirstAvailableDay("2012/10/04",+1)).to.be("2012/12/29"); 
+			});
+			it("should return null after passed day if there's no available day after passed day",function(){
+				expect(manager.getFirstAvailableDay("2012/12/29",+1)).to.be(null);
+				expect(manager.getFirstAvailableDay("2012/12/30",+1)).to.be(null);
+			});	
+		});
+		context("direction is left",function(){
+			it("should return first availabe day(which has contents) before passed day",function(){
+				expect(manager.getFirstAvailableDay("2012/08/21",-1)).to.be("2012/07/29"); 
+				expect(manager.getFirstAvailableDay("2012/10/02",-1)).to.be("2012/08/21");
+				expect(manager.getFirstAvailableDay("2012/10/03",-1)).to.be("2012/08/21"); 
+				expect(manager.getFirstAvailableDay("2012/10/04",-1)).to.be("2012/10/03"); 
+				expect(manager.getFirstAvailableDay("2012/07/30",-1)).to.be("2012/07/29");
+			});
+			it("should return null after passed day if there's no available day before passed day",function(){
+				expect(manager.getFirstAvailableDay("2012/07/29",-1)).to.be(null);
+				expect(manager.getFirstAvailableDay("2012/07/28",-1)).to.be(null);
+			});	
+		});
+	});
+	
     describe("getInfoForDate",function(){
         beforeEach(function(){
             localStorage.clear();
