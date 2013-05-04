@@ -89,19 +89,26 @@ FacebookContentsManager.prototype = {
         }
     },
 	getFirstAvailableDay : function(date,direction){
-		var keys = _.keys(this.postCalendarMap);
+		//	var keys = _.keys(this.postCalendarMap);
+	
+		date = Date.fromKey(date);
 		if(direction > 0){
-			for(var i=0;i<keys.length;i++){
-				if(Date.fromKey(keys[i]) > Date.fromKey(date))
-					return keys[i];
-			}	
+			var lastDate = new Date();
+			lastDate.setDate(lastDate.getDate() + 1);
+			while(date.getTime() < lastDate.getTime()){
+				date.setDate(date.getDate() + 1);
+				if(this.postCalendarMap[date.toKey()]) 
+					return date.toKey();
+			}
 		} else {
-			for(var i=0;i<keys.length;i++){
-				if(Date.fromKey(keys[keys.length - i - 1]) < Date.fromKey(date))
-					return keys[keys.length - i - 1];
-			}	
+			var startDate = _.min(_.chain(this.postCalendarMap).keys().value(),function(d){return Date.fromKey(d).getTime(); });
+			startDate = Date.fromKey(startDate);
+			while(date.getTime() >= startDate.getTime()){
+				date.setDate(date.getDate() - 1);
+				if(this.postCalendarMap[date.toKey()]) 
+					return date.toKey();
+			}
 		}
-		
 		return null;
 	},
     facebookPermissions : function(){

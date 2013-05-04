@@ -138,12 +138,19 @@ describe("FacebookContentsManager", function() {
 	describe("getFirstAvailableDay",function(){
 		beforeEach(function(){
             manager.setCachedPosts([
-		        {id:15125   , created_time: "2012-07-29T14:12:28+0000" , message : "ㅁㄴㅎㅁㄴㅇㄹㅁㄴㅇㄹ"},
 		        {id:23512   , created_time: "2012-08-21T14:12:28+0000"},
-		        {id:34625   , created_time: "2012-08-21T14:12:28+0000"},
 		        {id:1513512 , created_time: "2012-10-03T14:12:28+0000"},
-		        {id:1251243 , created_time: "2012-12-29T14:12:28+0000"}
+		        {id:15125   , created_time: "2012-07-29T14:12:28+0000" , message : "ㅁㄴㅎㅁㄴㅇㄹㅁㄴㅇㄹ"},
+				{id:1251243 , created_time: "2012-12-29T14:12:28+0000"},
+		        {id:34625   , created_time: "2012-08-21T14:12:28+0000"},
 	    	]);
+		});
+		it("should work with a Date object to",function(){
+			var date = new Date();
+			date.setYear(2012);
+			date.setMonth(8);
+			date.setDate(20);
+			expect(manager.getFirstAvailableDay(date,+1)).to.be("2012/10/03"); 
 		});
 		context("direction is right",function(){
 			it("should return first availabe day(which has contents) after passed day",function(){

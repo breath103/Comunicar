@@ -167,6 +167,24 @@ DiaryController.prototype = {
     getCurrentDate : function(){
         return this.currentDate;
     },
+	showNextAvailableDate : function(){
+		var nextDay = this.fbContentsManager.getFirstAvailableDay(this.getCurrentDate(),+1);
+		if(nextDay){
+			this.showDay(nextDay);
+			return true;
+		} else {
+			return false;
+		}
+	},
+	showPrevAvailableDate : function(){
+		var prevDay = this.fbContentsManager.getFirstAvailableDay(this.getCurrentDate(),-1);
+		if(prevDay){
+			this.showDay(prevDay);
+			return true;
+		} else {
+			return false;
+		}
+	},
     moveDate : function(dateDelta){
         var currentDate = new Date(this.getCurrentDate());
         currentDate.setDate(currentDate.getDate()+dateDelta);
