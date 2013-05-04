@@ -223,17 +223,23 @@ DiaryController.prototype = {
  		if(this.getCurrentDate()) {
 			var self = this;
 						
-			
-            var delta = date.getTime() - this.getCurrentDate().getTime();
+			var delta = date.getTime() - this.getCurrentDate().getTime();
  			var deltaSign = delta>0?1:-1;
  			var index = 0;
 			
 			if(delta > 0){
-				$(".date-page[view-index='-1']").remove();
+				$(".date-page[view-index='-1']").stop(true).transit({
+					left : getLeftOffset(-2)
+				},function(){
+					$(this).remove();
+				});
 			} else {
-				$(".date-page[view-index='1']").remove();
+				$(".date-page[view-index='1']").stop(true).transit({
+					left : getLeftOffset(2)
+				},function(){
+					$(this).remove();
+				});
 			}
-			
 			
 			for(var d = new Date(this.getCurrentDate());
 				d.toKey() != moment(date).add('d', deltaSign*2).toDate().toKey();
@@ -242,18 +248,22 @@ DiaryController.prototype = {
  				var leftOffset = getLeftOffset(index * deltaSign);
  				
 				if(page.parent().length <= 0)
+				{
+					//set force if it's just created
  					$(".post-container").append(page);
-				//page.attr("view-index",index);
-				page.css({
- 					left:leftOffset
- 				});
-//				console.log(d.toKey(),index * deltaSign,leftOffset);
+					page.css({
+	 					left:leftOffset
+	 				});
+				} else {
+					page.transit({
+	 					left:leftOffset
+	 				});
+				}
 				index++;
 			}
-//			console.log("------");
 			
 			var count = index - (visibleIndexMargin/2);
-			var j = 0;
+			var index = 0;
 			
 			for(var d = new Date(this.getCurrentDate());
 				d.toKey() != moment(date).add('d', deltaSign*2).toDate().toKey();
@@ -261,33 +271,19 @@ DiaryController.prototype = {
 				(function(index,d){
 					var leftOffset = getLeftOffset(index);
 	 				var page = self.renderDay(d);
-					
 					//이미 기존에 같은 인덱스를 가진 페이지가 있는경우 삭제
-					
-					//$(".date-page[view-index='"+index+"']").remove();
 					page.attr("view-index",index);
-					
-					page.clearQueue().transit({
+					page.stop(true).transit({
 						left : leftOffset 
 					},function(){
 						$(this).attr("view-index",index);
 						if (Math.abs(index) < 2) {
-						} else {
-							console.log(this);
-							$(this).remove();
-						}
+						} else { $(this).remove(); }
 					});	
-				})((count-j-1) * -deltaSign, d);
-				
-//				console.log(d.toKey(),(count - j-1) * deltaSign,leftOffset);
-				j++;
+				})((count-index-1) * -deltaSign, d);
+				index++;
 			}
-			
-			console.log($(".date-page").length);
-			
-			
-			
- 		} else {
+		} else {
 			//initializing
 			var prevPage = this.renderDay(moment(date).add('days', -1).toDate());
 			var datePage = this.renderDay(date);
