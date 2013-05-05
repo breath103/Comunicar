@@ -21,9 +21,9 @@ describe("FacebookContentsManager", function() {
         });
     });
     describe("-connectFacebook",function(){
-        it("should connect to facebook",function(done){
+        xit("should connect to facebook",function(done){
             manager.connectFacebook(function(error,response){
-                expect(this).to.be(manager);
+           	 	expect(this).to.be(manager);
                 done();
             });
         });

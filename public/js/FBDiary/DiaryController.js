@@ -15,28 +15,24 @@ function DiaryController(contentsManager){
 	this.$nextPage 	  = null;
 
     this.$currentDatePage = null;
+
+	this.searchFilter = null;
+	
     var self = this;
 
     var searchResultList = $(".search-results-list");
 
     this.$searchInput.bind("change focus",function(){
         if($(this).val() == "") {
-            searchResultList.clearQueue().transit({"left":"-100%"});
-        }
+			self.setSerachFilter(null);
+	    }
         else {
-            searchResultList.clearQueue().transit({"left":"0%"});
-            self.showSearchResultMap($(this).val(),
-                                     self.postSearcher.searchPost({query : $(this).val()}));
-        }
-    });
-    $("#search-button").click(function(){
-        if(self.$searchInput.val() == "") {
-            searchResultList.clearQueue().transit({"left":"-100%"});
-        }
-        else {
-            searchResultList.clearQueue().transit({"left":"0%"});
-            self.showSearchResultMap(self.$searchInput.val(),
-                                     self.postSearcher.searchPost({query : self.$searchInput.val()}));
+			console.log($(this).val());
+			self.setSerachFilter({
+				query : $(this).val()
+			});
+            // self.showSearchResultMap($(this).val(),
+            //                          self.postSearcher.searchPost({query : $(this).val()}));
         }
     });
 	
@@ -59,6 +55,7 @@ function get_random_color() {
 }
 
 DiaryController.prototype = {
+	
     /**
      * Generate graph from posts info
      */
@@ -167,6 +164,12 @@ DiaryController.prototype = {
     getCurrentDate : function(){
         return this.currentDate;
     },
+	setSearchFilter : function(filter){
+		this.serachFilter = filter;
+	},
+	getSearchFilter : function(){
+		return this.serachFilter;
+	},
 	showNextAvailableDate : function(){
 		var nextDay = this.fbContentsManager.getFirstAvailableDay(this.getCurrentDate(),+1);
 		if(nextDay){
@@ -273,6 +276,7 @@ DiaryController.prototype = {
 	 				var page = self.renderDay(d);
 					//이미 기존에 같은 인덱스를 가진 페이지가 있는경우 삭제
 					page.attr("view-index",index);
+
 					page.stop(true).transit({
 						left : leftOffset 
 					},function(){
