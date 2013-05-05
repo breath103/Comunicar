@@ -162,31 +162,40 @@ DiaryController.prototype = {
 	setSearchFilter : function(filter){
 		var self = this;
 		this.searchFilter = filter;
+
 		$.each($(".date-page"),function(i,page){
 			self.applySearchFilterToDatePage($(page));
 		});
 		
-		_.each( $(".line"), function(line,i){
-			line = $(line);
-			var dateKey = line.attr("date");
-			var datePosts = self.fbContentsManager.getPostsWithDate(dateKey);
+		if(this.searchFilter) {
+			var d = new Date();
+			_.each( $(".line"), function(line,i){
+				line = $(line);
+				var dateKey = line.attr("date");
+				var datePosts = self.fbContentsManager.getPostsWithDate(dateKey);
 			
-			var visiblePostCount = 0;
-			_.each(datePosts,function(post){
-				if(self.checkPostWithSearchFilter(post)){
-					visiblePostCount ++;
-				}
-				else{
+				var visiblePostCount = 0;
+				_.each(datePosts,function(post){
+					if(self.checkPostWithSearchFilter(post)){
+						console.log(post);
+						visiblePostCount ++;
+					}
+					else{
 					
-				} 
+					} 
+				});
+				if(visiblePostCount > 0){
+					line.animate({opacity:1});
+				} else {
+					line.animate({opacity:0});
+				}
 			});
-//			console.log(dateKey,visiblePostCount);
-			if(visiblePostCount > 0){
-				line.transit({opacity:1});
-			} else {
-				line.transit({opacity:0});
-			}
-		});
+			console.log( (new Date).getTime() - d.getTime());		
+		} else {
+			$(".line").animate({opacity:1})	;
+		}
+		
+	
 	},
 	getSearchFilter : function(){
 		return this.searchFilter;
@@ -219,7 +228,6 @@ DiaryController.prototype = {
 				"message",
 				"source",
 				"name",
-				"link",
 				"caption"
 			];
 			for(var p in checkableProperties){
