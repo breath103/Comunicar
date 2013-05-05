@@ -24,11 +24,11 @@ function DiaryController(contentsManager){
 
     this.$searchInput.bind("change focus",function(){
         if($(this).val() == "") {
-			self.setSerachFilter(null);
+			self.setSearchFilter(null);
 	    }
         else {
 			console.log($(this).val());
-			self.setSerachFilter({
+			self.setSearchFilter({
 				query : $(this).val()
 			});
             // self.showSearchResultMap($(this).val(),
@@ -165,10 +165,51 @@ DiaryController.prototype = {
         return this.currentDate;
     },
 	setSearchFilter : function(filter){
-		this.serachFilter = filter;
+		var self = this;
+		this.searchFilter = filter;
+		$.each($(".date-page"),function(i,page,l){
+			self.applySearchFilterToDatePage($(page));
+		});
 	},
 	getSearchFilter : function(){
-		return this.serachFilter;
+		return this.searchFilter;
+	},
+	applySearchFilterToDatePage : function($page){
+		var self = this;
+		
+		$.each($page.children(),function(j,post){
+			var $post = $(post);
+			if(self.checkPostWithSearchFilter($post.attr("post-id"))){
+//				$post.css("opacity",1);
+				$post.fadeIn();
+			} else {
+//				$post.css("opacity",0);
+				$post.fadeOut();
+			}
+		});
+	},
+	checkPostWithSearchFilter : function(post_id){
+		var post = this.fbContentsManager.getPostWithID(post_id);
+		if(this.searchFilter && this.searchFilter.query){
+			var q = this.searchFilter.query;
+			var checkableProperties = [
+				"description",
+				"story",
+				"message",
+				"source",
+				"name",
+				"link",
+				"caption"
+			];
+			for(var p in checkableProperties){
+				if(post[checkableProperties[p]] && post[checkableProperties[p]].indexOf(q) > -1)
+					return true;
+			}
+			return false;
+				    
+		} else {
+			return true;
+		}
 	},
 	showNextAvailableDate : function(){
 		var nextDay = this.fbContentsManager.getFirstAvailableDay(this.getCurrentDate(),+1);
@@ -205,6 +246,7 @@ DiaryController.prototype = {
             },this);
             this.datePages[dateKey] = $page;
         }
+		this.applySearchFilterToDatePage(this.datePages[dateKey]);
         return this.datePages[dateKey];
     },
 	

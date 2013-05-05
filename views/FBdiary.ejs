@@ -64,7 +64,7 @@
 
             <div id="templates" style="display:none;">
                 <div id="video_post">
-                    <div class="video">
+                    <div class="video" post-id="{{post.id}}">
                         <div style="width:100%;float:left">
                             <div style="width:30%;height:auto;display:inline-block;float:left">
                                 <div class="photo-container">
@@ -90,7 +90,7 @@
                     </div>
                 </div>
                 <div id="photo_post">
-                    <div class="status">
+                    <div class="status" post-id="{{post.id}}">
                         <div style="-webkit-transform: rotate(0deg);" class="Photo">
                             <div class="photo-container">
                                 <img src="{{post.picture}}"
@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <div id="link_post">
-                    <div class="link">
+                    <div class="link" post-id="{{post.id}}">
                         <div style="width:100%;float:left">
                             <div style="width:20%;height:auto;display:inline-block;float:left">
                                 <div class="photo-container">
@@ -136,22 +136,22 @@
                         <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
                     </div>
                 </div>
-                <div id="comment_post">
-                    <div class="status">
+                <div id="comment_post" >
+                    <div class="status" post-id="{{post.id}}">
                         <p>{{post.main_text}}</p>
                         <i class="icon-comment"></i>
                         <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
                     </div>
                 </div>
                 <div id="likes_post">
-                    <div class="status">
+                    <div class="status" post-id="{{post.id}}">
                         <p>{{post.main_text}}</p>
                         <i class="icon-heart"></i>
                         <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
                     </div>
                 </div>
                 <div id="status_post">
-                    <div class="status">
+                    <div class="status" post-id="{{post.id}}">
                         <div>
                             <small>{{post.status_type}}</small>
                             <p>{{post.main_text}}</p>

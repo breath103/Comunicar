@@ -190,7 +190,6 @@ PostPresenter.prototype = {
     },
     presentPost : function(post){
         var $post = $(this.__presentPost(post));
-        $post.attr("id","post_"+post.id);
         if(post.application){
             $post.append(this._presentApplication(post.application));
         }
