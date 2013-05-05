@@ -23,17 +23,12 @@ function DiaryController(contentsManager){
     var searchResultList = $(".search-results-list");
 
     this.$searchInput.bind("change focus",function(){
-        if($(this).val() == "") {
+        if($(this).val() == "")
 			self.setSearchFilter(null);
-	    }
-        else {
-			console.log($(this).val());
+        else 
 			self.setSearchFilter({
 				query : $(this).val()
 			});
-            // self.showSearchResultMap($(this).val(),
-            //                          self.postSearcher.searchPost({query : $(this).val()}));
-        }
     });
 	
 	$("body").keyup(function(event) {
@@ -167,8 +162,30 @@ DiaryController.prototype = {
 	setSearchFilter : function(filter){
 		var self = this;
 		this.searchFilter = filter;
-		$.each($(".date-page"),function(i,page,l){
+		$.each($(".date-page"),function(i,page){
 			self.applySearchFilterToDatePage($(page));
+		});
+		
+		_.each( $(".line"), function(line,i){
+			line = $(line);
+			var dateKey = line.attr("date");
+			var datePosts = self.fbContentsManager.getPostsWithDate(dateKey);
+			
+			var visiblePostCount = 0;
+			_.each(datePosts,function(post){
+				if(self.checkPostWithSearchFilter(post)){
+					visiblePostCount ++;
+				}
+				else{
+					
+				} 
+			});
+//			console.log(dateKey,visiblePostCount);
+			if(visiblePostCount > 0){
+				line.transit({opacity:1});
+			} else {
+				line.transit({opacity:0});
+			}
 		});
 	},
 	getSearchFilter : function(){
@@ -176,20 +193,24 @@ DiaryController.prototype = {
 	},
 	applySearchFilterToDatePage : function($page){
 		var self = this;
-		
 		$.each($page.children(),function(j,post){
 			var $post = $(post);
 			if(self.checkPostWithSearchFilter($post.attr("post-id"))){
-//				$post.css("opacity",1);
+				//$post.css("opacity",1);
 				$post.fadeIn();
 			} else {
-//				$post.css("opacity",0);
+				//$post.css("opacity",0);
 				$post.fadeOut();
 			}
 		});
 	},
 	checkPostWithSearchFilter : function(post_id){
-		var post = this.fbContentsManager.getPostWithID(post_id);
+		var post = null;
+		if(_.isString(post_id))
+			post = this.fbContentsManager.getPostWithID(post_id);
+		else
+			post = post_id;
+		
 		if(this.searchFilter && this.searchFilter.query){
 			var q = this.searchFilter.query;
 			var checkableProperties = [
@@ -206,7 +227,6 @@ DiaryController.prototype = {
 					return true;
 			}
 			return false;
-				    
 		} else {
 			return true;
 		}
