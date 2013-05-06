@@ -48,7 +48,7 @@ p{
 }
 .diary .search-bar{
 	height:50px;
-	background-color:skyblue;
+	background-color:rgb(9, 61, 82);
 }
 .diary .search-bar{
 	
@@ -57,7 +57,7 @@ p{
     float:left;
     width:100%;
     height:15%;
-    background-color: rosybrown;
+    background-color: transparent;
     border-radius:5px;
 }
 .diary .diary-header .diary-graph{
