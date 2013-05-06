@@ -177,7 +177,6 @@ DiaryController.prototype = {
 				var visiblePostCount = 0;
 				_.each(datePosts,function(post){
 					if(self.checkPostWithSearchFilter(post)){
-						console.log(post);
 						visiblePostCount ++;
 					}
 					else{
@@ -194,8 +193,6 @@ DiaryController.prototype = {
 		} else {
 			$(".line").animate({opacity:1})	;
 		}
-		
-	
 	},
 	getSearchFilter : function(){
 		return this.searchFilter;
@@ -240,7 +237,17 @@ DiaryController.prototype = {
 		}
 	},
 	showNextAvailableDate : function(){
-		var nextDay = this.fbContentsManager.getFirstAvailableDay(this.getCurrentDate(),+1);
+		var self = this;
+		var validator = function(posts){
+			var visiblePostCount = 0;
+			_.each(posts,function(post){
+				if(self.checkPostWithSearchFilter(post)){
+					visiblePostCount ++;
+				}
+			});
+			return visiblePostCount > 0;
+		}
+		var nextDay = this.fbContentsManager.getFirstAvailableDay(this.getCurrentDate(),+1,validator);
 		if(nextDay){
 			this.showDay(nextDay);
 			return true;
@@ -249,7 +256,17 @@ DiaryController.prototype = {
 		}
 	},
 	showPrevAvailableDate : function(){
-		var prevDay = this.fbContentsManager.getFirstAvailableDay(this.getCurrentDate(),-1);
+		var self = this;
+		var validator = function(posts){
+			var visiblePostCount = 0;
+			_.each(posts,function(post){
+				if(self.checkPostWithSearchFilter(post)){
+					visiblePostCount ++;
+				}
+			});
+			return visiblePostCount > 0;
+		}
+		var prevDay = this.fbContentsManager.getFirstAvailableDay(this.getCurrentDate(),-1,validator);
 		if(prevDay){
 			this.showDay(prevDay);
 			return true;
@@ -277,14 +294,13 @@ DiaryController.prototype = {
 		this.applySearchFilterToDatePage(this.datePages[dateKey]);
         return this.datePages[dateKey];
     },
-	
-    showDay : function(date){
+	showDay : function(date){
 		if(_.isString(date)){
 			date = Date.fromKey(date);
 		}
 		
 		var visibleIndexMargin = 2;
-		var pageWidth = 70;
+		var pageWidth = 55;
         
 		var getLeftOffset = function(index){
         	return 50 - pageWidth * 0.5 + index * pageWidth + "%";

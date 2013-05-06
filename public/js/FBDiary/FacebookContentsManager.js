@@ -88,16 +88,23 @@ FacebookContentsManager.prototype = {
             }
         }
     },
-	getFirstAvailableDay : function(date,direction){
+	getFirstAvailableDay : function(date,direction,validator){
+		
+		if(!validator)
+		{
+			validator = function(x){
+				return x;
+			};
+		}	
+		
 		//	var keys = _.keys(this.postCalendarMap);
-	
 		date = Date.fromKey(date);
 		if(direction > 0){
 			var lastDate = new Date();
 			lastDate.setDate(lastDate.getDate() + 1);
 			while(date.getTime() < lastDate.getTime()){
 				date.setDate(date.getDate() + 1);
-				if(this.postCalendarMap[date.toKey()]) 
+				if(validator(this.postCalendarMap[date.toKey()])) 
 					return date.toKey();
 			}
 		} else {
@@ -105,7 +112,7 @@ FacebookContentsManager.prototype = {
 			startDate = Date.fromKey(startDate);
 			while(date.getTime() >= startDate.getTime()){
 				date.setDate(date.getDate() - 1);
-				if(this.postCalendarMap[date.toKey()]) 
+				if(validator(this.postCalendarMap[date.toKey()])) 
 					return date.toKey();
 			}
 		}
