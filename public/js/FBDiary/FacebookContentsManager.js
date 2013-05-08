@@ -151,7 +151,7 @@ FacebookContentsManager.prototype = {
         var self = this;
         var debug_app   = "358262920960112";
         var release_app = "333864290041286";
-        FB.init({ "appId"  : debug_app,
+        FB.init({ "appId"  : "358262920960112",
                   "status" : false,
                   "cookie" : false,
                   "xfbml"  : false,
