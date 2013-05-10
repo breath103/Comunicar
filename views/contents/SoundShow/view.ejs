@@ -14,6 +14,8 @@
         <script src="/js/jquery.transit.min.js"></script>
         <script src="/js/google_analytics.js"></script>
         <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/underscore-min.js"></script>
+		
 		<script src="/socket.io/socket.io.js"></script>
         <script>
 			var socket = null;
@@ -22,11 +24,9 @@
                 if (socket == null) {
                     socket = io.connect("/SoundShow");
 					socket.on('message', function(data) {
-                    	
                     });
                     socket.on('disconnect', function() {
-						
-                    });
+					});
                 }
                 socket.socket.connect();
             }
@@ -41,24 +41,91 @@
 			}
 			
 			function sendColor(){
+				clearInterval(handle);
 				socket.emit("screen_color",{
 					color : get_random_color()
 				});
 			}
 			
 			var handle = null;
-			function startSendingBlink(){
+			var currentColors = null;
+			function startSendingBlink(colors){
+				currentColors = colors;
 				clearInterval(handle);
 				handle = setInterval(function(){
-					socket.emit("screen_color",{
-						color : get_random_color()
-					});
-				},100);
+					var color = null;
+					if(colors) {
+						color = colors[ _.random(0,colors.length) ];
+					} else {
+						color = get_random_color();
+					}
+					sendColor(color);
+				},Number( $("#blink_input").val() ));
 			}
-
-            $(document).ready(function() {
+			
+			function sendColor(color){
+				socket.emit("screen_color",{
+					'color' : color
+				});
+			}
+			function createColorDiv(color){
+				var $color = $("<div class='color'></div>");
+				var $overlay = $("<div class='overlay'></div>");
+				$overlay.click(function(){
+					$color.remove();
+				});
+				$color.append($overlay);
+				$color.css({
+					'background-color' : color
+				});
+				return $color;
+			}
+			function createPatternDiv(colors){
+				var $pattern = $("<div class='pattern'></div>");
+				_.each(colors,function(color){
+					$pattern.append(createColorDiv(color));
+				});
+				$pattern.click(function(){
+					var colors = [];
+					_.each($(this).children(".color"),function(v){
+						colors.push($(v).css("background-color"));
+					});
+					startSendingBlink(colors);
+				});
+				return $pattern;
+			}
+			function addNewColor(){
+				var color = $("#color_input").val();
+				var $color = $("<div class='color'></div>");
+				$(".pallete").append($color);
+				$color.css({
+					'background-color' : color
+				});
+				$color.click(function(){
+					$(this).remove();
+				});
+			}
+			$(document).ready(function() {
                 connectWS();
-            });
+            	$("body").keydown(function(e){
+ 					switch(e.keyCode) {
+ 				   		case 81 : $($(".pattern")[0]).trigger("click"); break;
+						case 87 : $($(".pattern")[1]).trigger("click"); break;
+						case 69 : $($(".pattern")[2]).trigger("click"); break;
+						case 82 : $($(".pattern")[3]).trigger("click"); break;
+						case 84 : $($(".pattern")[4]).trigger("click"); break;
+ 				   	}
+            	});
+			});
+			
+			function onBlinkIntervalChange(input){
+				var $input = $(input);
+				$('#blink_interval').html($input.val());
+				
+				if (handle) {
+					startSendingBlink(currentColors);
+				}
+			}
         </script>
         <style>
 		button{
@@ -66,25 +133,40 @@
 			margin-top:20%;
 			margin-right:auto;
 		}
+		.pallete { 
+			
+		}
+		.pallete .pattern{
+			margin:5px;
+			height:40px;
+		}
+		.pallete .pattern .color {
+			display:inline-block;
+			width:40px;
+			height:100%;
+			position:relative;
+		}
+		.pallete .pattern .color .overlay {
+			position:absolute;
+			width:15px;
+			height:15px;
+			background-color:red;
+		}
         </style>
         <title>Comunicar</title>
     </head>
     <body>
-		<table class="table">
-			<thead>
-				<tr>
-					<td>Color</td>
-					<td>RGB</td>
-					<td>shortcut</td>
-				</tr>
-			</thead>
-			<tr>
-				<td><button style="background-color:rgb(255,0,0)"></button></td>
-				<td>rgb(255,0,0)</td>
-				<td>'Q'</td>
-			</tr>
-		</table>
+		<div class="pallete">
+		</div>
+		<div>
+			<input type="text" id="color_input"><button onclick="addNewColor();">AddColor</button>
+			<br/>
+			<input type="range" id="blink_input" onchange="onBlinkIntervalChange(this);" 
+				   value="30" min="10" max="500" step="1">
+		   	<p id="blink_interval"></p>
+		</div>
+		<!-- <div>
 		<button onclick="startSendingBlink();">send blink</button>
-		<button onclick="sendColor();">send color</button>
+		<button onclick="sendColor();">send color</button> -->
 	</body>
 </html>
