@@ -8,6 +8,7 @@
     }, 
     "dependencies": {
         "express"    :  "3.0.1",
+		"underscore" :  "*",
         "jugglingdb" :  "0.2.0-22",
     	"jugglingdb-mysql" : "latest",
         "ejs"        :  "0.8.3",
@@ -20,6 +21,7 @@
         "mongoose"    :  "*",
         "require-dir" : "*",
         "browserify" : "2.10.1",
-	"sinon" : "*"         
+		"socket.io-client" : "*",
+		"sinon" : "*"         
     }
 }
