@@ -6,11 +6,15 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
         <link rel="stylesheet" type="text/css" href="/css/paper.css">
         <link rel="shortcut icon" href="/icons/logo3.ico">
-        <!--script src="/js/require.js"/-->
+        
+		<link href="/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+		
+		<!--script src="/js/require.js"/-->
         <script src="/js/jquery-1.7.1.js"></script>
         <script src="/js/jquery.transit.min.js"></script>
         <script src="/js/google_analytics.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
         <script>
 			var socket = null;
             function connectWS() {
@@ -41,6 +45,16 @@
 					color : get_random_color()
 				});
 			}
+			
+			var handle = null;
+			function startSendingBlink(){
+				clearInterval(handle);
+				handle = setInterval(function(){
+					socket.emit("screen_color",{
+						color : get_random_color()
+					});
+				},100);
+			}
 
             $(document).ready(function() {
                 connectWS();
@@ -56,6 +70,21 @@
         <title>Comunicar</title>
     </head>
     <body>
+		<table class="table">
+			<thead>
+				<tr>
+					<td>Color</td>
+					<td>RGB</td>
+					<td>shortcut</td>
+				</tr>
+			</thead>
+			<tr>
+				<td><button style="background-color:rgb(255,0,0)"></button></td>
+				<td>rgb(255,0,0)</td>
+				<td>'Q'</td>
+			</tr>
+		</table>
+		<button onclick="startSendingBlink();">send blink</button>
 		<button onclick="sendColor();">send color</button>
 	</body>
 </html>
