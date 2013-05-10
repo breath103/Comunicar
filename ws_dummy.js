@@ -9,7 +9,7 @@ var response = {
 
 var connectedClientCount = 0;
 
-var connectNew = function(){
+function connectNew(){
 	var io = require('socket.io-client');
 	var socket = io.connect("http://www.fbdiary.net/SoundShow",{'force new connection': true});
 	socket.on('connect', function(){
