@@ -16,7 +16,6 @@
             function connectWS() {
                 console.log('Connecting to local server...');
                 if (socket == null) {
-
                     socket = io.connect("/SoundShow");
 					socket.on('message', function(data) {
                     	

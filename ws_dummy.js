@@ -1,26 +1,34 @@
+var _ = require("underscore");
 	
-var clientCount = 200;
-var interval = 50;
+var clientCount = 500;
+var interval = 20;
 var response = {
-	"test color" : []
+	"screen_color" : []
 };
 
-var i = 0;
+
+var connectedClientCount = 0;
 
 var connectNew = function(){
 	var io = require('socket.io-client');
-	var socket = io.connect("http://localhost:7777/SoundShow",{'force new connection': true});
+	var socket = io.connect("http://www.fbdiary.net/SoundShow",{'force new connection': true});
 	socket.on('connect', function(){
-		socket.on("test color",function(data){
-			response["test color"].push(new Date());
-			console.log(response["test color"].length);
-			if (response["test color"].length >= clientCount - 1) {
-				var array = response["test color"];
-				console.log(array);
-				// for(var i=0;i<array.length;i++){
-// 					var date = array[i];
-// 				 	console.log(date);
-// 				}
+		console.log("current client : ",++connectedClientCount);
+		socket.on("screen_color",function(data){
+			response["screen_color"].push(new Date());
+			console.log(response["screen_color"].length);
+			if (response["screen_color"].length >= clientCount - 1) {
+				var array = response["screen_color"];
+				var min = _.min(array); 
+				var max = _.max(array);
+				var totalTime = 0;
+				_.each(array,function(v){
+					totalTime += v.getTime();
+				});
+				var avg = new Date(totalTime/array.length);
+				console.log("min ",min);
+				console.log("max ",max);
+				console.log("avg ",avg);
 			}
 		});
 		socket.on('event', function(data){
@@ -30,12 +38,8 @@ var connectNew = function(){
 			console.log(data);
 		});
 		socket.on('disconnect', function(){
-//			console.log("disconnect");
 		});
 	});	
-	if(i++ > clientCount){
-		
-	}	
 };
 
 for(var i=0;i<clientCount;i++){
