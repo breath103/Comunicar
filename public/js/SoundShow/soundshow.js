@@ -1,10 +1,3 @@
-SoundShow = {
-	picker : {
-			
-	}
-};
-
-
 function Track(){
 	this.patterns = [];//data.patterns;
 	this.currentIndex = 0;
