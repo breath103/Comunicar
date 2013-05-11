@@ -8,16 +8,140 @@
         <link rel="shortcut icon" href="/icons/logo3.ico">
         
 		<link href="/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" href="/css/sunny/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		<link href="/colorpicker/jquery.colorpicker.css" rel="stylesheet" type="text/css"/>
+
 		
 		<!--script src="/js/require.js"/-->
         <script src="/js/jquery-1.7.1.js"></script>
         <script src="/js/jquery.transit.min.js"></script>
+        <!-- <script src="/js/jquery-ui.js"></script>-->	
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+				
+				
+		
         <script src="/js/google_analytics.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/underscore-min.js"></script>
-		
 		<script src="/socket.io/socket.io.js"></script>
-        <script>
+		<script src="/colorpicker/jquery.colorpicker.js"></script>
+		<script src="/colorpicker/i18n/jquery.ui.colorpicker-nl.js"></script>
+		<script src="/colorpicker/swatches/jquery.ui.colorpicker-pantone.js"></script>
+		<script src="/colorpicker/parts/jquery.ui.colorpicker-rgbslider.js"></script>
+		
+		
+		
+	    <script type="text/template" id="pattern-template">
+			<div class="pattern">
+				<? _.each(e.colors,function(v){ ?>
+					<?=v.present()?>
+				<? }); ?>
+				<select val="<?=e.t?>">
+					<option>single_color</option>
+					<option>r_blink</option>
+					<option>frame_blink</option>
+				</select>
+				<button class="play_button btn" >play</button>
+				<input type="button" class="btn btn-success add-color-btn" value="Add Color">
+				</input>
+			</div>
+		</script>
+	    <script type="text/template" id="color-template">
+			<div class="color" style="background-color:<?=e.color?>;">
+				<div class="overlay">
+				</div>
+			</div>
+		</script>
+		
+		
+		<script>
+		    _.templateSettings = {
+				escape		: /<\?-([\s\S]+?)\?>/g,
+				evaluate	: /<\?([\s\S]+?)\?>/g,
+				interpolate : /<\?=([\s\S]+?)\?>/g
+	    	};
+	    	
+			function Color(color){
+				this.color = color;
+			}
+			Color.prototype = {
+				template : _.template($('#color-template').html()) ,
+				present : function(){
+					return this.template({e:this});
+				}
+			}
+
+			function Pattern(){
+				this.colors = [];
+				this.t = "single_color";
+				this.$div = null;
+				this.interval = 10;
+			}
+			Pattern.prototype = {
+				template : _.template($('#pattern-template').html()) ,
+				present : function(){
+					var self = this;	
+					this.$div = $(this.template({e:this}));
+					this.$div.find("select").change(function(){
+						self.t = $(this).val();
+						console.log(self);
+					});
+					this.$div.find(".play_button").click(function(){
+						self.play();
+					});
+					this.$div.find(".add-color-btn").click(function(){
+						$(this).colorpicker({
+							showCloseButton  : true ,
+							showCancelButton : true ,
+							close:function(event, color) {
+								self.addColor(new Color("#" + color.formatted));
+								//console.log(color);
+								
+							} 
+						});						
+					});
+					this.$div[0].model = this;
+					return this.$div;
+				},
+				play : function(){
+					var colors = [];
+					_.each(this.colors,function(c){
+						colors.push(c.color);
+					});
+					var data = {
+						t : this.t,
+						colors : colors,
+						interval : this.interval
+					};
+					console.log(data);
+					socket.emit("screen_color",data);
+				},
+				addColor : function(color){
+					var self = this;
+					
+					this.colors.push(color);
+					var $color = $(color.present());
+					$color[0].model = color;
+
+					color.$div = $color;
+					// $color.click(function(){
+					// 	$(this).colorpicker();
+					// })
+					console.log($color.find(".overlay"));
+					$color.find(".overlay").click(function(){
+						self.removeColor(color);
+					});
+					this.$div.append($color);
+				},
+				removeColor : function(color){
+					if(color.$div) 
+						color.$div.remove();
+					
+					this.colors = _.without(this.colors,color);
+				}
+			};
+			
+			
 			var socket = null;
             function connectWS() {
                 console.log('Connecting to local server...');
@@ -39,19 +163,12 @@
 			    }
 			    return color;
 			}
-			
-			function sendColor(){
-				clearInterval(handle);
-				socket.emit("screen_color",{
-					color : get_random_color()
-				});
-			}
-			
+						
 			var handle = null;
 			var currentColors = null;
 			function startSendingBlink(colors){
 				currentColors = colors;
-				clearInterval(handle);
+				handle = clearInterval(handle);
 				handle = setInterval(function(){
 					var color = null;
 					if(colors) {
@@ -61,6 +178,10 @@
 					}
 					sendColor(color);
 				},Number( $("#blink_input").val() ));
+			}
+			
+			function sendRandomColors(){
+				
 			}
 			
 			function sendColor(color){
@@ -81,18 +202,21 @@
 				return $color;
 			}
 			function createPatternDiv(colors){
-				var $pattern = $("<div class='pattern'></div>");
-				_.each(colors,function(color){
-					$pattern.append(createColorDiv(color));
-				});
-				$pattern.click(function(){
-					var colors = [];
-					_.each($(this).children(".color"),function(v){
-						colors.push($(v).css("background-color"));
-					});
-					startSendingBlink(colors);
-				});
-				return $pattern;
+				// var $pattern = $("<div class='pattern'></div>");
+				// _.each(colors,function(color){
+				// 	$pattern.append(createColorDiv(color));
+				// });
+				// $pattern.click(function(){
+				// 	var colors = [];
+				// 	_.each($(this).children(".color"),function(v){
+				// 		colors.push($(v).css("background-color"));
+				// 	});
+				// 	socket.emit("screen_color",{
+				// 		t : "r_blink",
+				// 		colors : colors
+				// 	});
+				// });
+				// return $pattern;
 			}
 			function addNewColor(){
 				var color = $("#color_input").val();
@@ -108,16 +232,31 @@
 			$(document).ready(function() {
                 connectWS();
             	$("body").keydown(function(e){
- 					switch(e.keyCode) {
- 				   		case 81 : $($(".pattern")[0]).trigger("click"); break;
-						case 87 : $($(".pattern")[1]).trigger("click"); break;
-						case 69 : $($(".pattern")[2]).trigger("click"); break;
-						case 82 : $($(".pattern")[3]).trigger("click"); break;
-						case 84 : $($(".pattern")[4]).trigger("click"); break;
+					console.log(e.keyCode);
+					switch(e.keyCode) {
+						case 39 : 
+							$("#blink_input").val(Number($("#blink_input").val()) + 2); 
+							onBlinkIntervalChange($("#blink_input"));
+							break;
+						case 37 :
+							$("#blink_input").val(Number($("#blink_input").val()) - 2); 
+							onBlinkIntervalChange($("#blink_input"));
+							break;
+ 				   		case 81 : $(".pattern")[0].model.play(); break; 
+						case 87 : $(".pattern")[1].model.play(); break;
+						case 69 : $(".pattern")[2].model.play(); break;
+						case 82 : $(".pattern")[3].model.play(); break;
+						case 84 : $(".pattern")[4].model.play(); break;
  				   	}
+					console.log($("#blink_input").val());
             	});
 			});
-			
+			function stopAll(){
+				handle = clearInterval(handle);
+				socket.emit("screen_color",{
+					t : "fade_stop"
+				});
+			}
 			function onBlinkIntervalChange(input){
 				var $input = $(input);
 				$('#blink_interval').html($input.val());
@@ -126,21 +265,36 @@
 					startSendingBlink(currentColors);
 				}
 			}
+			function addNewPattern(){
+				var pattern = new Pattern();
+				pattern.t = "r_blink";
+				$(".pallete").append(pattern.present());
+			}
         </script>
         <style>
-		button{
-			margin-left:auto;
-			margin-top:20%;
-			margin-right:auto;
-		}
 		.pallete { 
-			
+			width:100%;
+			min-height:500px;
+			border:1px solid #1555ff;
 		}
 		.pallete .pattern{
 			margin:5px;
+			min-width:400px;
 			height:40px;
+			width:auto;
+			display:block;
+			border:1px solid black;
+		}
+		.pallete .pattern select{
+			float:left;
+		}
+		.pallete .pattern .add-color-btn {
+			float:right;
+			height:100%;
+			position:relative;
 		}
 		.pallete .pattern .color {
+			float:left;
 			display:inline-block;
 			width:40px;
 			height:100%;
@@ -151,19 +305,35 @@
 			width:15px;
 			height:15px;
 			background-color:red;
+			display:none;
+		}
+		.pallete .pattern .color:hover .overlay {
+			position:absolute;
+			width:15px;
+			height:15px;
+			background-color:rgba(0,0,0,100);
+			display:block;
 		}
         </style>
+		
         <title>Comunicar</title>
     </head>
     <body>
-		<div class="pallete">
-		</div>
-		<div>
-			<input type="text" id="color_input"><button onclick="addNewColor();">AddColor</button>
-			<br/>
-			<input type="range" id="blink_input" onchange="onBlinkIntervalChange(this);" 
-				   value="30" min="10" max="500" step="1">
-		   	<p id="blink_interval"></p>
+		<header>
+			<h1>SoundShow Control Panel</h1>
+		</header>
+		<div class="container">
+			<div class="pallete">
+			</div>
+			<div>
+				<button class = "btn btn-primary btn-large" onclick="addNewPattern();">add New Pattern</button>
+				<button class = "btn btn-primary btn-large" onclick="startSendingBlink();">sendRandom();</button>
+				<button class = "btn btn-danger btn-large" onclick="stopAll();">stop all</button>
+				<input type="text" id="color_input"><button onclick="addNewColor();">AddColor</button>
+				<input type="range" id="blink_input" onchange="onBlinkIntervalChange(this);" 
+					   value="30" min="10" max="100" step="1">
+			   	<p id="blink_interval"></p>
+			</div>		   
 		</div>
 		<!-- <div>
 		<button onclick="startSendingBlink();">send blink</button>

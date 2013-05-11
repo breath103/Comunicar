@@ -10,33 +10,74 @@
         <script src="/js/jquery.transit.min.js"></script>
         <script src="/js/jgestures.min.js"></script>
         <script src="/js/google_analytics.js"></script>
+        <script src="/js/underscore-min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
-        <script>
-            var socket = null;
-            function connectWS() {
-                console.log('Connecting to local server...');
-				var connecting_handle = null;
-                if (socket == null) {
-                    socket = io.connect("/SoundShow");
-                    socket.on("connect", function() {
-                        clearInterval(connecting_handle);
-                    });
-                    socket.on('message', function(data) {});
-                    socket.on('disconnect', function() {
-                        connecting_handle = setInterval(function() {
-                            socket.socket.connect();
-                        }, 500);
-                    });
-					socket.on('screen_color',function(data){
-						$(".site").css("background-color",data.color);
-					});
-                }
-                socket.socket.connect();
+        <script src="/js/SoundShow/soundshow.js">
+		<script>
+		var handle = null;
+		
+		function get_random_color() {
+		    var letters = '0123456789ABCDEF'.split('');
+		    var color = '#';
+		    for (var i = 0; i < 6; i++ ) { color += letters[Math.round(Math.random() * 15)]; }
+		    return color;
+		}
+		
+		function parseColorEvent(e,$div){
+			if(handle){
+				handle = clearInterval(handle);
+			}
+			if (e.t == 'r_blink'){
+				handle = setInterval(function(){
+					var color = null;
+					if(e.colors && e.colors.length > 0) { 
+						color = e.colors[ _.random(0,e.colors.length) ];
+					} else { 
+						color = get_random_color(); }
+					$div.css("background-color",color);
+				},e.interval);
+			} else if (e.t == 'frame_blink') {
+				for(var i=0;i<e.frames.length;i++){
+					var frame = e.frames[i];
+				}
+			} else if (e.t == "single_color") {
+				$div.css("background-color",e.colors[0]);	
+			} 
+			else if (e.t == "fade_stop") {
+				$div.transit({
+					"background-color" : "#000000"
+				});
+			} else if (e.t == "") {
+				
+			}
+		}
+		
+        var socket = null;
+        function connectWS() {
+            console.log('Connecting to local server...');
+			var connecting_handle = null;
+            if (socket == null) {
+                socket = io.connect("/SoundShow");
+                socket.on("connect", function() {
+                    clearInterval(connecting_handle);
+                });
+                socket.on('message', function(data) {});
+                socket.on('disconnect', function() {
+                    connecting_handle = setInterval(function() {
+                        socket.socket.connect();
+                    }, 500);
+                });
+				socket.on('screen_color',function(data){
+					$(".site").css("background-color",data.color);
+					parseColorEvent(data,$(".site"));
+				});
             }
+            socket.socket.connect();
+        }
 
-            $(document).ready(function() {
-                connectWS();
-            });
+        $(document).ready(function() {
+            connectWS();
+        });
         </script>
         <style>
 		body{
