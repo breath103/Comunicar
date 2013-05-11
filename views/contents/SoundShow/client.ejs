@@ -12,7 +12,7 @@
         <script src="/js/google_analytics.js"></script>
         <script src="/js/underscore-min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/SoundShow/soundshow.js">
+        <script src="/js/SoundShow/soundshow.js"></script>
 		<script>
 		var handle = null;
 		
@@ -63,9 +63,9 @@
                 });
                 socket.on('message', function(data) {});
                 socket.on('disconnect', function() {
-                    connecting_handle = setInterval(function() {
-                        socket.socket.connect();
-                    }, 500);
+                   	connecting_handle = setInterval(function() {
+        				socket.socket.connect();
+        			}, 500);
                 });
 				socket.on('screen_color',function(data){
 					$(".site").css("background-color",data.color);
