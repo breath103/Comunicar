@@ -42,8 +42,11 @@
 				}
 			} else if (e.t == "single_color") {
 				$div.css("background-color",e.colors[0]);	
-			} 
-			else if (e.t == "fade_stop") {
+			} else if (e.t == "fade_to") {
+				$div.clearQueue().transit({
+					"background-color" : e.colors[0]
+				});
+			} else if (e.t == "fade_stop") {
 				$div.transit({
 					"background-color" : "#000000"
 				});
