@@ -16,10 +16,7 @@
         <script src="/js/jquery.transit.min.js"></script>
         <!-- <script src="/js/jquery-ui.js"></script>-->	
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-				
-				
-		
-        <script src="/js/google_analytics.js"></script>
+		<script src="/js/google_analytics.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/underscore.js"></script>
         <script src="/js/SoundShow/soundshow.js"></script>
@@ -35,8 +32,7 @@
 				<span><?=e.type?></span>
 				<!--span><?=e.objectId?></span>
 				<span><?=e.createdAt?></span-->
-				<?console.log(e.data);?>
-				<?=_.template($('#Pattern-Color-template').html())({e: JSON.parse(e.data)})?>
+				<?=_.template($('#Pattern-' + e.type + '-template').html())({e: JSON.parse(e.data)})?>
 				<button class="delete-btn" >delete</button>
 			</div>
 		</script>
@@ -44,6 +40,8 @@
 		
 	    <script type="text/template" id="Pattern-FadeTo-template">
 			<div class="FadeTo" style="background-color:<?=e.color?>">
+				<p class="text-left">t:<?=e.time?></p>
+				<p class="text-left">d:<?=e.delay?></p>
 			</div>
 		</script>
 	    <script type="text/template" id="Pattern-Color-template">
@@ -320,17 +318,17 @@
 			min-height:500px;
 			border:1px solid #1555ff;
 		}
-		.pallete .pattern{
-			margin:5px;
-			min-width:400px;
-			height:40px;
-			width:auto;
+		#pattern_list .pattern{
+			min-width:100px;
 			display:block;
 			border:1px solid black;
+			margin: 3px;
+			border-radius: 7px;
+			padding: 5px;
 		}
 		.FadeTo {
-			width:100%;
-			height:100%;
+			width: 50px;
+			height: 50px;
 		}
 		.Color {
 			width: 50px;
