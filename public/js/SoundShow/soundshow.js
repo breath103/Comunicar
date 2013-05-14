@@ -10,7 +10,7 @@ Track.prototype = {
 		var self = this;
 		this.patterns = [];
 		_.each(o.patterns,function(v){
-			self.patterns.push(   new window[v.pattern_name](v)   );
+			self.patterns.push(   new window[v.type](JSON.parse(v.data))   );
 		});
 	},
 	toString : function(){
@@ -69,7 +69,7 @@ FadeTo.prototype.constructor = FadeTo;
 FadeTo.prototype = {
 	toJSON : function(){
 		return {
-			pattern_name : "FadeTo",
+			type : "FadeTo",
 			time  : this.time,
 			delay : this.delay,
 			color : this.color
@@ -108,7 +108,7 @@ Color.prototype.constructor = Color;
 Color.prototype = {
 	toJSON : function(){
 		return {
-			pattern_name : "Color",
+			type  : "Color",
 			delay : this.delay,
 			color : this.color
 		};
@@ -124,7 +124,7 @@ Color.prototype = {
 		},self.delay);
 	},
 	onEnd : function(){
-		clearTimeout(self.callbackHandle);
+		clearTimeout(this.callbackHandle);
 	}
 };
 
@@ -140,7 +140,7 @@ RandomBlink.prototype.constructor = RandomBlink;
 RandomBlink.prototype = {
 	toJSON : function(){
 		return {
-			pattern_name : "RandomBlink",
+			type     : "RandomBlink",
 			interval : this.interval,
 			colors   : this.colors,
 			delay    : this.delay

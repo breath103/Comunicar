@@ -9,8 +9,8 @@
 		<link href="/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" href="/css/sunny/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
 		<link href="/color-picker/jquery.colorpicker.css" rel="stylesheet" type="text/css"/>
+		<link href="/css/SoundShow/view.css" rel="stylesheet" type="text/css"/>
 
-		
 		<!--script src="/js/require.js"/-->
         <script src="/js/jquery-1.7.1.js"></script>
         <script src="/js/jquery.transit.min.js"></script>
@@ -25,8 +25,9 @@
 		<script src="/color-picker/i18n/jquery.ui.colorpicker-nl.js"></script>
 		<script src="/color-picker/swatches/jquery.ui.colorpicker-pantone.js"></script>
 		<script src="/color-picker/parts/jquery.ui.colorpicker-rgbslider.js"></script>
-	    <script src="/js/parse-1.2.7.min.js"></script>
-
+		<script src="/js/parse-1.2.7.min.js"></script>
+		<script src="/js/SoundShow/app.js"></script>
+	    
 	    <script type="text/template" id="pattern-template">
 			<div class="pattern">
 				<span><?=e.type?></span>
@@ -36,8 +37,6 @@
 				<button class="delete-btn" >delete</button>
 			</div>
 		</script>
-		
-		
 	    <script type="text/template" id="Pattern-FadeTo-template">
 			<div class="FadeTo" style="background-color:<?=e.color?>">
 				<p class="text-left">t:<?=e.time?></p>
@@ -48,15 +47,14 @@
 			<div class="Color" style="background-color:<?=e.color?>">
 			</div>
 		</script>
-		
-		
-	    <script type="text/template" id="login-template">
+		<script type="text/template" id="login-template">
 	   		<header id="header"></header>
 	      	<div class="login">
 		        <form class="login-form">
 		        	<h2>Log In</h2>
 		         	<div class="error" style="display:none"></div>
-		         	<input type="text" id="login-username" placeholder="Username" />			  <input type="password" id="login-password" placeholder="Password" />
+		         	<input type="text" id="login-username" placeholder="Username" />			 
+					<input type="password" id="login-password" placeholder="Password" />
 				    <button>Log In</button>
 		        </form>
 				<form class="signup-form">
@@ -68,13 +66,19 @@
 		      	</form>
 			</div>
 	    </script>
-		
-	    <script type="text/template" id="track-template">
-			<div class="pattern">
-				<h4><?=v.object_id?></h4>
-				<?_.each(e.colors,function(v){ ?>
-					<?=v.present()?>
-				<?});?>
+		<script type="text/template" id="track-template">
+			<div class="track">
+				<h4><?=e.objectId?></h4>
+				<li class="pattern_list">
+					<?for(var i=0;i<e.patterns.length;i++){?>
+						<? 
+							var pattern = e.patterns[i];
+							var template = _.template( $("#pattern-template").html() );
+						?>
+						<ul><?=template({e: pattern})?></ul>
+					<?}?>
+				</li>
+				<button class="btn play-btn">play</button>
 			</div>
 		</script>
 	    <script type="text/template" id="color-template">
@@ -83,108 +87,9 @@
 				</div>
 			</div>
 		</script>
+		
 		<script>
-			$(function() {
-				Parse.$ = jQuery;
-				// Initialize Parse with your Parse application javascript keys
-		  	 	Parse.initialize("PJbZN8uNbyIehnkz7VyY53RJG6rEVHdzKcCoUZYR", "9luQVvgoxvJ8XI7mJPP3jaqCrx0Oj8xgpTdigwck");
-				var User = Parse.Object.extend("User", {
-				});
-				// Construct a query to get the current user's todo items
-				var query = new Parse.Query(User);
-				
-				
-				var Pattern = Parse.Object.extend("Pattern");
-				// A Collection containing all instances of Pattern.
-				var PatternList = Parse.Collection.extend({
-					model: Pattern
-				});
-				
-			    var PatternView = Parse.View.extend({
-					//... is a list tag.
-			    	tagName:  "div",
-					// Cache the template function for a single item.
-			     	template: _.template($('#pattern-template').html()),
-					// The DOM events specific to an item.
-			     	events: {
-			        	"click .delete-btn" : "onDelete"
-			      	},
-					// The TodoView listens for changes to its model, re-rendering. Since there's
-			      	// a one-to-one correspondence between a Todo and a TodoView in this
-			      	// app, we set a direct reference on the model for convenience.
-			      	initialize: function() {
-			        	_.bindAll(this, 'render', 'close', 'remove');
-			        	this.model.bind('change',  this.render);
-			        	this.model.bind('destroy', this.remove);
-			      	},
-					// Re-render the contents of the todo item.
-			      	render: function() {
-			        	$(this.el).html( this.template({ e:this.model.toJSON() }) );
-			        	return this;
-			      	},
-				    // Close the `"editing"` mode, saving changes to the todo.
-				    close: function() {
-				   	 	this.model.save();
-				  	},
-					// Remove the item, destroy the model.
-			      	onDelete: function() {
-			      		this.model.destroy();
-			      	}
-			    });
-				
-				
-				
-			    var PatternListView = Parse.View.extend({
-			    	el: $("#pattern_list"),
-					initialize: function() {
-						var self = this;
-						
-				        _.bindAll(this, 'addOne', 'addAll', 'render');
-						// Create our collection of Todos
-				        this.patternList = new PatternList;
-
-				        // Setup the query for the collection to look for todos from the current user
-				        this.patternList.query = new Parse.Query(Pattern);
-				        this.patternList.bind('add',   this.addOne);
-				        this.patternList.bind('reset', this.addAll);
-				        this.patternList.bind('all',   this.render);
-						this.patternList.fetch();
-			        },
-				    addOne: function(pattern) {
-						var view = new PatternView({model: pattern});
-				    	$("#pattern_list").append(view.render().el);
-				    },
-					addAll: function(collection, filter) {
-				    	this.patternList.each(this.addOne);
-				    },
-					render : function() {
-			        },
-				});
-				
-				
-
-
-		        Parse.User.logIn("admin", "admin", {
-		        	success: function(user) {
-						console.log("success",user);
-					},
-					error: function(user, error) {
-		            	console.log("error",user,error);
-					}
-		        });
-				
-				new PatternListView();
-				
-//				Parse.history.start();
-			});
-		</script>
-		<script>
-		    _.templateSettings = {
-				escape		: /<\?-([\s\S]+?)\?>/g,
-				evaluate	: /<\?([\s\S]+?)\?>/g,
-				interpolate : /<\?=([\s\S]+?)\?>/g
-	    	};
-	    	
+		    
 			function Pattern(){
 				this.colors = [];
 				this.t = "single_color";
@@ -256,8 +161,8 @@
 			};
 			
 			
-			var socket = null;
             function connectWS() {
+				window.socket = null;
                 console.log('Connecting to local server...');
                 if (socket == null) {
                     socket = io.connect("/SoundShow");
@@ -312,59 +217,7 @@
 				$(".pallete").append(pattern.present());
 			}
         </script>
-        <style>
-		.pallete { 
-			width:100%;
-			min-height:500px;
-			border:1px solid #1555ff;
-		}
-		#pattern_list .pattern{
-			min-width:100px;
-			display:block;
-			border:1px solid black;
-			margin: 3px;
-			border-radius: 7px;
-			padding: 5px;
-		}
-		.FadeTo {
-			width: 50px;
-			height: 50px;
-		}
-		.Color {
-			width: 50px;
-			height: 50px;
-		}
-		.pallete .pattern select{
-			float:left;
-		}
-		.pallete .pattern .add-color-btn {
-			float:right;
-			height:100%;
-			position:relative;
-		}
-		.pallete .pattern .color {
-			float:left;
-			display:inline-block;
-			width:40px;
-			height:100%;
-			position:relative;
-		}
-		.pallete .pattern .color .overlay {
-			position:absolute;
-			width:15px;
-			height:15px;
-			background-color:red;
-			display:none;
-		}
-		.pallete .pattern .color:hover .overlay {
-			position:absolute;
-			width:15px;
-			height:15px;
-			background-color:rgba(0,0,0,100);
-			display:block;
-		}
-        </style>
-		
+        
         <title>Comunicar</title>
     </head>
     <body>
@@ -375,12 +228,14 @@
 	  		<div class="row-fluid">
 	    		<div class="span2">
 					<div id="pattern_list">
+					
 					</div>
 					<button class="btn btn-primary btn-large" 
 							onclick="addNewPattern();">add New Pattern</button>
 			 	</div>
 	    		<div class="span10">
-					<div class="track_list">
+					<div class="track_list" id="track_list">
+					
 					</div>
 					<button class = "btn btn-danger btn-large" onclick="stopAll();">stop all</button>
 	    		</div>

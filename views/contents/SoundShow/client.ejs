@@ -74,6 +74,14 @@
 					$(".site").css("background-color",data.color);
 					parseColorEvent(data,$(".site"));
 				});
+				socket.on("play_track",function(data){
+					var track = new Track();
+					track.fromString(JSON.stringify(data.track));
+					console.log(track);
+					track.run($(".site"),function(){
+						alert("end");
+					});
+				});
             }
             socket.socket.connect();
         }

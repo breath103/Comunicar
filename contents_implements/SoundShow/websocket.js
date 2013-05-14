@@ -13,6 +13,10 @@ module.exports = function(content,io){
 			lastScreenColor = data;
 			socket.broadcast.emit("screen_color",data);
 		});
+		socket.on("play_track",function(data){
+			socket.broadcast.emit("play_track",data);
+		});
+		
 		socket.on('message', function (data) {
 			console.log(data);
         });

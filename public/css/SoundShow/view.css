@@ -1,0 +1,60 @@
+.pallete { 
+	width:100%;
+	min-height:500px;
+	border:1px solid #1555ff;
+}
+#pattern_list .pattern{
+	min-width:100px;
+	display:block;
+	border:1px solid black;
+	margin: 3px;
+	border-radius: 7px;
+	padding: 5px;
+}
+.FadeTo {
+	width: 50px;
+	height: 50px;
+}
+.Color {
+	width: 50px;
+	height: 50px;
+}
+.pallete .pattern select{
+	float:left;
+}
+.pallete .pattern .add-color-btn {
+	float:right;
+	height:100%;
+	position:relative;
+}
+.pallete .pattern .Color {
+	float:left;
+	display:inline-block;
+	width:40px;
+	height:100%;
+	position:relative;
+}
+.pallete .pattern .Color .overlay {
+	position:absolute;
+	width:15px;
+	height:15px;
+	background-color:red;
+	display:none;
+}
+.pallete .pattern .Color:hover .overlay {
+	position:absolute;
+	width:15px;
+	height:15px;
+	background-color:rgba(0,0,0,100);
+	display:block;
+}
+
+
+.track_list .track .pattern_list
+{
+	float:left;
+}
+.track_list .track .pattern_list > ul
+{
+	float:left;
+}
