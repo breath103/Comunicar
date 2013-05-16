@@ -154,8 +154,8 @@
 		        	$(this).trigger("mousemove");
 		        	e = e.originalEvent;
 	            	var touchPos = {
-	                	x : e.pageX,
-	                	y : e.pageY
+	                	x : e.pageX - $(this).offset().left,
+	                	y : e.pageY - $(this).offset().top
 	            	};
 					var grayScale = 
 					Math.round(touchPos.y / $touchpad.height() * 255);
@@ -172,8 +172,8 @@
 		            if(e && e.originalEvent && shouldDraw){
 		            	e = e.originalEvent;
 		            	var touchPos = {
-		                	x : e.pageX,
-		                	y : e.pageY
+		                	x : e.pageX - $(this).offset().left,
+		                	y : e.pageY - $(this).offset().top
 		            	};
 						var grayScale = 
 						Math.round(touchPos.y / $touchpad.height() * 255);
@@ -186,18 +186,18 @@
 		        	}
 		        });
 		        $touchpad.bind("touchend mouseup", function(e) {
-		        	e = e.originalEvent;
-	            	var touchPos = {
-	                	x : e.pageX,
-	                	y : e.pageY
-	            	};
-					var grayScale = 
-					Math.round(touchPos.y / $touchpad.height() * 255);
-					var color = "rgb("+grayScale+","+grayScale+","+grayScale+")";
-					$("#touch-pad-out").html(JSON.stringify(touchPos));
-					socket.emit("screen_color",{
-						color : color
-					});
+					// 		        	e = e.originalEvent;
+					// 	            	var touchPos = {
+					// 	                	x : e.pageX,
+					// 	                	y : e.pageY
+					// 	            	};
+					// var grayScale = 
+					// Math.round(touchPos.y / $touchpad.height() * 255);
+					// var color = "rgb("+grayScale+","+grayScale+","+grayScale+")";
+					// $("#touch-pad-out").html(JSON.stringify(touchPos));
+					// socket.emit("screen_color",{
+					// 	color : color
+					// });
 					shouldDraw = false;
 					return false;
 		        });
