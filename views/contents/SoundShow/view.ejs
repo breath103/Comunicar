@@ -36,17 +36,22 @@
 			<!--/div-->
 		</script>
 	    <script type="text/template" id="Pattern-FadeTo-template">
-			<div class="FadeTo" style="background-color:<?=e.color?>">
-				<p class="text-left">t:<?=e.time?></p>
-				<p class="text-left">d:<?=e.delay?></p>
-			</div>
+			<!--div class="FadeTo" style="background-color:<?=e.color?>"-->
+				<div class="thumbnail" style="background-color:<?=e.color?>"></div>
+				<em>time</em>
+					<input class="time_input" type="text" value="<?=e.time?>"/>
+				<em>delay</em>
+					<input class="delay_input" type="text" value="<?=e.delay?>"/>
+			<!--/div-->
 		</script>
 	    <script type="text/template" id="Pattern-RandomBlink-template">
-			<div class="RandomBlink">
-				<p class="text-left">interval:<?=e.interval?></p>
-				<p class="text-left">delay:<?=e.delay?></p>
-				<p class="text-left">colors:<?=e.colors&&e.colors.length>0?JSON.stringify(e.colors):"random"?></p>
-			</div>
+			<!--div class="RandomBlink"-->
+				<label>interval</label><input class="interval_input" type="text" value="<?=e.interval?>"/>
+				<label>delay</label><input class="delay_input" type="text" value="<?=e.delay?>"/>
+				<p class="text-left">
+					colors:<?=e.colors&&e.colors.length>0?JSON.stringify(e.colors):"random"?>
+				</p>
+			<!--/div-->
 		</script>
 		<script type="text/template" id="Pattern-Color-template">
 			<!--div class="Color" style="background-color:<?=e.color?>"-->
@@ -95,7 +100,7 @@
 				<div class='header'>
 					<h4><?=e.objectId?></h4>
 					<button class="btn play-btn">play</button>
-					<button class = "btn btn-danger delete-track-btn">delete</button>
+					<button class="btn btn-danger delete-track-btn">delete</button>
 				</div>
 			<!--/div-->
 		</script>

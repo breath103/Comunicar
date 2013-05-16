@@ -23,7 +23,15 @@ $(function() {
 	    },
 	    comparator: function(pattern) {
 	    	return pattern.get('order');
-	    }
+	    },
+		toJSON : function(){
+			return _.map(this.models, function(model){ 
+				return {
+					type : model.get("type"),
+					data : model.get("data")
+				};
+			});
+		}
 	});
 	var SubPatternViews = {
 		"Color" : Parse.View.extend({
@@ -67,7 +75,47 @@ $(function() {
 		"FadeTo" : Parse.View.extend({
 	    	tagName : "div",
 			className : "FadeTo",
-	     	template: _.template($('#Pattern-FadeTo-template').html())
+	     	template: _.template($('#Pattern-FadeTo-template').html()),
+			events: {
+				"change .time_input" : "onChange",
+				"change .delay_input" : "onChange"
+			},
+		  	initialize: function() {
+	        	_.bindAll(this, 'render','onClickColor','onChange');
+				this.$el.click(this.onClickColor);
+	      	},
+			getData : function(){
+				return JSON.parse(this.model.get("data"));
+			},
+			setData : function(data){
+				this.model.set("data",JSON.stringify(data));
+				this.model.save();
+			},
+			onChange : function(){
+				var data = this.getData();
+				data.time  = Number(this.$el.find(".time_input").val());
+				data.delay = Number(this.$el.find(".delay_input").val());
+				this.setData(data);
+			},
+			setColor : function(color) {
+				var data = this.getData();
+				data.color = color;
+				this.setData(data);
+			},
+			onClickColor : function(e){
+				var self = this;
+				this.$el.find(".thumbnail").colorpicker({
+					'showCloseButton': true ,
+					'inline': false,
+					'showCancelButton': true ,
+					close: function(event, color) {
+						self.setColor("#" + color.formatted);
+					}
+				});
+			},
+	      	render: function() {
+	      		this.$el.html(this.template({e: this.getData()}));
+			}
 		}),
 		"RandomBlink" : Parse.View.extend({
 	    	tagName : "div",
@@ -202,6 +250,8 @@ $(function() {
       	initialize: function() {
 			_.bindAll(this, 'render', 'close', 'play','addPattern');
         	this.model.bind('change',  this.render);
+				
+			this.$el.html(this.template({e:this.model.toJSON()}));
 			
 			var patternListView = new PatternListView({
         		track : this.model
@@ -211,6 +261,7 @@ $(function() {
 			this.$el.append(patternListView.$el);
       	},
       	render: function() {
+	
 			this.patternListView.render();
 			return this;
       	},
@@ -222,9 +273,16 @@ $(function() {
 			this.model.add("patterns", JSON.stringify(pattern));
 			this.render();
 		},
+		jsonForPlay : function(){
+			var json = this.model.toJSON();
+			json.patterns = this.patternListView.patternList.toJSON();
+			console.log(json);
+			return json;
+		},
 		play : function() {
+			
 			window.socket.emit("play_track",{
-				track: this.model.toJSON()
+				track: this.jsonForPlay()
 			});
 		},
       	delete: function() {
