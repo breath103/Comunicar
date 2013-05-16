@@ -12,7 +12,9 @@ $(function() {
 	// Construct a query to get the current user's todo items
 	var query = new Parse.Query(User);
 
-	var Pattern = Parse.Object.extend("Pattern");
+	var Pattern = Parse.Object.extend({
+		className: "Pattern"
+	});
 	var PatternList = Parse.Collection.extend({
 		model: Pattern
 	});
@@ -21,30 +23,34 @@ $(function() {
 		className : 'pattern',
      	template: _.template($('#pattern-template').html()),
      	events: {
-        	"click .delete-btn" : "onDelete"
+        	"click .delete-btn" : "delete"
       	},
       	initialize: function() {
-        	_.bindAll(this, 'render', 'close', 'remove');
+        	_.bindAll(this, 'render', 'close', 'delete');
         	this.model.bind('change',  this.render);
-        	this.model.bind('destroy', this.remove);
       	},
       	render: function() {
-			console.log(this.model.toJSON());
         	$(this.el).html( this.template({ e:this.model.toJSON() }) );
         	return this;
       	},
 	    close: function() {
 	   	 	this.model.save();
 	  	},
-      	onDelete: function() {
-      		this.model.destroy();
-      	}
+      	delete: function() {
+			var self = this;
+			this.$el.fadeOut(function(){
+	      		self.model.destroy();
+      		});
+		}
     });
 
     var PatternListView = Parse.View.extend({
-    	el: $("#pattern_list"),
+    	el: $("#pattern_list_container"),
+		events : {
+			"click .new-pattern" : "newPattern"
+		},
 		initialize: function() {
-		    _.bindAll(this, 'addOne', 'addAll', 'render');
+		    _.bindAll(this, 'addOne', 'addAll', 'render','newPattern');
 	        this.patternList = new PatternList();
 	        this.patternList.query = new Parse.Query(Pattern);
 	        this.patternList.bind('add',   this.addOne);
@@ -61,6 +67,39 @@ $(function() {
 	    },
 		render : function() {
         },
+		createPatternWithType : function(type){
+			if (type == "Color") { 
+				return this.patternList.create({
+					type : type,
+					data : JSON.stringify({
+						color:"red",
+						delay:1000
+					})
+				});
+			} else if (type == "RandomBlink") {
+				return this.patternList.create({
+					type : type,
+					data : JSON.stringify({
+						colors:null,
+						delay:1000,
+						interval:100
+					})
+				});
+			} else if (type == "FadeTo") {
+				return this.patternList.create({
+					type : type,
+					data : JSON.stringify({
+						color : "black",
+						delay : 1000,
+						time  : 1000
+					})
+				});
+			}
+		},
+		newPattern : function(e){
+			var type = $(e.target).html();
+			var pattern = this.createPatternWithType(type);
+		}
 	});
 	
 	
@@ -78,7 +117,7 @@ $(function() {
      	template: _.template($('#track-template').html()),
      	events: {
         	"click .play-btn" : "play",
-			"click .delete-btn" : "delete"
+			"click .delete-track-btn" : "delete"
 		},
       	initialize: function() {
         	_.bindAll(this, 'render', 'close', /*'remove',*/'play','addPattern');
@@ -135,7 +174,10 @@ $(function() {
       	},
 		addOne: function(track) {
 			var view = new TrackView({model: track});
-	    	$("#track_list").append(view.render().el);
+			view.render();
+			$("#track_list").append(view.$el);
+			view.$el.css({"display":"none"});
+			view.$el.fadeIn();
 	    },
 		addAll: function(collection, filter) {
 	    	this.trackList.each(this.addOne);
