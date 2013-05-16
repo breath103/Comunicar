@@ -1,8 +1,9 @@
-.pallete { 
+.touch-pad{
 	width:100%;
-	min-height:500px;
-	border:1px solid #1555ff;
+	height:500px;
 }
+
+
 #pattern_list .pattern{
 	min-width:100px;
 	display:block;
