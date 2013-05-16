@@ -30,8 +30,8 @@
 	    
 	    <script type="text/template" id="pattern-template">
 			<!--div class="pattern"-->
-				<span><?=e.type?></span>
-				<?=_.template($('#Pattern-' + e.type + '-template').html())({e: JSON.parse(e.data)})?>
+				<div class="detail">
+				</div>
 				<button class="delete-btn" >delete</button>
 			<!--/div-->
 		</script>
@@ -49,8 +49,9 @@
 			</div>
 		</script>
 		<script type="text/template" id="Pattern-Color-template">
-			<div class="Color" style="background-color:<?=e.color?>">
-			</div>
+			<!--div class="Color" style="background-color:<?=e.color?>"-->
+				
+			<!--/div-->
 		</script>
 		<script type="text/template" id="login-template">
 	   		<header id="header"></header>

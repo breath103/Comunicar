@@ -18,9 +18,62 @@ $(function() {
 	var PatternList = Parse.Collection.extend({
 		model: Pattern
 	});
+	
+	var SubPatternViews = {
+		"Color" : Parse.View.extend({
+	    	tagName : "div",
+			className : "Color",
+	     	template: _.template($('#Pattern-Color-template').html()),
+			events: {
+			},
+			
+	      	initialize: function() {
+	        	_.bindAll(this, 'render','onClickColor');
+				this.$el.click(this.onClickColor);
+	      	},
+			getData : function(){
+				return JSON.parse(this.model.get("data"));
+			},
+			setData : function(data){
+				this.model.set("data",JSON.stringify(data));
+				this.model.save();
+			},
+	      	render: function() {
+	        	this.$el.css({"background-color":this.getData().color});
+	        	return this;
+	      	},
+			setColor : function(color) {
+				var data = this.getData();
+				data.color = color;
+				this.setData(data);
+			},
+			onClickColor : function(e){
+				var self = this;
+				this.$el.colorpicker({
+					'showCloseButton': true ,
+					'inline': false,
+					'showCancelButton': true ,
+					close: function(event, color) {
+						self.setColor("#" + color.formatted);
+					}
+				});
+			}
+		}),
+		"FadeTo" : Parse.View.extend({
+	    	tagName : "div",
+			className : "FadeTo",
+	     	template: _.template($('#Pattern-FadeTo-template').html())
+		}),
+		"RandomBlink" : Parse.View.extend({
+	    	tagName : "div",
+			className : "RandomBlink",
+	     	template: _.template($('#Pattern-RandomBlink-template').html())
+		})
+	}
+	
     var PatternView = Parse.View.extend({
-    	tagName:  "div",
-		className : 'pattern',
+    	tagName: "div",
+		className: 'pattern',
      	template: _.template($('#pattern-template').html()),
      	events: {
         	"click .delete-btn" : "delete"
@@ -28,22 +81,30 @@ $(function() {
       	initialize: function() {
         	_.bindAll(this, 'render', 'close', 'delete');
         	this.model.bind('change',  this.render);
-      	},
+			$(this.el).html( this.template({ e:this.model.toJSON() }) );
+			
+			this.actualView = new SubPatternViews[this.model.get("type")]( {model : this.model} );
+			this.actualView.render();
+			this.$el.prepend(this.actualView.$el);
+		},
       	render: function() {
-        	$(this.el).html( this.template({ e:this.model.toJSON() }) );
-        	return this;
+			this.actualView.render();
+			return this;
       	},
 	    close: function() {
-	   	 	this.model.save();
-	  	},
+			if(this.parentTrackView) {
+			} else {
+				this.model.save();
+			}
+		},
       	delete: function() {
 			var self = this;
 			this.$el.fadeOut(function(){
 	      		self.model.destroy();
       		});
 		}
-    });
-
+    });	
+	
     var PatternListView = Parse.View.extend({
     	el: $("#pattern_list_container"),
 		events : {
@@ -132,10 +193,10 @@ $(function() {
 				view.render();
 				$(self.el).find(".pattern_list").append($(view.el));
 			});
-			
-        	return this;
+			return this;
       	},
 	    close: function() {
+			console.log(patterns);
 	   	 	this.model.save();
 	  	},
 		addPattern : function(pattern) {
