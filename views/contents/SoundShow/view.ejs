@@ -53,6 +53,24 @@
 				
 			<!--/div-->
 		</script>
+	    <script type="text/template" id="pattern_list_template">
+			<!--div class="pattern_list_container"-->
+				<div class="pattern_list">
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+				    	add New Pattern
+				    	<span class="caret"></span>
+				  	</a>
+				  	<ul class="dropdown-menu">
+					    <li><a tabindex="-1" class="new-pattern">Color</a></li>
+					    <li><a tabindex="-1" class="new-pattern">RandomBlink</a></li>
+					    <li><a tabindex="-1" class="new-pattern">FadeTo</a></li>
+					</ul>
+				</div>
+			<!--/div-->
+		</script>
+		
 		<script type="text/template" id="login-template">
 	   		<header id="header"></header>
 	      	<div class="login">
@@ -79,8 +97,6 @@
 					<button class="btn play-btn">play</button>
 					<button class = "btn btn-danger delete-track-btn">delete</button>
 				</div>
-				<div class="pattern_list">
-				</li>
 			<!--/div-->
 		</script>
 	    <script type="text/template" id="color-template">
@@ -129,23 +145,10 @@
 		</header>
 		<div class="container-fluid">
 	  		<div class="row-fluid">
-	    		<div class="span3" style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
+	    		<div class="span3" id="left-main-column" 
+						style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
 					<h3> Patterns </h3>
-					<div id="pattern_list_container">
-						<div id="pattern_list">
-						</div>
-						<div class="btn-group">
-							<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-						    	add New Pattern
-						    	<span class="caret"></span>
-						  	</a>
-						  	<ul class="dropdown-menu">
-							    <li><a tabindex="-1" class="new-pattern">Color</a></li>
-							    <li><a tabindex="-1" class="new-pattern">RandomBlink</a></li>
-							    <li><a tabindex="-1" class="new-pattern">FadeTo</a></li>
-							</ul>
-						</div>
-					</div>
+
 			 	</div>
 	    		<div class="span9" style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
 					<h3> Tracks </h3>

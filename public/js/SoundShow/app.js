@@ -18,7 +18,6 @@ $(function() {
 	var PatternList = Parse.Collection.extend({
 		model: Pattern
 	});
-	
 	var SubPatternViews = {
 		"Color" : Parse.View.extend({
 	    	tagName : "div",
@@ -26,8 +25,7 @@ $(function() {
 	     	template: _.template($('#Pattern-Color-template').html()),
 			events: {
 			},
-			
-	      	initialize: function() {
+		  	initialize: function() {
 	        	_.bindAll(this, 'render','onClickColor');
 				this.$el.click(this.onClickColor);
 	      	},
@@ -70,7 +68,6 @@ $(function() {
 	     	template: _.template($('#Pattern-RandomBlink-template').html())
 		})
 	}
-	
     var PatternView = Parse.View.extend({
     	tagName: "div",
 		className: 'pattern',
@@ -79,6 +76,8 @@ $(function() {
         	"click .delete-btn" : "delete"
       	},
       	initialize: function() {
+			console.log("pattenr.track :",this.model.get("track").id);
+			
         	_.bindAll(this, 'render', 'close', 'delete');
         	this.model.bind('change',  this.render);
 			$(this.el).html( this.template({ e:this.model.toJSON() }) );
@@ -104,26 +103,34 @@ $(function() {
       		});
 		}
     });	
-	
     var PatternListView = Parse.View.extend({
-    	el: $("#pattern_list_container"),
+    	tagName : "div",
+		className : 'pattern_list_container',
+     	template : _.template($('#pattern_list_template').html()),
 		events : {
 			"click .new-pattern" : "newPattern"
 		},
 		initialize: function() {
+        	this.track = this.options.track;
+			
 		    _.bindAll(this, 'addOne', 'addAll', 'render','newPattern');
 	        this.patternList = new PatternList();
+			
 	        this.patternList.query = new Parse.Query(Pattern);
-	        this.patternList.bind('add',   this.addOne);
+			this.patternList.query.equalTo("track", this.track);
+			this.patternList.bind('add',   this.addOne);
 	        this.patternList.bind('reset', this.addAll);
 	        this.patternList.bind('all',   this.render);
 			this.patternList.fetch();
+			
+			this.$el.html(this.template());
         },
 	    addOne: function(pattern) {
 			var view = new PatternView({model: pattern});
-	    	$("#pattern_list").append(view.render().el);
+	    	this.$el.find(".pattern_list").append(view.render().el);
 	    },
 		addAll: function(collection, filter) {
+			console.log(this.track.id, " : ", this.patternList);
 	    	this.patternList.each(this.addOne);
 	    },
 		render : function() {
@@ -135,7 +142,8 @@ $(function() {
 					data : JSON.stringify({
 						color:"red",
 						delay:1000
-					})
+					}),
+					track : this.track
 				});
 			} else if (type == "RandomBlink") {
 				return this.patternList.create({
@@ -144,7 +152,8 @@ $(function() {
 						colors:null,
 						delay:1000,
 						interval:100
-					})
+					}),
+					track : this.track
 				});
 			} else if (type == "FadeTo") {
 				return this.patternList.create({
@@ -153,7 +162,8 @@ $(function() {
 						color : "black",
 						delay : 1000,
 						time  : 1000
-					})
+					}),
+					track : this.track
 				});
 			}
 		},
@@ -162,7 +172,6 @@ $(function() {
 			var pattern = this.createPatternWithType(type);
 		}
 	});
-	
 	
 	var Track = Parse.Object.extend({
 		className: "Track"
@@ -174,25 +183,25 @@ $(function() {
 
     var TrackView = Parse.View.extend({
     	tagName:  "div",
-		className : 'track',
-     	template: _.template($('#track-template').html()),
+		className: 'track',
+		template: _.template($('#track-template').html()),
      	events: {
         	"click .play-btn" : "play",
 			"click .delete-track-btn" : "delete"
 		},
       	initialize: function() {
-        	_.bindAll(this, 'render', 'close', 'play','addPattern');
+			_.bindAll(this, 'render', 'close', 'play','addPattern');
         	this.model.bind('change',  this.render);
+			
+			var patternListView = new PatternListView({
+        		track : this.model
+        	});
+			patternListView.render();
+			this.patternListView = patternListView;
+			this.$el.append(patternListView.$el);
       	},
       	render: function() {
-        	var self = this;
-			$(this.el).html( this.template({ e: this.model.toJSON() }) );
-			_.each(this.model.get("patterns"),function(pattern){
-				pattern = new Pattern(pattern);
-				var view = new PatternView({model : pattern});
-				view.render();
-				$(self.el).find(".pattern_list").append($(view.el));
-			});
+			this.patternListView.render();
 			return this;
       	},
 	    close: function() {
@@ -215,15 +224,13 @@ $(function() {
       		});
       	}
     });
-
     var TrackListView = Parse.View.extend({
     	el: $("#track_list"),
 		initialize: function() {
 			var self = this;
 		    _.bindAll(this, 'addOne', 'addAll', 'render','onClickAddNew');
 	        this.trackList = new TrackList();
-
-	        this.trackList.query = new Parse.Query(Track);
+			this.trackList.query = new Parse.Query(Track);
 	        this.trackList.bind('add',   this.addOne);
 	        this.trackList.bind('reset', this.addAll);
 	        this.trackList.bind('all',   this.render);
@@ -243,17 +250,13 @@ $(function() {
 	    	this.trackList.each(this.addOne);
 	    },
 		render : function() {
-			
-			
-        },
+		},
 		onClickAddNew : function(){
-			console.log("add new Track");
 	        this.trackList.create({
 				patterns : [ {"data":"{\"color\":\"red\",\"delay\":1000}","type":"Color"} ]
 	        });
 		}
 	});
-	
 
     Parse.User.logIn("admin", "admin", {
     	success: function(user) {
@@ -264,7 +267,8 @@ $(function() {
 		}
     });
 
-	new PatternListView();
+//	emptyPatternListView = new PatternListView();
+//	$("#left-main-column").append(emptyPatternListView.$el);
 	new TrackListView();
 //				Parse.history.start();
 });
