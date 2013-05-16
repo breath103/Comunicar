@@ -36,11 +36,11 @@ Track.prototype = {
 		}	
 		_runNextTrack();
 	},
-	stop : function(){
-		$(".site").clearQueue();
+	stop : function($div){
+		$div.clearQueue();
 //		this.$div.stop(true,false);
 		if(this.currentPattern)
-			this.currentPattern.onEnd(this.$div);
+			this.currentPattern.onEnd($div);
 		this.currentIndex 	= 0;
 		this.currentPattern = null;
 	}
@@ -166,7 +166,6 @@ RandomBlink.prototype = {
 		}
 	},
 	onEnd : function(){
-		console.log("end",this);
 		clearTimeout(this.endHandle);
 		clearInterval(this.blinkIntervalHandle);
 	}

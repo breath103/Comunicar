@@ -16,38 +16,29 @@ $(function() {
 
 
 	var Pattern = Parse.Object.extend("Pattern");
-	// A Collection containing all instances of Pattern.
+
 	var PatternList = Parse.Collection.extend({
 		model: Pattern
 	});
 
     var PatternView = Parse.View.extend({
-		//... is a list tag.
     	tagName:  "div",
-		// Cache the template function for a single item.
      	template: _.template($('#pattern-template').html()),
-		// The DOM events specific to an item.
      	events: {
         	"click .delete-btn" : "onDelete"
       	},
-		// The TodoView listens for changes to its model, re-rendering. Since there's
-      	// a one-to-one correspondence between a Todo and a TodoView in this
-      	// app, we set a direct reference on the model for convenience.
       	initialize: function() {
         	_.bindAll(this, 'render', 'close', 'remove');
         	this.model.bind('change',  this.render);
         	this.model.bind('destroy', this.remove);
       	},
-		// Re-render the contents of the todo item.
       	render: function() {
         	$(this.el).html( this.template({ e:this.model.toJSON() }) );
         	return this;
       	},
-	    // Close the `"editing"` mode, saving changes to the todo.
 	    close: function() {
 	   	 	this.model.save();
 	  	},
-		// Remove the item, destroy the model.
       	onDelete: function() {
       		this.model.destroy();
       	}
@@ -92,26 +83,28 @@ $(function() {
 
     var TrackView = Parse.View.extend({
     	tagName:  "div",
+		className : 'track',
      	template: _.template($('#track-template').html()),
      	events: {
         	"click .play-btn" : "play"
-      	},
+		},
       	initialize: function() {
-        	_.bindAll(this, 'render', 'close', 'remove','play');
+        	_.bindAll(this, 'render', 'close', 'remove','play','addPattern');
         	this.model.bind('change',  this.render);
         	this.model.bind('destroy', this.remove);
       	},
       	render: function() {
-			console.log(this.model);
         	$(this.el).html( this.template({ e: this.model.toJSON() }) );
         	return this;
       	},
 	    close: function() {
 	   	 	this.model.save();
 	  	},
+		addPattern : function(pattern) {
+			this.model.add("patterns", JSON.stringify(pattern));
+			this.render();
+		},
 		play : function() {
-			console.log("play",this.model);
-			console.log(this.model.toJSON());
 			window.socket.emit("play_track",{
 				track: this.model.toJSON()
 			});

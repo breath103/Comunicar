@@ -56,6 +56,7 @@
 		}
 		
         var socket = null;
+		var currentTrack = null;
         function connectWS() {
             console.log('Connecting to local server...');
 			var connecting_handle = null;
@@ -75,12 +76,16 @@
 					parseColorEvent(data,$(".site"));
 				});
 				socket.on("play_track",function(data){
+					if(currentTrack){
+						currentTrack.stop($(".site"));
+					}
+					
 					var track = new Track();
 					track.fromString(JSON.stringify(data.track));
-					console.log(track);
 					track.run($(".site"),function(){
-						alert("end");
+						currentTrack = null;
 					});
+					currentTrack = track;
 				});
             }
             socket.socket.connect();

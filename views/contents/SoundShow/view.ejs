@@ -43,7 +43,14 @@
 				<p class="text-left">d:<?=e.delay?></p>
 			</div>
 		</script>
-	    <script type="text/template" id="Pattern-Color-template">
+	    <script type="text/template" id="Pattern-RandomBlink-template">
+			<div class="RandomBlink">
+				<p class="text-left">interval:<?=e.interval?></p>
+				<p class="text-left">delay:<?=e.delay?></p>
+				<p class="text-left">colors:<?=e.colors&&e.colors.length>0?JSON.stringify(e.colors):"random"?></p>
+			</div>
+		</script>
+		<script type="text/template" id="Pattern-Color-template">
 			<div class="Color" style="background-color:<?=e.color?>">
 			</div>
 		</script>
@@ -67,7 +74,7 @@
 			</div>
 	    </script>
 		<script type="text/template" id="track-template">
-			<div class="track">
+			<!--div class="track"-->
 				<h4><?=e.objectId?></h4>
 				<li class="pattern_list">
 					<?for(var i=0;i<e.patterns.length;i++){?>
@@ -79,7 +86,7 @@
 					<?}?>
 				</li>
 				<button class="btn play-btn">play</button>
-			</div>
+			<!--/div-->
 		</script>
 	    <script type="text/template" id="color-template">
 			<div class="color" style="background-color:<?=e.color?>;">

@@ -49,7 +49,14 @@
 	display:block;
 }
 
-
+.track_list 
+{
+	float:left;
+}
+.track_list .track
+{
+	width:100%;
+}
 .track_list .track .pattern_list
 {
 	float:left;
