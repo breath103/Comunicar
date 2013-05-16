@@ -19,7 +19,6 @@ Track.prototype = {
 	run : function($div,cb){
 		var self = this;
 		self.$div = $div;
-		console.log("1",$div);
 		var _runNextTrack = function(){
 			if (self.currentIndex >= self.patterns.length) {
 				self.stop();
