@@ -77,12 +77,13 @@ $(function() {
 		className : 'track',
      	template: _.template($('#track-template').html()),
      	events: {
-        	"click .play-btn" : "play"
+        	"click .play-btn" : "play",
+			"click .delete-btn" : "delete"
 		},
       	initialize: function() {
-        	_.bindAll(this, 'render', 'close', 'remove','play','addPattern');
+        	_.bindAll(this, 'render', 'close', /*'remove',*/'play','addPattern');
         	this.model.bind('change',  this.render);
-        	this.model.bind('destroy', this.remove);
+//        	this.model.bind('destroy', this.remove);
       	},
       	render: function() {
         	var self = this;
@@ -109,7 +110,10 @@ $(function() {
 			});
 		},
       	delete: function() {
-      		this.model.destroy();
+			var self = this;
+			this.$el.fadeOut(function(){
+	      		self.model.destroy();
+      		});
       	}
     });
 
