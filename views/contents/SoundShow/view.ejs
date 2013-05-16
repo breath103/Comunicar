@@ -125,6 +125,12 @@
                 socket.socket.connect();
             }
 						
+			function get_random_color() {
+			    var letters = '0123456789ABCDEF'.split('');
+			    var color = '#';
+			    for (var i = 0; i < 6; i++ ) { color += letters[Math.round(Math.random() * 15)]; }
+			    return color;
+			}
 			$(document).ready(function() {
                 connectWS();
             	$("body").keydown(function(e){
@@ -140,6 +146,61 @@
 						case 84 : $(".pattern")[4].model.play(); break;  */
  				   	}
             	});
+				
+				$touchpad = $(".touch-pad");
+				var shouldDraw = false;
+		        $touchpad.bind("touchstart mousedown", function(e) {
+		            $(this).trigger("touchmove");
+		        	$(this).trigger("mousemove");
+		        	e = e.originalEvent;
+	            	var touchPos = {
+	                	x : e.pageX,
+	                	y : e.pageY
+	            	};
+					var grayScale = 
+					Math.round(touchPos.y / $touchpad.height() * 255);
+					var color = "rgb("+grayScale+","+grayScale+","+grayScale+")";
+					$("#touch-pad-out").html(JSON.stringify(touchPos));
+					socket.emit("screen_color",{
+						color : color
+					});
+
+        			shouldDraw = true;
+					return false;
+		        });
+		        $touchpad.bind("touchmove mousemove", function(e) {
+		            if(e && e.originalEvent && shouldDraw){
+		            	e = e.originalEvent;
+		            	var touchPos = {
+		                	x : e.pageX,
+		                	y : e.pageY
+		            	};
+						var grayScale = 
+						Math.round(touchPos.y / $touchpad.height() * 255);
+						var color = "rgb("+grayScale+","+grayScale+","+grayScale+")";
+						$("#touch-pad-out").html(JSON.stringify(touchPos));
+						socket.emit("screen_color",{
+							color : color
+						});
+		                return false;
+		        	}
+		        });
+		        $touchpad.bind("touchend mouseup", function(e) {
+		        	e = e.originalEvent;
+	            	var touchPos = {
+	                	x : e.pageX,
+	                	y : e.pageY
+	            	};
+					var grayScale = 
+					Math.round(touchPos.y / $touchpad.height() * 255);
+					var color = "rgb("+grayScale+","+grayScale+","+grayScale+")";
+					$("#touch-pad-out").html(JSON.stringify(touchPos));
+					socket.emit("screen_color",{
+						color : color
+					});
+					shouldDraw = false;
+					return false;
+		        });
 			});
         </script>
         <title>Comunicar</title>
@@ -151,9 +212,10 @@
 		<div class="container-fluid">
 	  		<div class="row-fluid">
 	    		<div class="span3" id="left-main-column" 
-						style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
-					<h3> Patterns </h3>
-
+					style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
+					<h4 id="touch-pad-out"></h4>
+					<div class="touch-pad">
+					</div>
 			 	</div>
 	    		<div class="span9" style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
 					<h3> Tracks </h3>

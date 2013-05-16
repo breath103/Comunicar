@@ -73,7 +73,7 @@
                 });
 				socket.on('screen_color',function(data){
 					$(".site").css("background-color",data.color);
-					parseColorEvent(data,$(".site"));
+				//	parseColorEvent(data,$(".site"));
 				});
 				socket.on("play_track",function(data){
 					if(currentTrack){
