@@ -120,9 +120,8 @@ $(function() {
 			"click .delete-track-btn" : "delete"
 		},
       	initialize: function() {
-        	_.bindAll(this, 'render', 'close', /*'remove',*/'play','addPattern');
+        	_.bindAll(this, 'render', 'close', 'play','addPattern');
         	this.model.bind('change',  this.render);
-//        	this.model.bind('destroy', this.remove);
       	},
       	render: function() {
         	var self = this;
@@ -189,15 +188,7 @@ $(function() {
 		onClickAddNew : function(){
 			console.log("add new Track");
 	        this.trackList.create({
-				//default pattern. show color
 				patterns : [ {"data":"{\"color\":\"red\",\"delay\":1000}","type":"Color"} ]
-				/*
-	        	content: this.input.val(),
-	        	order:   this.todos.nextOrder(),
-	        	done:    false,
-	        	user:    Parse.User.current(),
-	        	ACL:     new Parse.ACL(Parse.User.current())
-				*/
 	        });
 		}
 	});
