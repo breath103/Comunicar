@@ -16,7 +16,14 @@ $(function() {
 		className: "Pattern"
 	});
 	var PatternList = Parse.Collection.extend({
-		model: Pattern
+		model: Pattern,
+	    nextOrder: function() {
+	    	if (!this.length) return 1;
+	    	return this.last().get('order') + 1;
+	    },
+	    comparator: function(pattern) {
+	    	return pattern.get('order');
+	    }
 	});
 	var SubPatternViews = {
 		"Color" : Parse.View.extend({
@@ -143,7 +150,8 @@ $(function() {
 						color:"red",
 						delay:1000
 					}),
-					track : this.track
+					track : this.track,
+					order : this.patternList.nextOrder()
 				});
 			} else if (type == "RandomBlink") {
 				return this.patternList.create({
@@ -153,7 +161,8 @@ $(function() {
 						delay:1000,
 						interval:100
 					}),
-					track : this.track
+					track : this.track,
+					order : this.patternList.nextOrder()
 				});
 			} else if (type == "FadeTo") {
 				return this.patternList.create({
@@ -163,7 +172,8 @@ $(function() {
 						delay : 1000,
 						time  : 1000
 					}),
-					track : this.track
+					track : this.track,
+					order : this.patternList.nextOrder()
 				});
 			}
 		},
