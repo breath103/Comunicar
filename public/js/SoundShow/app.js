@@ -5,24 +5,20 @@ $(function() {
 		interpolate : /<\?=([\s\S]+?)\?>/g
 	};
 	
-	
 	Parse.$ = jQuery;
-	// Initialize Parse with your Parse application javascript keys
  	Parse.initialize("PJbZN8uNbyIehnkz7VyY53RJG6rEVHdzKcCoUZYR", "9luQVvgoxvJ8XI7mJPP3jaqCrx0Oj8xgpTdigwck");
 	var User = Parse.Object.extend("User", {
 	});
 	// Construct a query to get the current user's todo items
 	var query = new Parse.Query(User);
 
-
 	var Pattern = Parse.Object.extend("Pattern");
-
 	var PatternList = Parse.Collection.extend({
 		model: Pattern
 	});
-
     var PatternView = Parse.View.extend({
     	tagName:  "div",
+		className : 'pattern',
      	template: _.template($('#pattern-template').html()),
      	events: {
         	"click .delete-btn" : "onDelete"
@@ -33,6 +29,7 @@ $(function() {
         	this.model.bind('destroy', this.remove);
       	},
       	render: function() {
+			console.log(this.model.toJSON());
         	$(this.el).html( this.template({ e:this.model.toJSON() }) );
         	return this;
       	},
@@ -47,12 +44,8 @@ $(function() {
     var PatternListView = Parse.View.extend({
     	el: $("#pattern_list"),
 		initialize: function() {
-			var self = this;
-		
-	        _.bindAll(this, 'addOne', 'addAll', 'render');
-			// Create our collection of Todos
-	        this.patternList = new PatternList;
-	        // Setup the query for the collection to look for todos from the current user
+		    _.bindAll(this, 'addOne', 'addAll', 'render');
+	        this.patternList = new PatternList();
 	        this.patternList.query = new Parse.Query(Pattern);
 	        this.patternList.bind('add',   this.addOne);
 	        this.patternList.bind('reset', this.addAll);
@@ -69,8 +62,6 @@ $(function() {
 		render : function() {
         },
 	});
-	
-	
 	
 	
 	var Track = Parse.Object.extend({
@@ -94,7 +85,15 @@ $(function() {
         	this.model.bind('destroy', this.remove);
       	},
       	render: function() {
-        	$(this.el).html( this.template({ e: this.model.toJSON() }) );
+        	var self = this;
+			$(this.el).html( this.template({ e: this.model.toJSON() }) );
+			_.each(this.model.get("patterns"),function(pattern){
+				pattern = new Pattern(pattern);
+				var view = new PatternView({model : pattern});
+				view.render();
+				$(self.el).find(".pattern_list").append($(view.el));
+			});
+			
         	return this;
       	},
 	    close: function() {
@@ -118,17 +117,19 @@ $(function() {
     	el: $("#track_list"),
 		initialize: function() {
 			var self = this;
-		    _.bindAll(this, 'addOne', 'addAll', 'render');
-			// Create our collection of Todos
+		    _.bindAll(this, 'addOne', 'addAll', 'render','onClickAddNew');
 	        this.trackList = new TrackList();
-	        // Setup the query for the collection to look for todos from the current user
+
 	        this.trackList.query = new Parse.Query(Track);
 	        this.trackList.bind('add',   this.addOne);
 	        this.trackList.bind('reset', this.addAll);
 	        this.trackList.bind('all',   this.render);
 			this.trackList.fetch();
         },
-	    addOne: function(track) {
+     	events: {
+        	"click .add-new-btn" : "onClickAddNew"
+      	},
+		addOne: function(track) {
 			var view = new TrackView({model: track});
 	    	$("#track_list").append(view.render().el);
 	    },
@@ -136,9 +137,24 @@ $(function() {
 	    	this.trackList.each(this.addOne);
 	    },
 		render : function() {
+			
+			
         },
+		onClickAddNew : function(){
+			console.log("add new Track");
+	        this.trackList.create({
+				//default pattern. show color
+				patterns : [ {"data":"{\"color\":\"red\",\"delay\":1000}","type":"Color"} ]
+				/*
+	        	content: this.input.val(),
+	        	order:   this.todos.nextOrder(),
+	        	done:    false,
+	        	user:    Parse.User.current(),
+	        	ACL:     new Parse.ACL(Parse.User.current())
+				*/
+	        });
+		}
 	});
-	
 	
 
     Parse.User.logIn("admin", "admin", {

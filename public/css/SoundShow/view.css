@@ -51,17 +51,29 @@
 
 .track_list 
 {
+	width:100%;
 	float:left;
 }
 .track_list .track
 {
 	width:100%;
+	border-bottom: 1px solid black;
+	float: left;
+	margin-bottom: 10px;
+}
+.track_list .track .header 
+{
+	float:left;
+	width:20%;
 }
 .track_list .track .pattern_list
 {
 	float:left;
+	width:80%;
 }
-.track_list .track .pattern_list > ul
+.track_list .track .pattern_list .pattern
 {
-	float:left;
+	width:auto;
+	height:auto;
+	display:inline-block;
 }

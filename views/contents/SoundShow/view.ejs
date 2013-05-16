@@ -29,13 +29,12 @@
 		<script src="/js/SoundShow/app.js"></script>
 	    
 	    <script type="text/template" id="pattern-template">
-			<div class="pattern">
+			<!--div class="pattern"-->
+			<? console.log('#Pattern-' + e.type + '-template'); ?>
 				<span><?=e.type?></span>
-				<!--span><?=e.objectId?></span>
-				<span><?=e.createdAt?></span-->
 				<?=_.template($('#Pattern-' + e.type + '-template').html())({e: JSON.parse(e.data)})?>
 				<button class="delete-btn" >delete</button>
-			</div>
+			<!--/div-->
 		</script>
 	    <script type="text/template" id="Pattern-FadeTo-template">
 			<div class="FadeTo" style="background-color:<?=e.color?>">
@@ -51,6 +50,7 @@
 			</div>
 		</script>
 		<script type="text/template" id="Pattern-Color-template">
+		<? console.log("C",e) ?>
 			<div class="Color" style="background-color:<?=e.color?>">
 			</div>
 		</script>
@@ -75,17 +75,12 @@
 	    </script>
 		<script type="text/template" id="track-template">
 			<!--div class="track"-->
-				<h4><?=e.objectId?></h4>
-				<li class="pattern_list">
-					<?for(var i=0;i<e.patterns.length;i++){?>
-						<? 
-							var pattern = e.patterns[i];
-							var template = _.template( $("#pattern-template").html() );
-						?>
-						<ul><?=template({e: pattern})?></ul>
-					<?}?>
+				<div class='header'>
+					<h4><?=e.objectId?></h4>
+					<button class="btn play-btn">play</button>
+				</div>
+				<div class="pattern_list">
 				</li>
-				<button class="btn play-btn">play</button>
 			<!--/div-->
 		</script>
 	    <script type="text/template" id="color-template">
@@ -96,79 +91,7 @@
 		</script>
 		
 		<script>
-		    
-			function Pattern(){
-				this.colors = [];
-				this.t = "single_color";
-				this.$div = null;
-				this.interval = 10;
-			}
-			Pattern.prototype = {
-				template : _.template($('#pattern-template').html()) ,
-				present : function(){
-					var self = this;	
-					this.$div = $(this.template({e:this}));
-					this.$div.find("select").change(function(){
-						self.t = $(this).val();
-						console.log(self);
-					});
-					this.$div.find(".play_button").click(function(){
-						self.play();
-					});
-					this.$div.find(".add-color-btn").click(function(){
-						$(this).colorpicker({
-							showCloseButton  : true ,
-							showCancelButton : true ,
-							close:function(event, color) {
-								self.addColor(new Color("#" + color.formatted));
-								//console.log(color);
-								
-							} 
-						});						
-					});
-					this.$div[0].model = this;
-					return this.$div;
-				},
-				play : function(){
-					var colors = [];
-					_.each(this.colors,function(c){
-						colors.push(c.color);
-					});
-					var data = {
-						t : this.t,
-						colors : colors,
-						interval : this.interval
-					};
-					console.log(data);
-					socket.emit("screen_color",data);
-				},
-				addColor : function(color){
-					var self = this;
-					
-					this.colors.push(color);
-					var $color = $(color.present());
-					$color[0].model = color;
-
-					color.$div = $color;
-					// $color.click(function(){
-					// 	$(this).colorpicker();
-					// })
-					console.log($color.find(".overlay"));
-					$color.find(".overlay").click(function(){
-						self.removeColor(color);
-					});
-					this.$div.append($color);
-				},
-				removeColor : function(color){
-					if(color.$div) 
-						color.$div.remove();
-					
-					this.colors = _.without(this.colors,color);
-				}
-			};
-			
-			
-            function connectWS() {
+			function connectWS() {
 				window.socket = null;
                 console.log('Connecting to local server...');
                 if (socket == null) {
@@ -180,51 +103,24 @@
                 }
                 socket.socket.connect();
             }
-			
-			function get_random_color() {
-			    var letters = '0123456789ABCDEF'.split('');
-			    var color = '#';
-			    for (var i = 0; i < 6; i++ ) {
-			        color += letters[Math.round(Math.random() * 15)];
-			    }
-			    return color;
-			}
 						
 			$(document).ready(function() {
                 connectWS();
             	$("body").keydown(function(e){
-					console.log(e.keyCode);
 					switch(e.keyCode) {
 						case 39 : 
-							$("#blink_input").val(Number($("#blink_input").val()) + 2); 
-							onBlinkIntervalChange($("#blink_input"));
 							break;
 						case 37 :
-							$("#blink_input").val(Number($("#blink_input").val()) - 2); 
-							onBlinkIntervalChange($("#blink_input"));
 							break;
- 				   		case 81 : $(".pattern")[0].model.play(); break; 
+ 				   	/*	case 81 : $(".pattern")[0].model.play(); break; 
 						case 87 : $(".pattern")[1].model.play(); break;
 						case 69 : $(".pattern")[2].model.play(); break;
 						case 82 : $(".pattern")[3].model.play(); break;
-						case 84 : $(".pattern")[4].model.play(); break;
+						case 84 : $(".pattern")[4].model.play(); break;  */
  				   	}
-					console.log($("#blink_input").val());
             	});
 			});
-
-			function stopAll(){
-				socket.emit("screen_color",{
-					t : "fade_stop"
-				});
-			}
-			function addNewPattern(){
-				var pattern = new Pattern();
-				pattern.t = "fadeTo";
-				$(".pallete").append(pattern.present());
-			}
         </script>
-        
         <title>Comunicar</title>
     </head>
     <body>
@@ -233,16 +129,18 @@
 		</header>
 		<div class="container-fluid">
 	  		<div class="row-fluid">
-	    		<div class="span2">
+	    		<div class="span2" style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
+					<h3> Patterns </h3>
 					<div id="pattern_list">
-					
 					</div>
 					<button class="btn btn-primary btn-large" 
 							onclick="addNewPattern();">add New Pattern</button>
 			 	</div>
-	    		<div class="span10">
+	    		<div class="span10" style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
+					<h3> Tracks </h3>
 					<div class="track_list" id="track_list">
-					
+						
+						<button class='btn add-new-btn'>New Track</button>
 					</div>
 					<button class = "btn btn-danger btn-large" onclick="stopAll();">stop all</button>
 	    		</div>
