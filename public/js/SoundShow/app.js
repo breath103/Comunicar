@@ -120,7 +120,59 @@ $(function() {
 		"RandomBlink" : Parse.View.extend({
 	    	tagName : "div",
 			className : "RandomBlink",
-	     	template: _.template($('#Pattern-RandomBlink-template').html())
+	     	template: _.template($('#Pattern-RandomBlink-template').html()),
+			events: {
+				"change .interval_input" : "onChange",
+				"change .delay_input" 	 : "onChange",
+				"click .add-new-color" : "onAddNewColor"
+			},
+			initialize: function() {
+	        	_.bindAll(this, 'render','onAddNewColor','onChange','addColor');
+			},
+			getData : function(){
+				return JSON.parse(this.model.get("data"));
+			},
+			setData : function(data){
+				this.model.set("data",JSON.stringify(data));
+				this.model.save();
+			},
+			onChange : function(){
+				var data = this.getData();
+				data.interval = Number(this.$el.find(".interval_input").val());
+				data.delay 	  = Number(this.$el.find(".delay_input").val());
+				this.setData(data);
+			},
+			onAddNewColor : function(){
+				var newColor = "yellow";
+				var $color = $('<div class="Color"></div>');
+				$color.css({"background-color":newColor});
+				this.$el.find(".Colors").append($color);
+				$color.colorpicker({
+					'showCloseButton': true ,
+					'inline': false,
+					'showCancelButton': true ,
+					close: function(event, color) {
+						$(this).css({"background-color":"#" + color.formatted});
+					}
+				});
+				this.addColor(newColor);
+			},
+			addColor : function(color) {
+				var data = this.getData();
+				data.colors.push(color);
+				this.setData(data);
+			},
+	      	render: function() {
+	      		this.$el.html(this.template({e: this.getData()}));
+				this.$el.find(".Color").colorpicker({
+					'showCloseButton': true ,
+					'inline': false,
+					'showCancelButton': true ,
+					close: function(event, color) {
+						$(this).css({"background-color":"#" + color.formatted});
+					}
+				});
+			}
 		})
 	}
     var PatternView = Parse.View.extend({
@@ -131,8 +183,6 @@ $(function() {
         	"click .delete-btn" : "delete"
       	},
       	initialize: function() {
-			console.log("pattenr.track :",this.model.get("track").id);
-			
         	_.bindAll(this, 'render', 'close', 'delete');
         	this.model.bind('change',  this.render);
 			$(this.el).html( this.template({ e:this.model.toJSON() }) );
@@ -185,8 +235,7 @@ $(function() {
 	    	this.$el.find(".pattern_list").append(view.render().el);
 	    },
 		addAll: function(collection, filter) {
-			console.log(this.track.id, " : ", this.patternList);
-	    	this.patternList.each(this.addOne);
+			this.patternList.each(this.addOne);
 	    },
 		render : function() {
         },
@@ -245,7 +294,8 @@ $(function() {
 		template: _.template($('#track-template').html()),
      	events: {
         	"click .play-btn" : "play",
-			"click .delete-track-btn" : "delete"
+			"click .delete-track-btn" : "delete",
+			"change .hotkey-input" : "onHotkeyChange"
 		},
       	initialize: function() {
 			_.bindAll(this, 'render', 'close', 'play','addPattern');
@@ -279,6 +329,14 @@ $(function() {
 			console.log(json);
 			return json;
 		},
+		onHotkeyChange : function(e){
+			var hotkey =  $(e.currentTarget).val().charCodeAt(0);
+			
+			var val = $(e.currentTarget).val();
+			$(e.currentTarget).val(  val.substr(val.length-1)  );
+		 	this.model.set("hotkey",hotkey);
+			this.model.save();
+		},
 		play : function() {
 			
 			window.socket.emit("play_track",{
@@ -296,17 +354,23 @@ $(function() {
     	el: $("#track_list"),
 		initialize: function() {
 			var self = this;
-		    _.bindAll(this, 'addOne', 'addAll', 'render','onClickAddNew');
+		    _.bindAll(this, 'addOne', 'addAll', 'render','onClickAddNew','onKeydown');
 	        this.trackList = new TrackList();
 			this.trackList.query = new Parse.Query(Track);
 	        this.trackList.bind('add',   this.addOne);
 	        this.trackList.bind('reset', this.addAll);
 	        this.trackList.bind('all',   this.render);
 			this.trackList.fetch();
+				
+			console.log($("body"));
+			$("body").keydown(this.onKeydown);
         },
      	events: {
         	"click .add-new-btn" : "onClickAddNew"
       	},
+		onKeydown : function(e){
+			console.log(e.keyCode);
+		},
 		addOne: function(track) {
 			var view = new TrackView({model: track});
 			view.render();
@@ -325,18 +389,35 @@ $(function() {
 	        });
 		}
 	});
-
-    Parse.User.logIn("admin", "admin", {
-    	success: function(user) {
-			console.log("success",user);
+	
+    var LoginView = Parse.View.extend({
+    	el: $("#login_view"),
+		initialize: function() {
+			_.bindAll(this,"onLoginFailed","onLoginSuccess");
+        },
+     	events: {
+        	"click .login-btn" : "onClickLogin"
+      	},
+		onLoginFailed : function(user,error){
+			alert("failed to login : " + JSON.stringify(error));
 		},
-		error: function(user, error) {
-        	console.log("error",user,error);
+		onLoginSuccess : function(user){
+			new TrackListView();
+			this.$el.fadeOut();
+		},
+		onClickLogin : function(){
+			var id  = this.$el.find(".id-input").val();
+			var password = this.$el.find(".password-input").val();
+			if (id && password) {
+			    Parse.User.logIn(id,password, {
+			    	success : this.onLoginSuccess,
+					error   : this.onLoginFailed
+			    });
+			} else {
+				alert("id or password is not filled");
+			}
 		}
-    });
+	});
 
-//	emptyPatternListView = new PatternListView();
-//	$("#left-main-column").append(emptyPatternListView.$el);
-	new TrackListView();
-//				Parse.history.start();
+	new LoginView();
 });

@@ -3,6 +3,21 @@
 	height:500px;
 }
 
+.login_view {
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	background-color:rgba(0,0,0,0.91);
+}
+.login_view .input-container{
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:26%;
+	width: 400px;
+}
+
 
 #pattern_list .pattern{
 	min-width:100px;
@@ -29,6 +44,23 @@
 	height:50px;
 }
 
+
+.RandomBlink em{
+	width:30%;
+}
+.RandomBlink input{
+	width:60%;
+	background:transparent;
+	margin:0;
+	padding:0;
+}
+.RandomBlink .Colors{
+	
+}
+.RandomBlink .Colors .Color{
+	min-width:30px;
+	min-height:30px;
+}
 
 
 .Color {
@@ -90,6 +122,13 @@
 	float:left;
 	width:80%;
 }
+.track_list .track .hotkey-input
+{
+	width:1em;
+	padding:0;
+	margin:0;
+}
+
 .track_list .track .pattern_list .pattern
 {
 	width:auto;

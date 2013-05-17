@@ -39,18 +39,26 @@
 			<!--div class="FadeTo" style="background-color:<?=e.color?>"-->
 				<div class="thumbnail" style="background-color:<?=e.color?>"></div>
 				<em>time</em>
-					<input class="time_input" type="text" value="<?=e.time?>"/>
+				<input class="time_input" type="text" value="<?=e.time?>"/>
 				<em>delay</em>
-					<input class="delay_input" type="text" value="<?=e.delay?>"/>
+				<input class="delay_input" type="text" value="<?=e.delay?>"/>
 			<!--/div-->
 		</script>
 	    <script type="text/template" id="Pattern-RandomBlink-template">
 			<!--div class="RandomBlink"-->
 				<label>interval</label><input class="interval_input" type="text" value="<?=e.interval?>"/>
 				<label>delay</label><input class="delay_input" type="text" value="<?=e.delay?>"/>
-				<p class="text-left">
-					colors:<?=e.colors&&e.colors.length>0?JSON.stringify(e.colors):"random"?>
-				</p>
+				<div class="Colors">
+					<? if(!e.colors || e.colors.length == 0) {?>
+						Random
+					<?} else {?>
+						<?e.colors.forEach(function(v){?>
+							<div class="Color" style="background-color:<?=v?>">
+							</div>
+						<?})?>
+					<?}?>
+				</div>
+				<button class="btn-info add-new-color">add color</button>
 			<!--/div-->
 		</script>
 		<script type="text/template" id="Pattern-Color-template">
@@ -101,6 +109,7 @@
 					<h4><?=e.objectId?></h4>
 					<button class="btn play-btn">play</button>
 					<button class="btn btn-danger delete-track-btn">delete</button>
+					<input type="text" class="hotkey-input" value='<?=String.fromCharCode(e.hotkey)?>'/>
 				</div>
 			<!--/div-->
 		</script>
@@ -133,20 +142,7 @@
 			}
 			$(document).ready(function() {
                 connectWS();
-            	$("body").keydown(function(e){
-					switch(e.keyCode) {
-						case 39 : 
-							break;
-						case 37 :
-							break;
- 				   	/*	case 81 : $(".pattern")[0].model.play(); break; 
-						case 87 : $(".pattern")[1].model.play(); break;
-						case 69 : $(".pattern")[2].model.play(); break;
-						case 82 : $(".pattern")[3].model.play(); break;
-						case 84 : $(".pattern")[4].model.play(); break;  */
- 				   	}
-            	});
-				
+
 				$touchpad = $(".touch-pad");
 				var shouldDraw = false;
 		        $touchpad.bind("touchstart mousedown", function(e) {
@@ -177,7 +173,9 @@
 		            	};
 						var grayScale = 
 						Math.round(touchPos.y / $touchpad.height() * 255);
-						var color = "rgb("+grayScale+","+grayScale+","+grayScale+")";
+						var color = "rgb("+grayScale+","+
+									grayScale+","+
+									grayScale+")";
 						$("#touch-pad-out").html(JSON.stringify(touchPos));
 						socket.emit("screen_color",{
 							color : color
@@ -185,19 +183,7 @@
 		                return false;
 		        	}
 		        });
-		        $touchpad.bind("touchend mouseup", function(e) {
-					// 		        	e = e.originalEvent;
-					// 	            	var touchPos = {
-					// 	                	x : e.pageX,
-					// 	                	y : e.pageY
-					// 	            	};
-					// var grayScale = 
-					// Math.round(touchPos.y / $touchpad.height() * 255);
-					// var color = "rgb("+grayScale+","+grayScale+","+grayScale+")";
-					// $("#touch-pad-out").html(JSON.stringify(touchPos));
-					// socket.emit("screen_color",{
-					// 	color : color
-					// });
+		        $touchpad.bind("touchend mouseup", function(e){
 					shouldDraw = false;
 					return false;
 		        });
@@ -225,6 +211,35 @@
 					<button class = "btn btn-danger btn-large" onclick="stopAll();">stop all</button>
 				</div>
 	  	  </div>
+		</div>
+		<div class="login_view" id="login_view">
+			<div class="input-container">
+				<div class="form-horizontal">
+					<div class="control-group">
+				    	<label class="control-label" for="inputEmail">ID</label>
+				    	<div class="controls">
+				      	  <input type="text" id="inputEmail" 
+						  		 class='id-input' placeholder="ID">
+				    	</div>
+				  	</div>
+				  	<div class="control-group">
+				    	<label class="control-label" for="inputPassword">Password</label>
+				    	<div class="controls">
+				      		<input type="password" 
+									class="password-input"
+									id="inputPassword" placeholder="Password">
+				    	</div>
+				  	</div>
+				  	<div class="control-group">
+				    	<div class="controls">
+				      		<label class="checkbox">
+				        		<input type="checkbox"> Remember me
+				      	  	</label>
+				      	  	<button type="button" class="btn login-btn">Sign in</button>
+				    	</div>
+				  	</div>
+				</div>
+			</div>
 		</div>
 		<!-- <div>
 		<button onclick="startSendingBlink();">send blink</button>
