@@ -300,7 +300,7 @@ $(function() {
       	initialize: function() {
 			_.bindAll(this, 'render', 'close', 'play','addPattern');
         	this.model.bind('change',  this.render);
-				
+			this.model.view = this;
 			this.$el.html(this.template({e:this.model.toJSON()}));
 			
 			var patternListView = new PatternListView({
@@ -338,7 +338,12 @@ $(function() {
 			this.model.save();
 		},
 		play : function() {
-			
+			var b = this.$el.css("background-color");
+			this.$el.transit({
+				"background-color" : "red"
+			}).transit({
+				"background-color" : b
+			});
 			window.socket.emit("play_track",{
 				track: this.jsonForPlay()
 			});
@@ -369,7 +374,12 @@ $(function() {
         	"click .add-new-btn" : "onClickAddNew"
       	},
 		onKeydown : function(e){
-			console.log(e.keyCode);
+			this.trackList.each(function(track){
+				if(track.get("hotkey") == e.keyCode){
+					console.log("play",e.keyCode,track);
+					track.view.play();
+				}
+			});
 		},
 		addOne: function(track) {
 			var view = new TrackView({model: track});
@@ -384,9 +394,16 @@ $(function() {
 		render : function() {
 		},
 		onClickAddNew : function(){
-	        this.trackList.create({
-				patterns : [ {"data":"{\"color\":\"red\",\"delay\":1000}","type":"Color"} ]
-	        });
+			var self = this;
+			var track = new Track();
+			track.save();
+			
+			track.save().then(function(gameTurnAgain) {
+				self.trackList.add(track);
+			}, function(error) {
+				alert("fail to make new track");
+			});
+			console.log("new",track);
 		}
 	});
 	
