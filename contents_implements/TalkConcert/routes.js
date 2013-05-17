@@ -14,11 +14,12 @@ module.exports = function(content,app){
     });
     app.get(defaultPath + "view",function(req,res){
 		Question.find({},function(error,questions){
-			console.log("questions" , questions);
+			console.log(questions);
+			res.render(viewPath + "view",{
+				questions : questions,
+	    		content : req.content
+	    	});
 		});
-    	res.render(viewPath + "view",{
-    		content : req.content
-    	});
     });
 
 };	
