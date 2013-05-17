@@ -34,7 +34,6 @@ module.exports = function(app){
             user.save();
             res.send(200);
         });
-
     });
 
     app.get("/admin/facebook_users",function(req,res){

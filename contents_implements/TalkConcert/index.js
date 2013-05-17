@@ -16,6 +16,6 @@ module.exports = function(content,params){
 		console.log("TalkConcert moongoose db connected");
 	}
 
-	require("./websocket")(content,params.io);
+	require("./websocket")(content,params.io,Question);
 	require("./routes")(content,params.app);    
 };	

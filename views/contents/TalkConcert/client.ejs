@@ -11,163 +11,28 @@
         <script src="/js/google_analytics.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            var socket = null;
-            var target_url = null;
-
-            $.fn.get2dContext = function(){
-	            return this[0].getContext("2d");
-            };
-            
-            $.fn.resizeContext = function(){
-	           	$(this)[0].width  = $(this).width();
-	           	$(this)[0].height = $(this).height();
-            
-            };
-
-            function uploadImage() {
-            	var target_url = $("#painter")[0].toDataURL();
-                if (target_url) {
-                    socket.emit("uploadImage", {
-                        image: target_url,
-                        text: $("#text_input").val()
-                    });
-                    target_url = null;
-                }
-            }
-
-            function resizeImage(file, dataURL) {
-                var fileType = file.type;
-                var image = new Image();
-                image.src = dataURL;
-
-                image.onload = function() {
-                	var $canvas = $("#painter");
-                	
-                	var ctx = $canvas.get2dContext();
-                	
-                	
-                	
-                	var maxWidth    = $(".canvas_container").width(),
-                        maxHeight   = $(".canvas_container").height(),
-                        imageWidth = image.width,
-                        imageHeight = image.height;
-
-                    if (imageWidth > imageHeight) {
-                        if (imageWidth > maxWidth) {
-                            imageHeight *= maxWidth / imageWidth;
-                            imageWidth = maxWidth;
-                        }
-                    }
-                    else {
-                        if (imageHeight > maxHeight) {
-                            imageWidth *= maxHeight / imageHeight;
-                            imageHeight = maxHeight;
-                        }
-                    }
-                    
-                    $canvas.width(imageWidth);
-                    $canvas.height(imageHeight);
-                    $canvas.resizeContext();
-                    
-                    
-                    ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
-                }
-            }
-
-
-
-
-            function connectWS() {
-                console.log('Connecting to local server...');
-
-                var connecting_handle = null;
-                if (socket == null) {
-                    socket = io.connect("/Comunicar");
-                    socket.on("connect", function() {
-                        clearInterval(connecting_handle);
-                    });
-                    socket.on('message', function(data) {});
-                    socket.on('disconnect', function() {
-                        alert("disconnect");
-                        connecting_handle = setInterval(function() {
-                            socket.socket.connect();
-                        }, 500);
-                    });
-                }
-                socket.socket.connect();
-            }
-
-            function enablePainterInCanvas($canvas) {
-            	$canvas[0].width  = $canvas.width();
-            	$canvas[0].height = $canvas.height();
-            	
-            	var context = $canvas.get2dContext();
-
-            	context.lineJoin="round";
-            	context.lineCap="round";
-            	context.lineWidth=10;
-            		
-            	var lastTouch = null;
-            
-                $canvas.bind("touchstart mousedown", function(e) {
-	                $(this).trigger("touchmove");
-                	$(this).trigger("mousemove");
-                	e = e.originalEvent;
-                	var touchPos = {
-	                	x : e.pageX,
-	                	y : e.pageY
-                	};
-                	
-                	context.beginPath();
-                	context.moveTo(touchPos.x,touchPos.y);
-                	
-                	return false;
-                });
-                $canvas.bind("touchmove mousemove", function(e) {
-	                if(e && e.originalEvent){
-	                	e = e.originalEvent;
-	                	var touchPos = {
-		                	x : e.pageX,
-		                	y : e.pageY
-	                	};
-	                	lastTouch = touchPos;
-	                	
-	                	context.lineTo(touchPos.x,touchPos.y);
-						context.moveTo(touchPos.x,touchPos.y);
-	                    context.stroke();
-	            		
-	                    return false;
-                	}
-                });
-                $canvas.bind("touchend mouseup", function(e) {
-                	e = e.originalEvent;
-                	console.log(e);
-                	context.closePath();
-                	context.stroke();
-                	return false;
-                });
-            }
-
-            $(document).ready(function() {
-            //    alert("사진을 선택한뒤 화면에 보여지면 핸드폰을 흔들어주세요.\n그래도 업로드가 안된다면 아래 버튼을 눌러주세요");
+			function connectWS() {
+				window.socket = null;
+	            console.log('Connecting to local server...');
+	            if (socket == null) {
+	                socket = io.connect("/TalkConcert");
+					socket.on('message', function(data) {
+	                });
+	                socket.on('disconnect', function() {
+					});
+	            }
+	            socket.socket.connect();
+	        }
+			$(document).ready(function() {
                 connectWS();
-                $("#image_input").change(function() {
-                    var fileReader = new FileReader();
-                    var file = this.files[0];
-                    fileReader.onloadend = function(evt) {
-                        if (evt.target.readyState == FileReader.DONE) {
-                            resizeImage(file, evt.target.result);
-                        }
-                    };
-                    fileReader.readAsDataURL(file);
-                });
-                	
-               	enablePainterInCanvas($("#painter"));
-
-                $(window).bind("shake", function(event) {
-                    uploadImage();
-                });
-            });
+        		$("#question-send-btn").click(function(){
+					socket.emit("add_question",{
+						question : {
+							text : $("#question-input").val()
+						}
+					});
+        		});
+			});
         </script>
         <style>
 			html,body{
@@ -176,118 +41,115 @@
 				padding: 0px;
 				margin: 0px;
 			}
-        	#painter{
-	        	width:100%;
-	        	height:100%;
-	        	background-color:gray;
-	        	margin-left:auto;
-	        	margin-right:auto;
-        	}
-
 			.container{
-				width: 640px;
-				height: 716px;
+				width: 100%;
+				height: 100%;
 				background-image: url("/images/comunicar/postit_background.png");
+				max-width:960px;
+				max-height:1074px;
+			}
+			.sendbutton{
+				position: relative;
+				float:right;
+				width: 15%;
+				height: 14.1%;
+				top: 1.53%;
+				right: 3%;
+				min-width:101px;
+				min-height:101px;
+				background-image: url("/images/comunicar/postit_send_btn.png");
+				background-size: 100% 100%;
 			}
 			.post{
-				position:absolute;
-				width: 24%;
-				height: 48%;
-				margin-left: 8%;
-				margin-top: 8%;
+				position:relative;
+				width: 63%;
+				height: 57%;
+				top: 18%;
+				margin-left:auto;
+				margin-right:auto;
 				background-image: url("/images/comunicar/postit_yellow.png");
 				background-size: 100% 100%;
+				min-width:404px;
+				min-height:414px;
 			}
 			.posttext{
 				position: relative;
 				width: 90%;
 				height: 75%;
-				margin-left: 5%;
-				margin-top: 16%;
-				font-size:larger;
+				padding-left:5%;
+				padding-top:5%;
+				font-size:30%;
 				font-weight:bolder;
+				max-width:400px;
+				max-height:410px;
 			}
 			.tape{
 				position: absolute;
-				width: 10%;
-				height: 8%;
-				margin-top: 6%;
-				margin-left: 15%;
+				width: 22.5%;
+				height: 6.84%;
+				top: 15%;
+				left:40%;
+				max-width:144px;
+				max-height:49px;
 				background-image: url("/images/comunicar/postit_tape_effect.png");
 				background-size: 100% 100%;
 			}
-			.sendbutton{
-				position: absolute;
-				width: 6%;
-				height: 11%;
-				margin-left: 32.5%;
-				margin-top: 1.5%;
-				background-image: url("/images/comunicar/postit_send_btn.png");
-				background-size: 100% 100%;
-			}
 			.camera{
-				position: absolute;
-				width: 5.6%;
-				height: 10.5%;
-				margin-left: 8%;
-				margin-top: 36.8%;
+				position: relative;
+				width: 23%;
+				height: 100%;
+				float:left;
 				background-image: url("/images/comunicar/postit_camera_btn.png");
 				background-size: 100% 100%;
+				min-width:101px;
+				min-height:101px;
 			}
 			.write{
-				position: absolute;
-				width: 5.6%;
-				height: 10%;
-				margin-left: 17.3%;
-				margin-top: 37%;
+				position: relative;
+				width: 23%;
+				height: 100%;
+				float:left;
 				background-image: url("/images/comunicar/postit_write_btn.png");
 				background-size: 100% 100%;
+				margin-right:15%;
+				margin-left:15%;
+				min-width:101px;
+				min-height:101px;
 			}
 			.text{
-				position: absolute;
-				width: 5.6%;
-				height: 10%;
-				margin-left: 26.4%;
-				margin-top: 37%;
+				position: relative;
+				width: 23%;
+				height: 100%;
+				float:left;
 				background-image: url("/images/comunicar/postit_text_btn.png");
 				background-size: 100% 100%;
 			}
-/*        	.site { 
-	        	width:100%;
-	        	height:100%;
-	        	overflow:scroll;
-        	}
-        	.site > .canvas_container{
-	        	width:100%;
-	        	height:80%;
-	        }
-	        .site > .control_container{
-		        width:100%;
-	        	height:20%;
-	        }
-	        .site > .control_container > #text_input{
-		        width:50%;
-		        height:100%;
-		        float:left;
-	        }
-	        .site > .control_container > #upload_button{
-		        float:right;
-			} */
+			.btn{
+				position:relative;
+				top: 23%;
+				width:66%;
+				height:14.1%;
+				margin-left:auto;
+				margin-right:auto;
+			}
         </style>
         <title>Rolling Paper</title>
     </head>
     
     <body>
-		<div class="container">
+		<div class="container" aspect-ratio="0.89">
+			<button id="question-send-btn" class="sendbutton"></button>
 			<div class="post">
-				<div class="posttext">기분이 어떠신가요?</div>
+				<div class="posttext"><textarea id="question-input"></textarea></div>
 			</div>
-			<div class="sendbutton"></div>
-			<div class="tape" onClick=""></div>
-			<div class="camera"></div>
-			<div class="write"></div>
-			<div class="text"></div>
+			<div class="tape"></div>
+			<div class="btn">
+				<div class="camera"></div>
+				<div class="write"></div>
+				<div class="text"></div>
+			</div>
 		</div>
+
     	<!-- <div class="site"> 
     		<div class="canvas_container">
     			<canvas id="painter">
