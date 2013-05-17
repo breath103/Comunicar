@@ -4,6 +4,10 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+<<<<<<< HEAD
+=======
+    <orderEntry type="library" name="Node.js v0.9.12 Core Modules" level="application" />
+>>>>>>> fb-diary
   </component>
 </module>
 

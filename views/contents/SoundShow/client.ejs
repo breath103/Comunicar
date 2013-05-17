@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/css/paper.css">
+        <link rel="shortcut icon" href="/icons/logo3.ico">
+        <script src="/js/jquery-1.7.1.js"></script>
+        <script src="/js/jquery.transit.min.js"></script>
+        <script src="/js/jgestures.min.js"></script>
+        <script src="/js/google_analytics.js"></script>
+        <script src="/js/underscore-min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/SoundShow/soundshow.js"></script>
+		<script>
+		var handle = null;
+		
+		function get_random_color() {
+		    var letters = '0123456789ABCDEF'.split('');
+		    var color = '#';
+		    for (var i = 0; i < 6; i++ ) { color += letters[Math.round(Math.random() * 15)]; }
+		    return color;
+		}
+		
+		function parseColorEvent(e,$div){
+			if(handle){
+				handle = clearInterval(handle);
+			}
+			if (e.t == 'r_blink'){
+				handle = setInterval(function(){
+					var color = null;
+					if(e.colors && e.colors.length > 0) { 
+						color = e.colors[ _.random(0,e.colors.length) ];
+					} else { 
+						color = get_random_color(); }
+					$div.css("background-color",color);
+				},e.interval);
+			} else if (e.t == 'frame_blink') {
+				for(var i=0;i<e.frames.length;i++){
+					var frame = e.frames[i];
+				}
+			} else if (e.t == "single_color") {
+				$div.css("background-color",e.colors[0]);	
+			} else if (e.t == "fade_to") {
+				$div.clearQueue().transit({
+					"background-color" : e.colors[0]
+				});
+			} else if (e.t == "fade_stop") {
+				$div.transit({
+					"background-color" : "#000000"
+				});
+			} else if (e.t == "") {
+				
+			}
+		}
+		
+        var socket = null;
+		var currentTrack = null;
+        function connectWS() {
+            console.log('Connecting to local server...');
+			var connecting_handle = null;
+            if (socket == null) {
+                socket = io.connect("/SoundShow");
+                socket.on("connect", function() {
+                    clearInterval(connecting_handle);
+                });
+                socket.on('message', function(data) {});
+                socket.on('disconnect', function() {
+                   	connecting_handle = setInterval(function() {
+        				socket.socket.connect();
+        			}, 500);
+                });
+				socket.on('screen_color',function(data){
+					$(".site").css("background-color",data.color);
+				//	parseColorEvent(data,$(".site"));
+				});
+				socket.on("play_track",function(data){
+					if(currentTrack){
+						currentTrack.stop($(".site"));
+					}
+					
+					var track = new Track();
+					track.fromString(JSON.stringify(data.track));
+					track.run($(".site"),function(){
+						currentTrack = null;
+					});
+					currentTrack = track;
+				});
+            }
+            socket.socket.connect();
+        }
+
+        $(document).ready(function() {
+            connectWS();
+        });
+        </script>
+        <style>
+		body{
+			width:100%;
+			height:100%;
+		}
+		body .site {
+			width:100%;
+			height:100%;
+		}
+        </style>
+        <title>Rolling Paper</title>
+    </head>
+    
+    <body>
+    	<div class="site"> 
+        </div>
+    </body>
+
+</html>

@@ -44,7 +44,7 @@ module.exports = function(app) {
     		content : req.content
     	});
     	*/
-    	
+		console.log("contents- index",req.content.name);
     	res.render(util.format("contents/%s/index",req.content.name),{
     		content : req.content
     	});

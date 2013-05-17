@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>Facebook Diary</title>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <link href="/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/css/sunny/jquery-ui-1.10.2.custom.css" rel="stylesheet">
+    <link href="/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <script src="/js/jquery-1.8.2.min.js"></script>
+    <script src="/js/jquery.transit.min.js"></script>
+    <script src="/js/jquery-ui-1.10.2.custom.js"></script>
+    <script src="/fancybox/jquery.fancybox.js"></script>
+    <script src="/js/moment/moment.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+    </script>
+    <style>
+    </style>
+</head>
+<body>
+    <ul class="media-list">
+        <%users.forEach(function(v,k){%>
+            <li class="media">
+                <a class="pull-left" href="#">
+                    <img class="media-object" src="<%-v.picture%>">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <%-v.name%>
+                    </h4>
+                    <div class="media">
+                        <a href="<%-v.link%>"><%-v.facebook_id%></a>
+                        <%-v.email%></br>
+                        <%-v.last_use_date%></br>
+                        <h5>visit count : <%-v.visit_count%></h5>
+                    </div>
+                </div>
+            </li>
+        <%});%>
+    </ul>
+</body>
+</html>

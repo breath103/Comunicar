@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <title>Facebook Diary</title>
+        <meta charset="utf-8">
+        <meta name="viewport">
+
+        <link href="/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="/css/fbdiary_new.css" rel="stylesheet" type="text/css"/>
+        <link href="/css/sunny/jquery-ui-1.10.2.custom.css" rel="stylesheet">
+        <link href="/fancybox/jquery.fancybox.css" rel="stylesheet">
+
+        <script src="/js/jquery-1.8.2.min.js"></script>
+        <script src="/js/jquery.transit.min.js"></script>
+        <script src="/js/jquery-ui-1.10.2.custom.js"></script>
+        <script src="/fancybox/jquery.fancybox.js"></script>
+        <script src="/js/moment/moment.min.js"></script>
+        <script src="/js/FBDiary/date.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/async.js"></script>
+        <script src="/js/step.js"></script>
+        <script src="/js/js-url.js"></script>
+        <script src="/js/underscore-min.js"></script>
+        <script src="/js/angular.min.js"></script>
+        <script src="http://connect.facebook.net/en_US/all.js"></script>
+        <script src="/js/FBDiary/Post.js"></script>
+        <script src="/js/FBDiary/PostPresenter.js"></script>
+        <script src="/js/FBDiary/FacebookContentsManager.js"></script>
+        <script src="/js/FBDiary/PostSearcher.js"></script>
+        <script src="/js/FBDiary/TimelineController.js"></script>
+        <script src="/js/FBDiary/DiaryController.js"></script>
+        <script src="/js/FBDiary/facebook_clip.js"></script>
+        <script src="/js/FBDiary/google_analytics.js"></script>
+        <script src="/js/FBDiary/FacebookDiaryApp.js"></script>
+        <script src="/js/FBDiary/keep-aspect-ratio.js"></script>
+        <script>
+            $(document).ready(function () {
+                FacebookDiaryApp();
+            });
+        </script>
+    </head>
+    <body>
+        <div class="site">
+            <div class="diary keep-aspect-ratio" style="min-width:1200px" aspect-ratio="0.73">
+				<header class="search-bar">
+					<input id="search-input" type="text"/>
+				</header>
+				<div class="diary-header">
+                    <div class="diary-graph">
+						<div class="container">
+						</div>
+                    </div>
+                </div>
+                <div class="site-container">
+                    <div class="date-container">
+						<div class="date-badge">
+							<img src="/img/date_badge.png"/>
+	                        <h5 style="margin:0;margin-top: -17%;color: white;" class="date_indicator"></h5>
+                        </div>
+                        <!-- <button class="btn btn-inverse" onclick="diaryController.showPrevAvailableDate();"><<-</button>
+                        <h5 style="display:inline-block;margin:0;" class="date_indicator"></h5>
+                        <button class="btn btn-inverse" onclick="diaryController.showNextAvailableDate();">->></button> -->
+                    </div>
+				    <div class="post-container">
+						<div class="left-overlay" onclick="diaryController.showPrevAvailableDate();"></div>
+						<div class="right-overlay" onclick="diaryController.showNextAvailableDate();"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="templates" style="display:none;">
+                <div id="video_post">
+                    <div class="video" post-id="{{post.id}}">
+                        <div style="width:100%;float:left">
+                            <div style="width:30%;height:auto;display:inline-block;float:left">
+                                <div class="photo-container">
+                                    <a href="{{post.source}}" target="_blank">
+                                        <img src="{{'http://img.youtube.com/vi/' + url('?v',post.link) + '/mqdefault.jpg'}}"
+                                             class="loading-image" onload="$(this).removeClass('loading-image');"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="width:68%;display:inline-block;float:left;margin-left:2%">
+                                <h5 class="link-title">
+                                    {{post.name}}
+                                </h5>
+                                <small class="muted">{{post.description}}</small>
+                                <div class="link-caption">
+                                    <small>{{post.status_type}}</small>
+                                    <p>{{post.message?post.message:post.story}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="icon-film"></i>
+                        <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
+                    </div>
+                </div>
+                <div id="photo_post">
+                    <div class="status" post-id="{{post.id}}">
+                        <div style="-webkit-transform: rotate(0deg);" class="Photo">
+                            <div class="photo-container">
+                                <img src="{{post.picture}}"
+                                     class="img-rounded loading-image"
+                                     onload="$(this).removeClass('loading-image');" />
+
+                                <div class="caption-overlay">
+                                    <pre>{{post.caption}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p>
+                                {{post.message?post.message:post.story}}
+                            </p>
+                        </div>
+                        <i class="icon-camera"></i>
+                        <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
+                    </div>
+                </div>
+                <div id="link_post">
+                    <div class="link" post-id="{{post.id}}">
+                        <div style="width:100%;float:left">
+                            <div style="width:20%;height:auto;display:inline-block;float:left">
+                                <div class="photo-container">
+                                    <a href="{{post.link}}" target=_blank>
+                                    <img src="{{post.picture}}"
+                                         class="loading-image" onload="$(this).removeClass('loading-image');"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div style="width:78%;display:inline-block;float:left;margin-left:2%">
+
+                                <h5 class="link-title"> <a href="{{post.link}}" target=_blank>{{post.name}}</a></h5>
+                                <small class="muted">{{post.description}}</small>
+                                <div class="link-caption">
+                                    <small>{{post.status_type}}</small>
+                                    <p>{{post.message}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <i class="icon-globe"></i>
+                        <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
+                    </div>
+                </div>
+                <div id="comment_post" >
+                    <div class="status" post-id="{{post.id}}">
+                        <p>{{post.main_text}}</p>
+                        <i class="icon-comment"></i>
+                        <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
+                    </div>
+                </div>
+                <div id="likes_post">
+                    <div class="status" post-id="{{post.id}}">
+                        <p>{{post.main_text}}</p>
+                        <i class="icon-heart"></i>
+                        <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
+                    </div>
+                </div>
+                <div id="status_post">
+                    <div class="status" post-id="{{post.id}}">
+                        <div>
+                            <small>{{post.status_type}}</small>
+                            <p>{{post.main_text}}</p>
+                        </div>
+                        <i class="icon-pencil"></i>
+                        <a href="https://www.facebook.com/{{post.id}}" target="_blank" class="link-button"></a>
+                    </div>
+                </div>
+
+
+
+                <div id="cliped_photo_post">
+                    <div class="cliped_photo">
+                        <img class="img-rounded" src="{{post.picture}}"/>
+                        {{post.status_type}}</br>
+                        {{post.caption}}</br>
+                        {{post.message?post.message:post.story}}
+                    </div>
+                </div>
+                <div id="cliped_link_post">
+                    <div class="link">
+                        <div class="link-thumbnail">
+                            <img class="img-rounded" src="{{post.picture}}"/></p>
+                            <p style="text-align:left; font-weight:bold;">{{post.name}}</p>
+
+                            <div class="link-url">
+                                <a href="{{post.link}}">
+                                    <p>{{post.link}}</p>
+                                </a>
+                            </div>
+                            <div class="link-caption">
+                                <small>{{post.status_type}}</small>
+                                <p>{{post.message}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+            <a class="fancybox.iframe" id="facebook-popup"></a>
+        </div>
+        <div class="Loading" ></div>
+    </body>
+</html>

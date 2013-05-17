@@ -1,0 +1,186 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+header {height:40px; background: -webkit-linear-gradient(#7ec0e9 0%, #1872a7 100%); }
+header p{text-align: center;  color: white; vertical-align: middle;}
+
+
+* {
+    font-size: 1em;
+    letter-spacing: -1px;
+    font-family: NanumGothic, "Apple SD Gothic Neo", "Malgun Gothic", AppleGothic, Dotum, sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+.site{
+    width:100%;
+    height:100%;
+    margin-left:auto;
+    margin-right:auto;
+    position:relative;
+}
+
+.site .left-pad{
+    background-color: #dfc586;
+    height:100%;
+    display:block;
+    width:25%;
+    position:absolute;
+    left:0;
+    top:0;
+}
+.site .right-pad{
+    background-color:#2f96b4;
+    overflow-y:scroll;
+    display:inline-block;
+    width:75%;
+    height:100%;
+    position:absolute;
+    left:25%;
+    top:0;
+
+}
+
+.site-container {
+    position:absolute;
+    top:0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    background-color:beige;
+
+}
+.site-container .date-page{
+    width:100%;
+    position:absolute;
+    top:0%:
+    left:0%;
+}
+.search-result-view {
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    background-color:greenyellow;
+}
+
+.date-container {
+    border-radius: 10px;
+    background-color: rgb(142, 194, 190);
+    width: 500px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.date-container .title {
+    text-align: center;
+    font-family: "맑은 고딕";
+    font-size: 40px;
+}
+
+.Photo {
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.28);
+    margin-bottom: 8px;
+    border-radius: 4%;
+    overflow:hidden;
+}
+
+.Photo img {
+}
+
+.Photo .caption {
+}
+
+.Status {
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.28);
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+
+.Link {
+    width: 100%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.28);
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+
+.Loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-color: black;
+    color: white;
+    overflow:scroll;
+}
+.center-croped-image{
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.Photo{
+    background-color:rgb(240,240,240);
+}
+.Photo .PhotoContainer{
+    width:100%;
+    height:80%;
+}
+.Photo .PhotoContainer img{
+    width:100%;
+    height:100%;
+}
+.profile{
+    background-color: rgb(245, 167, 198);
+}
+.profile .profile_image {
+    display:inline-block;
+}
+.profile .profile_image img {
+
+}
+.profile .profile_name {
+    display:inline-block;
+}
+   /*
+.profile{
+    position: relative;
+    width: 100%;
+    height: 12%;
+    background-size: 100% 100%;
+    background-image: url("/images/profile_background.png");
+}
+.profile .profile_image{
+    float: left;
+    width: 18%;
+    height: 63%;
+    background-size: 100% 100%;
+    background-image: url("/images/profile_image.png");
+}
+.profile .profile_image img {
+    width:100%;
+    height:100%;
+}
+.profile .profile_name{
+    float: right;
+    position: relative;
+    top: 34%;
+    right: 13%;
+    width: 60%;
+    height: 30%;
+    font-size: larger;
+    font-weight: bold;
+    color: white;
+}
+   */

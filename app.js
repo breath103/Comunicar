@@ -8,7 +8,6 @@ module.exports = function(db, callback) {
 
     app.db = db;
     app.configure(function() {
-        app.set('port', process.env.PORT || 80);
         app.set('views', __dirname + '/views');
         app.set('view engine', 'ejs');
         app.use(express.favicon());
@@ -22,20 +21,16 @@ module.exports = function(db, callback) {
         
         app.use(app.router);
         app.use(express.static(path.join(__dirname, 'public')));
-
-
     });
 
     app.configure('development', function() {
         app.use(express.errorHandler());
-        /*
-	    app.use(function(err,req,res,next){
-	    	res.json({
-		    	error : err.toString()
-	    	});
-	    });
-	    */
+        app.set('port', 7777);
     });
+    app.configure('production', function() {
+        app.set('port', 80);
+    });
+
 
     app.all('*', function(req, res, next) {
         res.charset = "UTF-8";

@@ -1,0 +1,7 @@
+<div class="pattern">
+	<span><?=e.type?></span>
+	<!--span><?=e.objectId?></span>
+	<span><?=e.createdAt?></span-->
+	<?=_.template($('#Pattern-' + e.type + '-template').html())({e: JSON.parse(e.data)})?>
+	<button class="delete-btn" >delete</button>
+</div>

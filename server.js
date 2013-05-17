@@ -1,8 +1,6 @@
 var http = require("http"),
     Step = require("step"),
     util = require("util");
-  
-  
 
 process.on('uncaughtException', function(err) {
     console.error(err.stack);
@@ -23,7 +21,6 @@ try {
         }
     }, 
     function(err, app) {
-	    
 	    var httpServer = http.createServer(app);
 		require("./contents_implements")({
 			app : app, 

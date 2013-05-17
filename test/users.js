@@ -33,7 +33,7 @@ describe("API", function() {
 		    console.log(e);
 		}
     });
-
+     /*
     describe("USER API", function() {
         var userOne = null;
         describe("GET /api/users.json", function() {
@@ -49,4 +49,5 @@ describe("API", function() {
            });
         });
     });
+    */
 });
