@@ -1,4 +1,4 @@
-var fs = require("fs");
+var fs 		 = require("fs");
 var mongoose = require("mongoose");
 
 module.exports = function(app){
@@ -34,7 +34,6 @@ module.exports = function(app){
             user.save();
             res.send(200);
         });
-
     });
 
     app.get("/admin/facebook_users",function(req,res){

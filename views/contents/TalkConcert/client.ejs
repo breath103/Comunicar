@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+        <link rel="shortcut icon" href="/icons/logo3.ico">
+        <script src="/js/jquery-1.7.1.js"></script>
+        <script src="/js/jquery.transit.min.js"></script>
+        <script src="/js/jgestures.min.js"></script>
+        <script src="/js/google_analytics.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+			function connectWS() {
+				window.socket = null;
+	            console.log('Connecting to local server...');
+	            if (socket == null) {
+	                socket = io.connect("/TalkConcert");
+					socket.on('message', function(data) {
+	                });
+	                socket.on('disconnect', function() {
+					});
+	            }
+	            socket.socket.connect();
+	        }
+			$(document).ready(function() {
+                connectWS();
+        		$("#question-send-btn").click(function(){
+					socket.emit("add_question",{
+						question : {
+							text : $("#question-input").val()
+						}
+					});
+        		});
+			});
+        </script>
+        <style>
+			html,body{
+				width: 100%;
+				height: 100%;
+				padding: 0px;
+				margin: 0px;
+			}
+			.container{
+				width: 100%;
+				height: 100%;
+				background-image: url("/images/comunicar/postit_background.png");
+				max-width:960px;
+				max-height:1074px;
+			}
+			.sendbutton{
+				position: relative;
+				float:right;
+				width: 15%;
+				height: 14.1%;
+				top: 1.53%;
+				right: 3%;
+				min-width:101px;
+				min-height:101px;
+				background-image: url("/images/comunicar/postit_send_btn.png");
+				background-size: 100% 100%;
+			}
+			.post{
+				position:relative;
+				width: 63%;
+				height: 57%;
+				top: 18%;
+				margin-left:auto;
+				margin-right:auto;
+				background-image: url("/images/comunicar/postit_yellow.png");
+				background-size: 100% 100%;
+				min-width:404px;
+				min-height:414px;
+			}
+			.posttext{
+				position: relative;
+				width: 90%;
+				height: 75%;
+				padding-left:5%;
+				padding-top:5%;
+				font-size:30%;
+				font-weight:bolder;
+				max-width:400px;
+				max-height:410px;
+			}
+			.tape{
+				position: absolute;
+				width: 22.5%;
+				height: 6.84%;
+				top: 15%;
+				left:40%;
+				max-width:144px;
+				max-height:49px;
+				background-image: url("/images/comunicar/postit_tape_effect.png");
+				background-size: 100% 100%;
+			}
+			.camera{
+				position: relative;
+				width: 23%;
+				height: 100%;
+				float:left;
+				background-image: url("/images/comunicar/postit_camera_btn.png");
+				background-size: 100% 100%;
+				min-width:101px;
+				min-height:101px;
+			}
+			.write{
+				position: relative;
+				width: 23%;
+				height: 100%;
+				float:left;
+				background-image: url("/images/comunicar/postit_write_btn.png");
+				background-size: 100% 100%;
+				margin-right:15%;
+				margin-left:15%;
+				min-width:101px;
+				min-height:101px;
+			}
+			.text{
+				position: relative;
+				width: 23%;
+				height: 100%;
+				float:left;
+				background-image: url("/images/comunicar/postit_text_btn.png");
+				background-size: 100% 100%;
+			}
+			.btn{
+				position:relative;
+				top: 23%;
+				width:66%;
+				height:14.1%;
+				margin-left:auto;
+				margin-right:auto;
+			}
+        </style>
+        <title>Rolling Paper</title>
+    </head>
+    
+    <body>
+		<div class="container" aspect-ratio="0.89">
+			<button id="question-send-btn" class="sendbutton"></button>
+			<div class="post">
+				<div class="posttext"><textarea id="question-input"></textarea></div>
+			</div>
+			<div class="tape"></div>
+			<div class="btn">
+				<div class="camera"></div>
+				<div class="write"></div>
+				<div class="text"></div>
+			</div>
+		</div>
+
+    	<!-- <div class="site"> 
+    		<div class="canvas_container">
+    			<canvas id="painter">
+    			</canvas>
+    		</div>
+    		<div class="control_container">
+    			<input id="image_input" type="file" value="이미지 선텍" />
+    			<textarea id="text_input"></textarea><br/>
+		        <button id="upload_button" onclick="uploadImage();">업로드</button>
+    		</div> 
+        </div> -->
+    </body>
+
+</html>
