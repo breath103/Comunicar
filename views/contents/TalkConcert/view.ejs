@@ -50,9 +50,7 @@
 
             $(document).ready(function() {
                 connectWS();
-				<%questions.forEach(function(q){%>
-					new Question(<%-JSON.stringify(q)%>);
-				<%})%>
+				<%questions.forEach(function(q){%> new Question(<%-JSON.stringify(q)%>); <%})%>
             });
         </script>
         <style>
