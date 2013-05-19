@@ -42,7 +42,6 @@
 				margin: 0px;
 			}
 			.container{
-				position: absolute;
 				width: 100%;
 				height: 100%;
 				background-image: url("/images/comunicar/postit_background.png");
@@ -50,87 +49,88 @@
 				max-height:1074px;
 			}
 			.sendbutton{
+				position: relative;
 				float:right;
 				width: 15%;
 				height: 14.1%;
-				margin-top: 1.53%;
-				margin-right: 2%;
+				top: 1.53%;
+				right: 3%;
 				min-width:101px;
 				min-height:101px;
-				background: url("/images/comunicar/postit_send_btn.png");
+				background-image: url("/images/comunicar/postit_send_btn.png");
 				background-size: 100% 100%;
 			}
 			.post{
-				position: relative;
+				position:relative;
 				width: 63%;
 				height: 57%;
-				top: 16%;
-				padding-top: 5%;
+				top: 18%;
 				margin-left:auto;
 				margin-right:auto;
-				background: url("/images/comunicar/postit_yellow.png");
+				background-image: url("/images/comunicar/postit_yellow.png");
 				background-size: 100% 100%;
 				min-width:404px;
 				min-height:414px;
 			}
 			.posttext{
+				position: relative;
 				width: 90%;
 				height: 75%;
 				padding-left:5%;
+				padding-top:5%;
 				font-size:30%;
 				font-weight:bolder;
 				max-width:400px;
 				max-height:410px;
 			}
 			.tape{
-				position: absolute;
-				width: 23%;
+				width: 23%:
 				height: 6.84%;
-				left: 36%;
-				top: -4%;
-				background: url("/images/comunicar/postit_tape_effect.png");
+				top: 15%;
+				left:40%;
+				max-width:144px;
+				max-height:49px;
+				background-image: url("/images/comunicar/postit_tape_effect.png");
 				background-size: 100% 100%;
-				min-width:144px;	
-				min-height:49px;
 			}
 			.camera{
+				position: relative;
 				width: 23%;
-				height: auto;
+				height: 100%;
 				float:left;
-				background: url("/images/comunicar/postit_camera_btn.png");
+				background-image: url("/images/comunicar/postit_camera_btn.png");
 				background-size: 100% 100%;
-				min-width:30%;
+				min-width:101px;
 				min-height:101px;
-			
 			}
 			.write{
+				position: relative;
 				width: 23%;
-				height: auto;
+				height: 100%;
 				float:left;
-				background: url("/images/comunicar/postit_write_btn.png");
+				background-image: url("/images/comunicar/postit_write_btn.png");
 				background-size: 100% 100%;
-				margin-left: 5%;
-				min-width:30%;
+				margin-right:15%;
+				margin-left:15%;
+				min-width:101px;
 				min-height:101px;
 			}
 			.text{
+				position: relative;
 				width: 23%;
-				height: auto;
+				height: 100%;
 				float:left;
-				background: url("/images/comunicar/postit_text_btn.png");
+				background-image: url("/images/comunicar/postit_text_btn.png");
 				background-size: 100% 100%;
-				margin-left: 5%;
-				min-width:30%;
-				min-height:100px;
 			}
 			.btn{
-				width: 63%;
+				position:relative;
+				top: 23%;
+				width:auto;
 				height: auto;
 				margin-left:auto;
 				margin-right:auto;
-				margin-top: 26%;
-				min-width: 400px;
-				min-height: 101px;
+				background-color: red;
 			}
         </style>
         <title>Rolling Paper</title>
@@ -140,9 +140,9 @@
 		<div class="container" aspect-ratio="0.89">
 			<button id="question-send-btn" class="sendbutton"></button>
 			<div class="post">
-<div class="tape"></div>
 				<div class="posttext"><textarea id="question-input"></textarea></div>
 			</div>
+			<div class="tape"></div>
 			<div class="btn">
 				<div class="camera"></div>
 				<div class="write"></div>
