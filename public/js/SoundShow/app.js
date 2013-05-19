@@ -13,7 +13,11 @@ $(function() {
 	var query = new Parse.Query(User);
 
 	var Pattern = Parse.Object.extend({
-		className: "Pattern"
+		className: "Pattern",
+		getPlayTime : function(){
+			var p = new Patterns[this.get("type")](JSON.parse(this.get("data")));
+			return p.getPlayTime();
+		}
 	});
 	var PatternList = Parse.Collection.extend({
 		model: Pattern,
@@ -24,6 +28,13 @@ $(function() {
 	    comparator: function(pattern) {
 	    	return pattern.get('order');
 	    },
+		getPlayTime : function(){
+			var time = 0;
+			this.each(function(p){
+				time += p.getPlayTime();
+			});
+			return time;
+		},
 		toJSON : function(){
 			return _.map(this.models, function(model){ 
 				return {
@@ -42,6 +53,7 @@ $(function() {
 			},
 		  	initialize: function() {
 	        	_.bindAll(this, 'render','onClickColor');
+	      		this.$el.html(this.template({e: this.getData()}));
 				this.$el.click(this.onClickColor);
 	      	},
 			getData : function(){
@@ -293,9 +305,9 @@ $(function() {
 		className: 'track',
 		template: _.template($('#track-template').html()),
      	events: {
-        	"click .play-btn" : "play",
+        	"click .play-btn" 		  : "play",
 			"click .delete-track-btn" : "delete",
-			"change .hotkey-input" : "onHotkeyChange"
+			"change .hotkey-input" 	  : "onHotkeyChange"
 		},
       	initialize: function() {
 			_.bindAll(this, 'render', 'close', 'play','addPattern');
@@ -326,7 +338,6 @@ $(function() {
 		jsonForPlay : function(){
 			var json = this.model.toJSON();
 			json.patterns = this.patternListView.patternList.toJSON();
-			console.log(json);
 			return json;
 		},
 		onHotkeyChange : function(e){
@@ -337,7 +348,7 @@ $(function() {
 		 	this.model.set("hotkey",hotkey);
 			this.model.save();
 		},
-		play : function() {
+		play : function(loop) {
 			var b = this.$el.css("background-color");
 			this.$el.transit({
 				"background-color" : "red"
@@ -347,6 +358,11 @@ $(function() {
 			window.socket.emit("play_track",{
 				track: this.jsonForPlay()
 			});
+			
+			if(loop){
+				var playTime = this.patternListView.patternList.getPlayTime();
+				setTimeout(this.play,playTime + 1);
+			}
 		},
       	delete: function() {
 			var self = this;
@@ -427,7 +443,7 @@ $(function() {
 			this.$el.fadeOut();
 		},
 		onClickLogin : function(){
-			var id  = this.$el.find(".id-input").val();
+			var id 		 = this.$el.find(".id-input").val();
 			var password = this.$el.find(".password-input").val();
 			if (id && password) {
 			    Parse.User.logIn(id,password, {
@@ -440,5 +456,9 @@ $(function() {
 		}
 	});
 
-	new LoginView();
+	var loginView = new LoginView();
+	loginView.$el.find(".id-input").val("admin");
+	loginView.$el.find(".password-input").val("admin");
+	loginView.onClickLogin();
+	
 });

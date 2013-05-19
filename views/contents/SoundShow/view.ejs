@@ -10,12 +10,9 @@
 		<link rel="stylesheet" href="/css/sunny/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
 		<link href="/color-picker/jquery.colorpicker.css" rel="stylesheet" type="text/css"/>
 		<link href="/css/SoundShow/view.css" rel="stylesheet" type="text/css"/>
-
-		<!--script src="/js/require.js"/-->
-        <script src="/js/jquery-1.7.1.js"></script>
+		<script src="/js/jquery-1.7.1.js"></script>
         <script src="/js/jquery.transit.min.js"></script>
-        <!-- <script src="/js/jquery-ui.js"></script>-->	
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+    	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 		<script src="/js/google_analytics.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/underscore.js"></script>
@@ -26,8 +23,10 @@
 		<script src="/color-picker/swatches/jquery.ui.colorpicker-pantone.js"></script>
 		<script src="/color-picker/parts/jquery.ui.colorpicker-rgbslider.js"></script>
 		<script src="/js/parse-1.2.7.min.js"></script>
+		<script src="/js/SoundShow/patterns.js"></script>
 		<script src="/js/SoundShow/app.js"></script>
-	    
+		<script src="/js/SoundShow/mix-pad.js"></script>
+
 	    <script type="text/template" id="pattern-template">
 			<!--div class="pattern"-->
 				<div class="detail">
@@ -46,8 +45,10 @@
 		</script>
 	    <script type="text/template" id="Pattern-RandomBlink-template">
 			<!--div class="RandomBlink"-->
-				<label>interval</label><input class="interval_input" type="text" value="<?=e.interval?>"/>
-				<label>delay</label><input class="delay_input" type="text" value="<?=e.delay?>"/>
+				<label>interval</label>
+				<input class="interval_input" type="text" value="<?=e.interval?>"/>
+				<label>delay</label>
+				<input class="delay_input" type="text" value="<?=e.delay?>"/>
 				<div class="Colors">
 					<? if(!e.colors || e.colors.length == 0) {?>
 						Random
@@ -63,7 +64,9 @@
 		</script>
 		<script type="text/template" id="Pattern-Color-template">
 			<!--div class="Color" style="background-color:<?=e.color?>"-->
-				
+	    	<label class="control-label">delay
+      	  		<input type="text" class='delay-input' value="<?=e.delay?>">
+			</label>
 			<!--/div-->
 		</script>
 	    <script type="text/template" id="pattern_list_template">
@@ -142,51 +145,6 @@
 			}
 			$(document).ready(function() {
                 connectWS();
-
-				$touchpad = $(".touch-pad");
-				var shouldDraw = false;
-		        $touchpad.bind("touchstart mousedown", function(e) {
-		            $(this).trigger("touchmove");
-		        	$(this).trigger("mousemove");
-		        	e = e.originalEvent;
-	            	var touchPos = {
-	                	x : e.pageX - $(this).offset().left,
-	                	y : e.pageY - $(this).offset().top
-	            	};
-					var grayScale = 
-					Math.round(touchPos.y / $touchpad.height() * 255);
-					var color = "rgb("+grayScale+","+grayScale+","+grayScale+")";
-					$("#touch-pad-out").html(JSON.stringify(touchPos));
-					socket.emit("screen_color",{
-						color : color
-					});
-
-        			shouldDraw = true;
-					return false;
-		        });
-		        $touchpad.bind("touchmove mousemove", function(e) {
-		            if(e && e.originalEvent && shouldDraw){
-		            	e = e.originalEvent;
-		            	var touchPos = {
-		                	x : e.pageX - $(this).offset().left,
-		                	y : e.pageY - $(this).offset().top
-		            	};
-						var grayScale = 
-						Math.round(touchPos.y / $touchpad.height() * 255);
-						var color = "rgb("+grayScale+","+
-									grayScale+","+
-									grayScale+")";
-						$("#touch-pad-out").html(JSON.stringify(touchPos));
-						socket.emit("screen_color",{
-							color : color
-						});
-		                return false;
-		        	}
-		        });
-		        $touchpad.bind("touchend mouseup", function(e){
-					shouldDraw = false;
-					return false;
-		        });
 			});
         </script>
         <title>Comunicar</title>
@@ -200,9 +158,11 @@
 	    		<div class="span3" id="left-main-column" 
 					style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
 					<h4 id="touch-pad-out"></h4>
-					<div class="touch-pad">
+					<div id="touch-mix-pad" class="touch-pad">
+						<canvas>
+						</canvas>
 					</div>
-					<iframe class="monitoring-view" src="client"></iframe>
+					<iframe class="monitoring-view" width="100%" src="client"></iframe>
 				</div>
 	    		<div class="span9" style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
 					<h3> Tracks </h3>
