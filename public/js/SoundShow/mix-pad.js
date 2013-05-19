@@ -20,7 +20,7 @@ $(document).ready(function(){
 		},
 		onResize : function(){
 			var context = this.canvas[0].getContext("2d");
-			this.canvas[0].width = this.canvas.width();
+			this.canvas[0].width   = this.canvas.width();
 			this.canvas[0].height = this.canvas.height();
 			
 			if(this.palleteImage){
@@ -29,8 +29,15 @@ $(document).ready(function(){
 			}
 		},
 		onTouchStart : function(e){
-			this.canvas.trigger("touchmove");
-	    	this.canvas.trigger("mousemove");
+        	e = e.originalEvent;
+        	var touchPos = {
+            	x : e.pageX - this.canvas.offset().left,
+            	y : e.pageY - this.canvas.offset().top
+        	};
+			var color = this.getColorAtPos(touchPos);
+			socket.emit("screen_color",{
+				color : color
+			});
 			this.shouldDraw = true;
 			return false;			
 		},
@@ -50,8 +57,7 @@ $(document).ready(function(){
 				socket.emit("screen_color",{
 					color : color
 				});
-				
-	            return false;
+				return false;
 	    	}
 	    },
 		onTouchEnd : function(e){
