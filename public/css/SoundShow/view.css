@@ -18,6 +18,22 @@
 	width: 400px;
 }
 
+.monitoring-view
+{
+	width:100%;
+	border:none;
+}
+
+.touch-pad
+{
+	
+}
+.touch-pad canvas
+{
+	width:100%;
+	height:100%;
+}
+
 
 #pattern_list .pattern{
 	min-width:100px;

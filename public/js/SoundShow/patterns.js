@@ -36,8 +36,8 @@ Track.prototype = {
 		_runNextTrack();
 	},
 	stop : function($div){
-		if($div)
-			$div.clearQueue();
+		$div.clearQueue();
+//		this.$div.stop(true,false);
 		if(this.currentPattern)
 			this.currentPattern.onEnd($div);
 		this.currentIndex 	= 0;
