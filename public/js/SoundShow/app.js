@@ -351,8 +351,12 @@ $(function() {
       	delete: function() {
 			var self = this;
 			this.$el.fadeOut(function(){
-	      		self.model.destroy();
-      		});
+	      		self.patternListView.patternList.each(function(p){
+					p.destroy();
+	      		});
+				
+				self.model.destroy();
+			});
       	}
     });
     var TrackListView = Parse.View.extend({
