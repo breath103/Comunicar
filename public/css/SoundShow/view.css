@@ -31,7 +31,12 @@
 .touch-pad canvas
 {
 	width:100%;
-	height:100%;
+	height:92%;
+}
+.timeline-container {
+	width:100%;
+	height:200px;
+	background-color:#cccccc;
 }
 
 

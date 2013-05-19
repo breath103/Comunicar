@@ -251,11 +251,11 @@ $(function() {
 	    },
 		render : function() {
         },
-		createPatternWithType : function(type){
+		createPatternWithType : function(type,data){
 			if (type == "Color") { 
 				return this.patternList.create({
 					type : type,
-					data : JSON.stringify({
+					data : JSON.stringify(data?data:{
 						color:"red",
 						delay:1000
 					}),
@@ -265,7 +265,7 @@ $(function() {
 			} else if (type == "RandomBlink") {
 				return this.patternList.create({
 					type : type,
-					data : JSON.stringify({
+					data : JSON.stringify(data?data:{
 						colors:null,
 						delay:1000,
 						interval:100
@@ -276,7 +276,7 @@ $(function() {
 			} else if (type == "FadeTo") {
 				return this.patternList.create({
 					type : type,
-					data : JSON.stringify({
+					data : JSON.stringify(data?data:{
 						color : "black",
 						delay : 1000,
 						time  : 1000
@@ -386,8 +386,7 @@ $(function() {
 	        this.trackList.bind('reset', this.addAll);
 	        this.trackList.bind('all',   this.render);
 			this.trackList.fetch();
-				
-			console.log($("body"));
+			
 			$("body").keydown(this.onKeydown);
         },
      	events: {
@@ -413,17 +412,16 @@ $(function() {
 	    },
 		render : function() {
 		},
-		onClickAddNew : function(){
+		onClickAddNew : function(saveCallback,failureCallback){
 			var self = this;
 			var track = new Track();
-			track.save();
-			
 			track.save().then(function(gameTurnAgain) {
 				self.trackList.add(track);
+				if(saveCallback) saveCallback(track);
 			}, function(error) {
+				if(failureCallback) failureCallback(error);
 				alert("fail to make new track");
 			});
-			console.log("new",track);
 		}
 	});
 	
@@ -439,7 +437,7 @@ $(function() {
 			alert("failed to login : " + JSON.stringify(error));
 		},
 		onLoginSuccess : function(user){
-			new TrackListView();
+			window.trackListView = new TrackListView();
 			this.$el.fadeOut();
 		},
 		onClickLogin : function(){

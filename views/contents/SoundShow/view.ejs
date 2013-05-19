@@ -26,6 +26,8 @@
 		<script src="/js/SoundShow/patterns.js"></script>
 		<script src="/js/SoundShow/app.js"></script>
 		<script src="/js/SoundShow/mix-pad.js"></script>
+		<script src="/js/SoundShow/timeline.js"></script>
+		
 
 	    <script type="text/template" id="pattern-template">
 			<!--div class="pattern"-->
@@ -161,6 +163,7 @@
 					<div id="touch-mix-pad" class="touch-pad">
 						<canvas>
 						</canvas>
+						<button class="btn btn-danger recording-btn">Recording</button>
 					</div>
 					<iframe class="monitoring-view" width="100%" src="client"></iframe>
 				</div>
@@ -170,6 +173,8 @@
 						<button class = "btn add-new-btn">New Track</button>
 					</div>
 					<button class = "btn btn-danger btn-large">stop all</button>
+					<div class="timeline-container" id="timeline">
+					</div>
 				</div>
 	  	  </div>
 		</div>
@@ -180,7 +185,7 @@
 				    	<label class="control-label" for="inputEmail">ID</label>
 				    	<div class="controls">
 				      	  <input type="text" id="inputEmail" 
-						  		 class='id-input' placeholder="ID">
+						  		 class='id-input' placeholder="ID"/>
 				    	</div>
 				  	</div>
 				  	<div class="control-group">
@@ -188,7 +193,8 @@
 				    	<div class="controls">
 				      		<input type="password" 
 									class="password-input"
-									id="inputPassword" placeholder="Password">
+									id="inputPassword" 
+									placeholder="Password"/>
 				    	</div>
 				  	</div>
 				  	<div class="control-group">
