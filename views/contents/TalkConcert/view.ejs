@@ -11,6 +11,7 @@
         <script src="/js/jquery.transit.min.js"></script>
         <script src="/js/google_analytics.js"></script>
         <script src="/socket.io/socket.io.js"></script>
+		<script src="/js/underscore-min.js"></script>
         
         <script>
 	       	function random(min,max){
@@ -19,8 +20,7 @@
 	       	function Question(params){
             	var photoContainer = $("body");
 				var $div = $("<div class='question'></div>");
-	           	photoContainer.append($div);	
-				
+	        	photoContainer.append($div);	
 				$div.append("<div class='text_container'>" + params.text + "</div>");
 				$div.css({
 					left : Math.random() * 80 + "%",
@@ -31,7 +31,8 @@
 				$div.transit({
 					opacity : 1
 				});
-            }
+//            	this.$el = $div;
+			}
 
             function connectWS() {
                 window.socket = null;

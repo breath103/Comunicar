@@ -51,6 +51,7 @@ function Pattern(){
 }
 Pattern.prototype = {
 	toString : function(){},
+	getPlayTime : function(){},
 	run   	 : function($div,endCallback){},
 	stop  	 : function($div){},
 	onEnd 	 : function(){}
@@ -73,6 +74,9 @@ FadeTo.prototype = {
 			delay : this.delay,
 			color : this.color
 		};
+	},
+	getPlayTime : function(){
+		return this.time + this.delay;
 	},
 	run : function($div,endCallback){
 		var self = this;
@@ -112,6 +116,9 @@ Color.prototype = {
 			color : this.color
 		};
 	},
+	getPlayTime : function(){
+		return this.delay;
+	},
 	run : function($div,endCallback){
 		var self = this;
 		$div.css({
@@ -145,6 +152,9 @@ RandomBlink.prototype = {
 			delay    : this.delay
 		};
 	},
+	getPlayTime : function(){
+		return this.delay;
+	},
 	run : function($div,endCallback){
 		var self = this;
 		self.blinkIntervalHandle = setInterval(function(){
@@ -169,3 +179,5 @@ RandomBlink.prototype = {
 		clearInterval(this.blinkIntervalHandle);
 	}
 };
+
+
