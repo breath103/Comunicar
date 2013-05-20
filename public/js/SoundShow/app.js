@@ -360,8 +360,8 @@ $(function() {
 			});
 			
 			if(loop){
-				var playTime = this.patternListView.patternList.getPlayTime();
-				setTimeout(this.play,playTime + 1);
+		//		var playTime = this.patternListView.patternList.getPlayTime();
+		//		setTimeout(this.play,playTime + 1);
 			}
 		},
       	delete: function() {

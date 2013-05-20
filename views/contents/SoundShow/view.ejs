@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
         <link rel="shortcut icon" href="/icons/logo3.ico">
         
-		<link href="/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+		<link href="/css/bootstrap.cyborg.min.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" href="/css/sunny/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
 		<link href="/color-picker/jquery.colorpicker.css" rel="stylesheet" type="text/css"/>
 		<link href="/css/SoundShow/view.css" rel="stylesheet" type="text/css"/>
@@ -31,9 +31,11 @@
 
 	    <script type="text/template" id="pattern-template">
 			<!--div class="pattern"-->
+				<button class="btn btn-danger delete-btn" >
+					<i class="icon-trash"></i>
+				</button>
 				<div class="detail">
 				</div>
-				<button class="delete-btn" >delete</button>
 			<!--/div-->
 		</script>
 	    <script type="text/template" id="Pattern-FadeTo-template">
@@ -77,8 +79,8 @@
 				</div>
 				<div class="btn-group">
 					<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-				    	add New Pattern
-				    	<span class="caret"></span>
+						<i class="icon-plus"></i>
+				    	<!--span class="caret"></span-->
 				  	</a>
 				  	<ul class="dropdown-menu">
 					    <li><a tabindex="-1" class="new-pattern">Color</a></li>
@@ -106,14 +108,18 @@
 		        	<input type="password" id="signup-password" placeholder="Create a Password" />
 		        	<button>Sign Up</button>
 		      	</form>
-			</div>
+			</div>	
 	    </script>
 		<script type="text/template" id="track-template">
 			<!--div class="track"-->
 				<div class='header'>
 					<h4><?=e.objectId?></h4>
-					<button class="btn play-btn">play</button>
-					<button class="btn btn-danger delete-track-btn">delete</button>
+					<button class="btn play-btn">
+						<i class="icon-play"></i>
+					</button>
+					<button class="btn btn-danger delete-track-btn">
+						<i class="icon-trash"></i> Delete
+					</button>
 					<input type="text" class="hotkey-input" value='<?=String.fromCharCode(e.hotkey)?>'/>
 				</div>
 			<!--/div-->
@@ -153,7 +159,7 @@
     </head>
     <body>
 		<header>
-			<h1>SoundShow Control Panel</h1>
+			<h4>SoundShow Control Panel</h4>
 		</header>
 		<div class="container-fluid">
 	  		<div class="row-fluid">
@@ -208,8 +214,5 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div>
-		<button onclick="startSendingBlink();">send blink</button>
-		<button onclick="sendColor();">send color</button> -->
 	</body>
 </html>

@@ -5,7 +5,6 @@ module.exports = function(app) {
 
     var User = app.db.models.User;
 
-
     app.get("/api/users.json", function(req, res, next) {
         User.all(function(err, users) {
             if (err) next(err);

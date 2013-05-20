@@ -47,7 +47,29 @@
 	margin: 3px;
 	border-radius: 7px;
 	padding: 5px;
+	position:relative;
 }
+
+.pattern
+{
+	position:relative;
+}
+
+.pattern .delete-btn
+{
+	position:absolute;
+	display:none;
+	margin: 0;
+	padding: 2px;
+	top: 3%;
+	right: 3%;
+}
+.pattern:hover .delete-btn
+{
+	display:block;
+	
+}
+
 .FadeTo {
 	width:100px;
 }
