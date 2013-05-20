@@ -159,8 +159,13 @@ RandomBlink.prototype = {
 		var self = this;
 		self.blinkIntervalHandle = setInterval(function(){
 			var color = null;
+			var previousColor = $div.css("background-color");
 			if(self.colors && self.colors.length > 0) { 
-				color = self.colors[ _.random(0,self.colors.length) ];
+				var randomIndex = _.random(0,self.colors.length);
+				color = self.colors[randomIndex];
+				if(color == previousColor) {
+					color = self.colors[(randomIndex + 1)%self.colors.length];
+				}
 			} else { 
 				color = get_random_color(); 
 			}

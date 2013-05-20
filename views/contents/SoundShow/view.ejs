@@ -40,7 +40,9 @@
 		</script>
 	    <script type="text/template" id="Pattern-FadeTo-template">
 			<!--div class="FadeTo" style="background-color:<?=e.color?>"-->
-				<div class="thumbnail" style="background-color:<?=e.color?>"></div>
+				<div class="thumbnail" style="background-color:<?=e.color?>">
+			
+				</div>
 				<em>time</em>
 				<input class="time_input" type="text" value="<?=e.time?>"/>
 				<em>delay</em>
@@ -57,8 +59,8 @@
 					<? if(!e.colors || e.colors.length == 0) {?>
 						Random
 					<?} else {?>
-						<?e.colors.forEach(function(v){?>
-							<div class="Color" style="background-color:<?=v?>">
+						<?e.colors.forEach(function(v,i){?>
+							<div class="Color" index="<?=i?>" style="background-color:<?=v?>">
 							</div>
 						<?})?>
 					<?}?>

@@ -154,6 +154,11 @@ $(function() {
 				data.delay 	  = Number(this.$el.find(".delay_input").val());
 				this.setData(data);
 			},
+			setColorAtIndex : function(color,index){
+				var data = this.getData();
+				data.colors[index] = color;
+				this.setData(data);
+			},
 			onAddNewColor : function(){
 				var newColor = "yellow";
 				var $color = $('<div class="Color"></div>');
@@ -171,10 +176,14 @@ $(function() {
 			},
 			addColor : function(color) {
 				var data = this.getData();
+				if(!data.colors)
+					data.colors = [];
 				data.colors.push(color);
 				this.setData(data);
 			},
 	      	render: function() {
+				var self = this;
+				
 	      		this.$el.html(this.template({e: this.getData()}));
 				this.$el.find(".Color").colorpicker({
 					'showCloseButton': true ,
@@ -182,6 +191,7 @@ $(function() {
 					'showCancelButton': true ,
 					close: function(event, color) {
 						$(this).css({"background-color":"#" + color.formatted});
+						self.setColorAtIndex("#" + color.formatted, Number($(this).attr("index")));
 					}
 				});
 			}
