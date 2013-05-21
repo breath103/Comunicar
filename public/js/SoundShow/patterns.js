@@ -36,8 +36,8 @@ Track.prototype = {
 		_runNextTrack();
 	},
 	stop : function($div){
-		$div.clearQueue();
-//		this.$div.stop(true,false);
+		if($div)
+			$div.clearQueue();
 		if(this.currentPattern)
 			this.currentPattern.onEnd($div);
 		this.currentIndex 	= 0;
@@ -159,8 +159,13 @@ RandomBlink.prototype = {
 		var self = this;
 		self.blinkIntervalHandle = setInterval(function(){
 			var color = null;
+			var previousColor = $div.css("background-color");
 			if(self.colors && self.colors.length > 0) { 
-				color = self.colors[ _.random(0,self.colors.length) ];
+				var randomIndex = _.random(0,self.colors.length);
+				color = self.colors[randomIndex];
+				if(color == previousColor) {
+					color = self.colors[(randomIndex + 1)%self.colors.length];
+				}
 			} else { 
 				color = get_random_color(); 
 			}
@@ -180,9 +185,57 @@ RandomBlink.prototype = {
 	}
 };
 
+
+function BaseBlink(data)
+{
+	this.interval = data.interval;
+	this.delay    = data.delay;
+	this.range    = data.range;
+	this.color 	  = data.color;
+}
+BaseBlink.prototype = Pattern.prototype;
+BaseBlink.prototype.constructor = BaseBlink;
+BaseBlink.prototype = {
+	toJSON : function(){
+		return {
+			type     : "BaseBlink",
+			interval : this.interval,
+			delay    : this.delay,
+			range    : this.range,
+			color 	 : this.color
+		};
+	},
+	getPlayTime : function(){
+		return this.delay;
+	},
+	run : function($div,endCallback){
+		var self = this;
+		self.blinkIntervalHandle = setInterval(function(){
+			var parseColor = parseCSSColor(self.color);
+			
+			parseColor[0] += Math.round( (Math.random()-0.5) * Number(self.range));
+			parseColor[1] += Math.round( (Math.random()-0.5) * Number(self.range));
+			parseColor[2] += Math.round( (Math.random()-0.5) * Number(self.range));
+			
+			$div.css("background-color","rgb("+parseColor[0]+","+parseColor[1]+","+parseColor[2]+")");
+		},self.interval);
+		
+		if (self.delay) {
+			self.endHandle = setTimeout(function(){
+				self.onEnd();
+				endCallback();
+			},self.delay);
+		}
+	},
+	onEnd : function(){
+		clearTimeout(this.endHandle);
+		clearInterval(this.blinkIntervalHandle);
+	}
+};
+
 Patterns = {
 	FadeTo : FadeTo,
 	Color : Color,
-	RandomBlink : RandomBlink
+	RandomBlink : RandomBlink,
+	BaseBlink : BaseBlink
 };
-

@@ -195,6 +195,49 @@ $(function() {
 					}
 				});
 			}
+		}),
+		"BaseBlink" : Parse.View.extend({
+	    	tagName : "div",
+			className : "BaseBlink",
+	     	template: _.template($('#Pattern-BaseBlink-template').html()),
+			events: {
+				"change .interval_input" : "onChange",
+				"change .delay_input" 	 : "onChange",
+				"change .range_input"    : "onChange"
+			},
+			initialize: function() {
+	        	_.bindAll(this, 'render','onChange','setColor');
+			},
+			getData : function(){ return JSON.parse(this.model.get("data")); },
+			setData : function(data){
+				this.model.set("data",JSON.stringify(data));
+				this.model.save();
+			},
+			onChange : function(){
+				var data = this.getData();
+				data.interval = Number(this.$el.find(".interval_input").val());
+				data.delay 	  = Number(this.$el.find(".delay_input").val());
+				data.range    = this.$el.find(".range_input").val();
+				this.setData(data);
+			},
+			setColor : function(color){
+				var data = this.getData();
+				data.color = color;
+				this.setData(data);
+			},
+	      	render: function() {
+				var self = this;
+	      		this.$el.html(this.template({e: this.getData()}));
+				this.$el.find(".Color").colorpicker({
+					'showCloseButton': true,
+					'inline': false,
+					'showCancelButton': true ,
+					close: function(event, color) {
+						$(this).css({"background-color":"#" + color.formatted});
+						self.setColor("#" + color.formatted);
+					}
+				});
+			}
 		})
 	}
     var PatternView = Parse.View.extend({
@@ -283,6 +326,18 @@ $(function() {
 					track : this.track,
 					order : this.patternList.nextOrder()
 				});
+			} else if (type == "BaseBlink") {
+				return this.patternList.create({
+					type : type,
+					data : JSON.stringify(data?data:{
+						color: "#ff00ee",
+						delay: 1000,
+						interval: 100,
+						range : 10
+					}),
+					track : this.track,
+					order : this.patternList.nextOrder()
+				});
 			} else if (type == "FadeTo") {
 				return this.patternList.create({
 					type : type,
@@ -294,7 +349,7 @@ $(function() {
 					track : this.track,
 					order : this.patternList.nextOrder()
 				});
-			}
+			} 
 		},
 		newPattern : function(e){
 			var type = $(e.target).html();

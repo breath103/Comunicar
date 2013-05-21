@@ -7,7 +7,7 @@
         <link rel="shortcut icon" href="/icons/logo3.ico">
         
 		<link href="/css/bootstrap.cyborg.min.css" rel="stylesheet" type="text/css"/>
-		<link rel="stylesheet" href="/css/sunny/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		<link rel="stylesheet" href="/css/sunny/jquery-ui-1.10.2.custom.min.css" type="text/css" media="screen" charset="utf-8">
 		<link href="/color-picker/jquery.colorpicker.css" rel="stylesheet" type="text/css"/>
 		<link href="/css/SoundShow/view.css" rel="stylesheet" type="text/css"/>
 		<script src="/js/jquery-1.7.1.js"></script>
@@ -41,7 +41,6 @@
 	    <script type="text/template" id="Pattern-FadeTo-template">
 			<!--div class="FadeTo" style="background-color:<?=e.color?>"-->
 				<div class="thumbnail" style="background-color:<?=e.color?>">
-			
 				</div>
 				<em>time</em>
 				<input class="time_input" type="text" value="<?=e.time?>"/>
@@ -65,7 +64,18 @@
 						<?})?>
 					<?}?>
 				</div>
-				<button class="btn-info add-new-color">add color</button>
+				<button class="btn btn-success add-new-color">
+					<i class="icon-plus"></i> color
+				</button>
+			<!--/div-->
+		</script>
+	    <script type="text/template" id="Pattern-BaseBlink-template">
+			<!--div class="BaseBlink"-->
+				<label>interval</label><input class="interval_input" type="text" value="<?=e.interval?>"/>
+				<label>delay</label><input class="delay_input" type="text" value="<?=e.delay?>"/>
+				<label>range</label><input class="range_input" type="text" value="<?=e.range?>"/>
+				<div class="Color" style="background-color:<?=e.color?>">
+				</div>
 			<!--/div-->
 		</script>
 		<script type="text/template" id="Pattern-Color-template">
@@ -87,31 +97,12 @@
 				  	<ul class="dropdown-menu">
 					    <li><a tabindex="-1" class="new-pattern">Color</a></li>
 					    <li><a tabindex="-1" class="new-pattern">RandomBlink</a></li>
-					    <li><a tabindex="-1" class="new-pattern">FadeTo</a></li>
+					    <li><a tabindex="-1" class="new-pattern">BaseBlink</a></li>
+						<li><a tabindex="-1" class="new-pattern">FadeTo</a></li>
 					</ul>
 				</div>
 			<!--/div-->
 		</script>
-		
-		<script type="text/template" id="login-template">
-	   		<header id="header"></header>
-	      	<div class="login">
-		        <form class="login-form">
-		        	<h2>Log In</h2>
-		         	<div class="error" style="display:none"></div>
-		         	<input type="text" id="login-username" placeholder="Username" />			 
-					<input type="password" id="login-password" placeholder="Password" />
-				    <button>Log In</button>
-		        </form>
-				<form class="signup-form">
-		        	<h2>Sign Up</h2>
-		        	<div class="error" style="display:none"></div>
-		        	<input type="text" id="signup-username" placeholder="Username" />
-		        	<input type="password" id="signup-password" placeholder="Create a Password" />
-		        	<button>Sign Up</button>
-		      	</form>
-			</div>	
-	    </script>
 		<script type="text/template" id="track-template">
 			<!--div class="track"-->
 				<div class='header'>
@@ -126,6 +117,7 @@
 				</div>
 			<!--/div-->
 		</script>
+		
 	    <script type="text/template" id="color-template">
 			<div class="color" style="background-color:<?=e.color?>;">
 				<div class="overlay">
@@ -179,6 +171,8 @@
 						<canvas>
 						</canvas>
 						<button class="btn btn-danger recording-btn">Recording</button>
+						<div class="pad-background-list">
+						</div>
 					</div>
 					<iframe class="monitoring-view" width="100%" src="client"></iframe>
 				</div>

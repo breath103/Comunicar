@@ -105,6 +105,22 @@
 	min-height:30px;
 }
 
+.BaseBlink em{
+	width:30%;
+}
+.BaseBlink input{
+	width:60%;
+	background:transparent;
+	margin:0;
+	padding:0;
+}
+.BaseBlink .Color{
+	min-width:30px;
+	min-height:30px;
+}
+
+
+
 
 .Color {
 	width: 50px;

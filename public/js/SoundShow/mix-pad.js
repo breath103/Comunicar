@@ -17,18 +17,23 @@ $(document).ready(function(){
 					   .bind("touchmove mousemove" ,this.onTouchMove)
 					   .bind("touchend mouseup"	   ,this.onTouchEnd)
 					   .resize(this.onResize);	   
+					   
+			$padBackgroundList = this.$el.find(".pad-background-list");
+			
 		},
 		setCanvasImage : function(image_src) {
 	    	this.palleteImage = new Image();
-			this.palleteImage.src = image_src;
 			this.palleteImage.onload = this.onResize;
+			this.palleteImage.src = image_src;
+			console.log(this.palleteImage);
 		},
 		onResize : function(){
 			var context = this.canvas[0].getContext("2d");
 			this.canvas[0].width   = this.canvas.width();
-			this.canvas[0].height = this.canvas.height();
+			this.canvas[0].height  = this.canvas.height();
 			
 			if(this.palleteImage){
+				console.log(this.palleteImage);
 				context.drawImage(this.palleteImage, 
 								  0, 0, this.canvas.width(), this.canvas.height());
 			}
@@ -121,5 +126,5 @@ $(document).ready(function(){
 		}
     });	
 		
-	new MixPadView();
+	window.mixPadView = new MixPadView();
 });
