@@ -1,4 +1,4 @@
-$(function() {
+	$(function() {
 	_.templateSettings = {
 		escape		: /<\?-([\s\S]+?)\?>/g,
 		evaluate	: /<\?([\s\S]+?)\?>/g,
@@ -431,13 +431,17 @@ $(function() {
 		},
       	delete: function() {
 			var self = this;
-			this.$el.fadeOut(function(){
-	      		self.patternListView.patternList.each(function(p){
-					p.destroy();
-	      		});
+			if(confirm("Delete Track?")){
+				this.$el.fadeOut(function(){
+		      		self.patternListView.patternList.each(function(p){
+						p.destroy();
+		      		});
 				
-				self.model.destroy();
-			});
+					self.model.destroy();
+				});
+			} else {
+				
+			}
       	}
     });
     var TrackListView = Parse.View.extend({

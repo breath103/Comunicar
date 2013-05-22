@@ -2,12 +2,13 @@ $(document).ready(function(){
     var MixPadView = Parse.View.extend({
     	el: $("#touch-mix-pad"),
 		events : {
-			"click .recording-btn" : "toggleRecording"
+			"click .recording-btn" : "toggleRecording",
+			"click .pad-thumbnail" : "onClickPad"
 		},
       	initialize: function() {
 			_.bindAll(this,"onTouchStart","onTouchMove","onTouchEnd",
 			               "onResize","onColorTapped","startRecording",
-					   	   "stopRecording","toggleRecording");
+					   	   "stopRecording","toggleRecording","onClickPad");
 			this.shouldDraw = false;
 			this.isInRecording = false;
 			this.canvas = this.$el.find("canvas");
@@ -25,7 +26,6 @@ $(document).ready(function(){
 	    	this.palleteImage = new Image();
 			this.palleteImage.onload = this.onResize;
 			this.palleteImage.src = image_src;
-			console.log(this.palleteImage);
 		},
 		onResize : function(){
 			var context = this.canvas[0].getContext("2d");
@@ -33,7 +33,6 @@ $(document).ready(function(){
 			this.canvas[0].height  = this.canvas.height();
 			
 			if(this.palleteImage){
-				console.log(this.palleteImage);
 				context.drawImage(this.palleteImage, 
 								  0, 0, this.canvas.width(), this.canvas.height());
 			}
@@ -123,6 +122,11 @@ $(document).ready(function(){
 				});
 			});
 			console.log("Stop recording");
+		},
+		onClickPad: function (e){
+			var $div = $(e.currentTarget);
+			var src = $div.find("img").attr("src");
+			this.setCanvasImage(src);
 		}
     });	
 		
