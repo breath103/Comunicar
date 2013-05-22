@@ -10,8 +10,9 @@ module.exports = function(content,app){
     		content : req.content
     	});
     });
+	
     app.get(path + "view",function(req,res){
-		fs.readdir("public/contents/SoundShow/pads", function(error, files) {
+		fs.readdir(process.cwd() + "/public/contents/SoundShow/pads", function(error, files) {
 			if (error) {
 				res.send(500);
 			}
