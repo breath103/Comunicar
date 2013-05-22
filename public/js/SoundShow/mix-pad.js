@@ -3,7 +3,7 @@ $(document).ready(function(){
     	el: $("#touch-mix-pad"),
 		events : {
 			"click .recording-btn" : "toggleRecording",
-			"touchstart .recording-btn" : "toggleRecording",
+	//		"touchstart .recording-btn" : "toggleRecording",
 			"click .pad-thumbnail" : "onClickPad",
 			"click .btn-mix-type" : "onChangeMixType"
 		},
