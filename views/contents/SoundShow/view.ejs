@@ -157,27 +157,28 @@
 		  		<a class="brand" href="#">SoundShow Control Panel</a>
 		    	<ul class="nav">
 		      		<li class="active"><a href="#">Tracks</a></li>
-		      	  	<li><a onclick="$('.touch-pad').fadeToggle();">TouchPad</a></li>
+		      	  	<li><a onclick="$('.touch-pad').fadeToggle();
+						">TouchPad</a></li>
 		      	  	<li><a href="#">Settings</a></li>
 		    	</ul>
 		  	</div>
 		</div>
 		<div class="container-fluid">
-			<div id="touch-mix-pad" class="touch-pad">
-				<canvas>
-				</canvas>
-				<button class="btn btn-danger recording-btn">Recording</button>
-				<div class="pad-background-list">
-					<%pads.forEach(function(v){%>
-						<div class="pad-thumbnail">
-							<img src="<%=v%>"/>
-						</div>
-					<%})%>
-				</div>
-			</div>
 			<div class="row-fluid">
 	    		<div class="span3" id="left-main-column" 
 					style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
+					<div id="touch-mix-pad" class="touch-pad">
+						<canvas>
+						</canvas>
+						<button class="btn btn-danger recording-btn">Recording</button>
+						<div class="pad-background-list">
+							<%pads.forEach(function(v){%>
+								<div class="pad-thumbnail">
+									<img src="<%=v%>"/>
+								</div>
+							<%})%>
+						</div>
+					</div>
 					<h4 id="touch-pad-out"></h4>
 					<iframe class="monitoring-view" width="100%" src="client"></iframe>
 				</div>

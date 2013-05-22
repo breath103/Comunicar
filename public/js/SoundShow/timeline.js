@@ -21,6 +21,6 @@ $(document).ready(function(){
 		}
     });	
 		
-//	new TimelineView();
+	new TimelineView();
 // OFFED
 });
