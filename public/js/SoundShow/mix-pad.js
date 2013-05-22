@@ -3,12 +3,14 @@ $(document).ready(function(){
     	el: $("#touch-mix-pad"),
 		events : {
 			"click .recording-btn" : "toggleRecording",
-			"click .pad-thumbnail" : "onClickPad"
+			"touchstart .recording-btn" : "toggleRecording",
+			"click .pad-thumbnail" : "onClickPad",
+			"click .btn-mix-type" : "onChangeMixType"
 		},
       	initialize: function() {
 			_.bindAll(this,"onTouchStart","onTouchMove","onTouchEnd",
 			               "onResize","onColorTapped","startRecording",
-					   	   "stopRecording","toggleRecording","onClickPad");
+					   	   "stopRecording","toggleRecording","onClickPad","onChangeMixType");
 			this.shouldDraw = false;
 			this.isInRecording = false;
 			this.canvas = this.$el.find("canvas");
@@ -79,48 +81,108 @@ $(document).ready(function(){
 		},
 		onColorTapped  : function(color,event){
 			if(this.isInRecording){
+				var track = this.recoding_track;
+				var trackView = track.view;
+				var patternListView = trackView.patternListView;
+				
+				if(this.lastColorEvent){
+					time = event.timeStamp - this.lastColorEvent.event.timeStamp;
+					switch (this.mix_type) {
+						case "FadeTo" : {
+							patternListView.createPatternWithType("FadeTo",{
+								color : color,
+								delay : 0,
+								time  : time
+							});
+						}break; 
+						case "Color" : {
+							patternListView.createPatternWithType("Color",{
+								color : color,
+								delay : time
+							});
+						}break;
+						case "RandomBlink" : {
+				
+						}break;
+					}
+					
+				}
+				
 				this.colors.push({
 					color : color,
 					event : event
 				});
+				
+				this.lastColorEvent = {
+					color : color,
+					event : event
+				}
 			}
 		},
-		toggleRecording : function(){
+		toggleRecording : function(e){
+			$button = $(e.currentTarget);
 			if (this.isInRecording) {
+				$button.html("Recording");
 				this.stopRecording();
 			} else {
+				$button.html("Recording...");
 				this.startRecording();
+			}
+		},
+		onChangeMixType : function(e){
+			var $button = $(e.currentTarget);
+			var type = $button.html();
+			
+			this.mix_type = type;
+			console.log(this.mix_type);
+			switch (type) {
+				case "FadeTo" : {
+				
+				}break; 
+				case "Color" : {
+					
+				}break;
+				case "RandomBlink" : {
+				
+				}break;
 			}
 		},
 		startRecording : function(){
 			this.isInRecording = true;
 			this.colors = [];
+			this.lastColorEvent = null;
+			
+			var self = this;
+			window.trackListView.onClickAddNew(function(track){
+				console.log(track);
+				self.recoding_track = track;
+			});
+			
 			console.log("Start recording");
 		},
 		stopRecording : function(){
 			this.isInRecording = false;
-			console.log(this.colors);
+
+			// var self = this;
+			// var track = this.recoding_track;
+			// var trackView = track.view;
+			// var patternListView = trackView.patternListView;
+			// var previousTimestamp = null;
+			// 
+			// _.each(self.colors,function(node){
+			// 	if(previousTimestamp){
+			// 		node.time = node.event.timeStamp - previousTimestamp;
+			// 	} else {
+			// 		node.time = 1;
+			// 	}
+			// 	previousTimestamp = node.event.timeStamp;
+			// 	patternListView.createPatternWithType("FadeTo",{
+			// 		color : node.color,
+			// 		delay : 0,
+			// 		time  : node.time
+			// 	});
+			// });
 			
-			var self = this;
-			window.trackListView.onClickAddNew(function(track){
-				var trackView = track.view;
-				var patternListView = trackView.patternListView;
-				var previousTimestamp = null;
-				_.each(self.colors,function(node){
-					if(previousTimestamp){
-						node.time = node.event.timeStamp - previousTimestamp;
-					} else {
-						node.time = 1;
-					}
-					previousTimestamp = node.event.timeStamp;
-					
-					patternListView.createPatternWithType("FadeTo",{
-						color : node.color,
-						delay : 0,
-						time  : node.time
-					});
-				});
-			});
 			console.log("Stop recording");
 		},
 		onClickPad: function (e){

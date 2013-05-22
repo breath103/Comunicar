@@ -26,8 +26,6 @@ Track.prototype = {
 					cb();
 			} else {
 				self.currentPattern = self.patterns[self.currentIndex++];
-				console.log(self.currentPattern);
-				console.log("2",self.$div);
 				self.currentPattern.run(self.$div,function(){
 					_runNextTrack();
 				});	
