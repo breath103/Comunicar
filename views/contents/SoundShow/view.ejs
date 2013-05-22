@@ -148,6 +148,13 @@
 			$(document).ready(function() {
                 connectWS();
 			});
+			
+			function setLeftSize()
+			{
+				$("#left-main-column").transit({"width":"100%"});
+				$("#right-main-column").transit({"width":"0%",
+											 	 "opacity":0});
+			}
         </script>
         <title>Comunicar</title>
     </head>
@@ -157,8 +164,7 @@
 		  		<a class="brand" href="#">SoundShow Control Panel</a>
 		    	<ul class="nav">
 		      		<li class="active"><a href="#">Tracks</a></li>
-		      	  	<li><a onclick="$('.touch-pad').fadeToggle();
-						">TouchPad</a></li>
+		      	  	<li><a onclick="setLeftSize();">TouchPad</a></li>
 		      	  	<li><a href="#">Settings</a></li>
 		    	</ul>
 		  	</div>
@@ -170,28 +176,27 @@
 					<div id="touch-mix-pad" class="touch-pad">
 						<canvas>
 						</canvas>
-						<button class="btn btn-danger recording-btn">Recording</button>
-						<div>
+						<div style="width:100%;height:auto">
+							<button class="btn btn-danger recording-btn">Recording</button>
 							<button class="btn btn-mix-type">FadeTo</button>
 							<button class="btn btn-mix-type">Color</button>
 							<button class="btn btn-mix-type">RandomBlink</button>
 							<button class="btn btn-mix-type">BaseBlink</button>
 						</div>
-						
-						
-						
 						<div class="pad-background-list">
+							<div style="height:100%;width:100000px">
 							<%pads.forEach(function(v){%>
 								<div class="pad-thumbnail">
 									<img src="<%=v%>"/>
 								</div>
 							<%})%>
+							</div>
 						</div>
 					</div>
 					<h4 id="touch-pad-out"></h4>
-					<iframe class="monitoring-view" width="100%" src="client"></iframe>
+					<iframe class="monitoring-view" width="100px" height="100px" src="client"></iframe>
 				</div>
-	    		<div class="span9" style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
+	    		<div class="span9" id="right-main-column" style="background-color: rgb(228, 228, 228);border-radius: 10px;padding: 5px;">
 					<h3> Tracks </h3>
 					<div class="track_list" id="track_list">
 						<button class = "btn add-new-btn">New Track</button>
