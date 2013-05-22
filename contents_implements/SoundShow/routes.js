@@ -12,7 +12,7 @@ module.exports = function(content,app){
     });
 	
     app.get(path + "view",function(req,res){
-		fs.readdir(process.cwd() + "/public/contents/SoundShow/Pads", function(error, files) {
+		fs.readdir(process.cwd() + "/public/contents/SoundShow/touchpads", function(error, files) {
 			if (error) {
 				console.log(error);
 				res.send(500);
@@ -21,7 +21,7 @@ module.exports = function(content,app){
 				files.sort();
 				console.log(files);
 				files.forEach(function(v,k,l){
-					l[k] = "pads/" + v;
+					l[k] = "./touchpads/" + v;
 				});
 				console.log(files);
 				res.render(viewPath + "view",{
