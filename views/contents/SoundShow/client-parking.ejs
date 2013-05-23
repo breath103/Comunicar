@@ -16,7 +16,7 @@
 					var hour = Number(d.format("HH")) -9 + (Number(d.format("DD")) - 1) * 24;
 					if(hour < 10)
 						hour = "0" + hour;
-					$("#time_output").html(hour + ":" + d.format("mm:ss:SS"));
+					$("#time_output").html(hour + ":" + d.format("mm:ss"));
 				},10);
 			});
 	    </script>
@@ -35,29 +35,28 @@
 			}
 			#time_output {
 				font-family:"Helvetica Neue";
-				font-size: 64pt;
+				font-size: 58pt;
 				color:white;
 				text-align:center;
 			}
 			
 			.soundshow_name {
-			margin-left:auto;
-			margin-right:auto;
-			margin-bottom:2%;
-			width: 80%;
-			height: 20%;
-			margin-top:10%;
-			margin-botom:10%;
-			top: 20%;
-		
+				margin-left:auto;
+				margin-right:auto;
+				margin-bottom:2%;
+				width: 80%;
+				height: 20%;
+				margin-top:10%;
+				margin-bottom:10%;
+				top: 20%;
 			}
 			
 			.youtube_name {
-			margin-left:auto;
-			margin-right:auto;
-			margin-bottom:2%;
-			width:100%;
-			height:auto;
+				margin-left:auto;
+				margin-right:auto;
+				margin-bottom:2%;
+				width:100%;
+				height:auto;
 			}
 		</style>
 		<title>SoundShow</title>
@@ -66,7 +65,7 @@
     <body>
     	<div class="site"> 
     		<div class="soundshow_name">
-	    		<img src="soundshow.png" width=100%, height=auto>
+	    		<img src="soundshow.png" width="100%" height="auto">
     		</div>
     		<div class="youtube_name">	
     		<iframe width="auto" height="auto" src="http://www.youtube.com/embed/IviLZf7OjMo?rel=0" frameborder="0" allowfullscreen></iframe>
