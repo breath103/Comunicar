@@ -112,14 +112,14 @@ $(document).ready(function(){
 					switch (this.mix_type) {
 						case "FadeTo" : {
 							patternListView.createPatternWithType("FadeTo",{
-								color : color,
+								color : this.lastColorEvent.color,
 								delay : 0,
 								time  : time
 							});
 						}break; 
 						case "Color" : {
 							patternListView.createPatternWithType("Color",{
-								color : color,
+								color : this.lastColorEvent.color,
 								delay : time
 							});
 						}break;

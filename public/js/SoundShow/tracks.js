@@ -13,10 +13,11 @@ $(function() {
      	events: {
         	"click .play-btn" 		  : "play",
 			"click .delete-track-btn" : "delete",
+			"click .duplicate-btn"    : "createCopy",
 			"change .hotkey-input" 	  : "onHotkeyChange"
 		},
       	initialize: function() {
-			_.bindAll(this, 'render', 'close', 'play','addPattern');
+			_.bindAll(this, 'render', 'close', 'play','addPattern','createCopy');
         	this.model.bind('change',  this.render);
 			this.model.view = this;
 			this.$el.html(this.template({e:this.model.toJSON()}));
@@ -83,7 +84,21 @@ $(function() {
 			} else {
 				
 			}
-      	}
+      	},
+		createCopy : function(){
+			var self = this;
+			window.trackListView.onClickAddNew(function(track){
+				self.patternListView.patternList.each(function(pattern){
+					var newPattern = new Pattern({
+						type  : pattern.get("type"),
+						data  : pattern.get("data"),
+						order : pattern.get("order"),
+						track : track
+					});
+					newPattern.save();
+				});
+			})
+		}
     });
 	
     window.TrackListView = Parse.View.extend({

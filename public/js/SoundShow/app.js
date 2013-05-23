@@ -8,7 +8,7 @@ $(function() {
 	Parse.$ = jQuery;
  	Parse.initialize("PJbZN8uNbyIehnkz7VyY53RJG6rEVHdzKcCoUZYR", "9luQVvgoxvJ8XI7mJPP3jaqCrx0Oj8xgpTdigwck");
 
-	var Pattern = Parse.Object.extend({
+	window.Pattern = Parse.Object.extend({
 		className: "Pattern",
 		getPlayTime : function(){
 			var p = new Patterns[this.get("type")](JSON.parse(this.get("data")));
