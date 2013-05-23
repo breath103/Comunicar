@@ -1,16 +1,17 @@
 $(document).ready(function(){
+	
     var MixPadView = Parse.View.extend({
     	el: $("#touch-mix-pad"),
 		events : {
 			"click .recording-btn" : "toggleRecording",
-	//		"touchstart .recording-btn" : "toggleRecording",
 			"click .pad-thumbnail" : "onClickPad",
-			"click .btn-mix-type" : "onChangeMixType"
+			"click .btn-mix-type"  : "onChangeMixType"
+			"touchstart .btn-mix-type"  : "onChangeMixType"
 		},
       	initialize: function() {
 			_.bindAll(this,"onTouchStart","onTouchMove","onTouchEnd",
 			               "onResize","onColorTapped","startRecording",
-					   	   "stopRecording","toggleRecording","onClickPad","onChangeMixType");
+					   	   "stopRecording","toggleRecording","onClickPad","onChangeMixType","onKeydown");
 			this.shouldDraw = false;
 			this.isInRecording = false;
 			this.canvas = this.$el.find("canvas");
@@ -20,9 +21,26 @@ $(document).ready(function(){
 					   .bind("touchmove mousemove" ,this.onTouchMove)
 					   .bind("touchend mouseup"	   ,this.onTouchEnd)
 					   .resize(this.onResize);	   
-					   
+					 
+					 
 			$padBackgroundList = this.$el.find(".pad-background-list");
+			$(window).resize(this.onResize);
 			
+			$("body").keydown(this.onKeydown);
+      	},
+		onKeydown : function(e){
+			if (this.isInRecording){
+				var key = String.fromCharCode(e.keyCode);
+				var hotkeys = ['1','2','3','4'];
+				for(var i=0;i<hotkeys.length;i++){
+					if(hotkeys[i] == key){
+						$(this.$el.find(".btn-mix-type")[i]).trigger("click");
+						return;
+					}
+				}
+			} else {
+				
+			}
 		},
 		setCanvasImage : function(image_src) {
 	    	this.palleteImage = new Image();
@@ -33,7 +51,7 @@ $(document).ready(function(){
 			var context = this.canvas[0].getContext("2d");
 			this.canvas[0].width   = this.canvas.width();
 			this.canvas[0].height  = this.canvas.height();
-			
+			console.log(this.canvas.width(), ":", this.canvas.height());
 			if(this.palleteImage){
 				context.drawImage(this.palleteImage, 
 								  0, 0, this.canvas.width(), this.canvas.height());

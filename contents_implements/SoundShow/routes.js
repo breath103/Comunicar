@@ -26,7 +26,7 @@ module.exports = function(content,app){
 				files.sort();
 				console.log(files);
 				files.forEach(function(v,k,l){
-					l[k] = "./touchpads/" + v;
+					l[k] = "/contents/SoundShow/touchpads/" + v;
 				});
 				console.log(files);
 				res.render(viewPath + "view",{

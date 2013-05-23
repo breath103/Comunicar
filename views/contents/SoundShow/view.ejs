@@ -149,11 +149,28 @@
                 connectWS();
 			});
 			
+			
+			var opened = false;
+			
 			function setLeftSize()
 			{
-				$("#left-main-column").transit({"width":"100%"});
-				$("#right-main-column").transit({"width":"0%",
-											 	 "opacity":0});
+				if(!opened){
+					$("#left-main-column").transit({"width":"100%"},function(){
+						mixPadView.onResize();
+					});
+					$("#right-main-column").transit({"width":"0%","opacity":0},function(){
+						mixPadView.onResize();
+					});
+					opened = true;
+				} else {
+					$("#left-main-column").transit({"width":"30%"},function(){
+						mixPadView.onResize();
+					});
+					$("#right-main-column").transit({"width":"70%","opacity":1},function(){
+						mixPadView.onResize();
+					});
+					opened = false;
+				}
 			}
         </script>
         <title>Comunicar</title>
