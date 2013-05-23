@@ -50,10 +50,10 @@
 			className : "Color",
 	     	template: _.template($('#Pattern-Color-template').html()),
 			events: {
-			//	"change .delay_input" : "onChange"
+				"change .delay_input" : "onChange"
 			},
 		  	initialize: function() {
-	        	_.bindAll(this, 'render','onClickColor');
+	        	_.bindAll(this, 'render','onClickColor','onChange');
 	      		this.$el.html(this.template({e: this.getData()}));
 				this.$el.click(this.onClickColor);
 	      	},
@@ -64,10 +64,14 @@
 				this.model.set("data",JSON.stringify(data));
 				this.model.save();
 			},
-	      	render: function() {
-	        	this.$el.css({"background-color":this.getData().color});
-	        	return this;
-	      	},
+			onChange : function(){
+				var data = this.getData();
+				data.delay = Number(this.$el.find(".delay_input").val());
+				this.setData(data);
+			},
+			render: function() {
+	      		this.$el.html(this.template({e: this.getData()}));
+			},
 			setColor : function(color) {
 				var data = this.getData();
 				data.color = color;
@@ -75,7 +79,7 @@
 			},
 			onClickColor : function(e){
 				var self = this;
-				this.$el.colorpicker({
+				this.$el.find(".thumbnail").colorpicker({
 					'showCloseButton': true ,
 					'inline': false,
 					'showCancelButton': true ,

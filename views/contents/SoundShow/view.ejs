@@ -38,7 +38,15 @@
 				</div>
 			<!--/div-->
 		</script>
-	    <script type="text/template" id="Pattern-FadeTo-template">
+		<script type="text/template" id="Pattern-Color-template">
+			<!--div class="Color" style="background-color:<?=e.color?>"-->
+			<div class="thumbnail" style="background-color:<?=e.color?>">
+			</div>
+			<em>delay</em>
+			<input class="delay_input" type="text" value="<?=e.delay?>"/>
+			<!--/div-->
+		</script>
+		<script type="text/template" id="Pattern-FadeTo-template">
 			<!--div class="FadeTo" style="background-color:<?=e.color?>"-->
 				<div class="thumbnail" style="background-color:<?=e.color?>">
 				</div>
@@ -76,14 +84,6 @@
 				<label>range</label><input class="range_input" type="text" value="<?=e.range?>"/>
 				<div class="Color" style="background-color:<?=e.color?>">
 				</div>
-			<!--/div-->
-		</script>
-		<script type="text/template" id="Pattern-Color-template">
-			<!--div class="Color" style="background-color:<?=e.color?>"-->
-			<div class="thumbnail" style="background-color:<?=e.color?>">
-			</div>
-			<em>delay</em>
-			<input class="delay-input" type="text" value="<?=e.delay?>"/>
 			<!--/div-->
 		</script>
 	    <script type="text/template" id="pattern_list_template">
