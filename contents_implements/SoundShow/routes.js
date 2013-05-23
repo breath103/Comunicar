@@ -6,7 +6,7 @@ module.exports = function(content,app){
 	
 		
 	app.get(path + "client",function(req,res){
-    	res.render(viewPath + "client",{
+    	res.render(viewPath + "client-parking",{
     		content : req.content
     	});
     });
