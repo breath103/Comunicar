@@ -10,6 +10,12 @@ module.exports = function(content,app){
     	});
     });
 	
+	app.get("/client",function(req,res){
+    	res.render(viewPath + "client",{
+    		content : req.content
+    	});
+    });
+	
     app.get("/view",function(req,res){
 		fs.readdir(process.cwd() + "/public/contents/SoundShow/touchpads", function(error, files) {
 			if (error) {
