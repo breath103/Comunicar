@@ -93,7 +93,7 @@ $(document).ready(function(){
 					color : color
 				});
 				
-				this.onColorTapped(color,e);
+			//	this.onColorTapped(color,e);
 				return false;
 	    	}
 	    },

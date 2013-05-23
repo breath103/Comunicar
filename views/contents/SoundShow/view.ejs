@@ -25,10 +25,12 @@
 		<script src="/js/parse-1.2.7.min.js"></script>
 		<script src="/js/SoundShow/patterns.js"></script>
 		<script src="/js/SoundShow/app.js"></script>
+		<script src="/js/SoundShow/tracks.js"></script>
 		<script src="/js/SoundShow/mix-pad.js"></script>
 		<script src="/js/SoundShow/timeline.js"></script>
+		<script src="/js/SoundShow/songs.js"></script>
+		<script src="/js/SoundShow/users.js"></script>
 		
-
 	    <script type="text/template" id="pattern-template">
 			<!--div class="pattern"-->
 				<button class="btn btn-danger delete-btn" >
@@ -118,13 +120,21 @@
 				</div>
 			<!--/div-->
 		</script>
-		
 	    <script type="text/template" id="color-template">
 			<div class="color" style="background-color:<?=e.color?>;">
 				<div class="overlay">
 				</div>
 			</div>
 		</script>
+		
+	    <script type="text/template" id="song-template">
+			<h4><?=e.name?></h4>
+			<button class="btn show-btn">
+				<i class="icon-play"></i>
+			</button>
+		</script>
+		
+	
 		
 		<script>
 			function connectWS() {
@@ -187,6 +197,16 @@
 		    	</ul>
 		  	</div>
 		</div>
+		
+		<div id="song-list-container" class="song-list">
+			<div class="song-list">
+				
+			</div>
+			<button class="btn btn-success add-new-song">
+				<i class="icon-plus"></i> color
+			</button>
+		</div>
+		
 		<div class="container-fluid">
 			<div class="row-fluid">
 	    		<div class="span3" id="left-main-column" 

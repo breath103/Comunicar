@@ -1,4 +1,4 @@
-	$(function() {
+$(function() {
 	_.templateSettings = {
 		escape		: /<\?-([\s\S]+?)\?>/g,
 		evaluate	: /<\?([\s\S]+?)\?>/g,
@@ -7,10 +7,6 @@
 	
 	Parse.$ = jQuery;
  	Parse.initialize("PJbZN8uNbyIehnkz7VyY53RJG6rEVHdzKcCoUZYR", "9luQVvgoxvJ8XI7mJPP3jaqCrx0Oj8xgpTdigwck");
-	var User = Parse.Object.extend("User", {
-	});
-	// Construct a query to get the current user's todo items
-	var query = new Parse.Query(User);
 
 	var Pattern = Parse.Object.extend({
 		className: "Pattern",
@@ -19,7 +15,7 @@
 			return p.getPlayTime();
 		}
 	});
-	var PatternList = Parse.Collection.extend({
+	window.PatternList = Parse.Collection.extend({
 		model: Pattern,
 	    nextOrder: function() {
 	    	if (!this.length) return 1;
@@ -278,7 +274,7 @@
       		});
 		}
     });	
-    var PatternListView = Parse.View.extend({
+    window.PatternListView = Parse.View.extend({
     	tagName : "div",
 		className : 'pattern_list_container',
      	template : _.template($('#pattern_list_template').html()),
@@ -361,177 +357,4 @@
 			var pattern = this.createPatternWithType(type);
 		}
 	});
-	
-	var Track = Parse.Object.extend({
-		className: "Track"
-	});
-	// A Collection containing all instances of Pattern.
-	var TrackList = Parse.Collection.extend({
-		model: Track
-	});
-
-    var TrackView = Parse.View.extend({
-    	tagName:  "div",
-		className: 'track',
-		template: _.template($('#track-template').html()),
-     	events: {
-        	"click .play-btn" 		  : "play",
-			"click .delete-track-btn" : "delete",
-			"change .hotkey-input" 	  : "onHotkeyChange"
-		},
-      	initialize: function() {
-			_.bindAll(this, 'render', 'close', 'play','addPattern');
-        	this.model.bind('change',  this.render);
-			this.model.view = this;
-			this.$el.html(this.template({e:this.model.toJSON()}));
-			
-			var patternListView = new PatternListView({
-        		track : this.model
-        	});
-			patternListView.render();
-			this.patternListView = patternListView;
-			this.$el.append(patternListView.$el);
-      	},
-      	render: function() {
-	
-			this.patternListView.render();
-			return this;
-      	},
-	    close: function() {
-			console.log(patterns);
-	   	 	this.model.save();
-	  	},
-		addPattern : function(pattern) {
-			this.model.add("patterns", JSON.stringify(pattern));
-			this.render();
-		},
-		jsonForPlay : function(){
-			var json = this.model.toJSON();
-			json.patterns = this.patternListView.patternList.toJSON();
-			return json;
-		},
-		onHotkeyChange : function(e){
-			var hotkey =  $(e.currentTarget).val().charCodeAt(0);
-			
-			var val = $(e.currentTarget).val();
-			$(e.currentTarget).val(  val.substr(val.length-1)  );
-		 	this.model.set("hotkey",hotkey);
-			this.model.save();
-		},
-		play : function(loop) {
-			var b = this.$el.css("background-color");
-			this.$el.transit({
-				"background-color" : "red"
-			}).transit({
-				"background-color" : b
-			});
-			window.socket.emit("play_track",{
-				track: this.jsonForPlay()
-			});
-			
-			if(loop){
-		//		var playTime = this.patternListView.patternList.getPlayTime();
-		//		setTimeout(this.play,playTime + 1);
-			}
-		},
-      	delete: function() {
-			var self = this;
-			if(confirm("Delete Track?")){
-				this.$el.fadeOut(function(){
-		      		self.patternListView.patternList.each(function(p){
-						p.destroy();
-		      		});
-				
-					self.model.destroy();
-				});
-			} else {
-				
-			}
-      	}
-    });
-    var TrackListView = Parse.View.extend({
-    	el: $("#track_list"),
-		initialize: function() {
-			var self = this;
-		    _.bindAll(this, 'addOne', 'addAll', 'render','onClickAddNew','onKeydown');
-	        this.trackList = new TrackList();
-			this.trackList.query = new Parse.Query(Track);
-	        this.trackList.bind('add',   this.addOne);
-	        this.trackList.bind('reset', this.addAll);
-	        this.trackList.bind('all',   this.render);
-			this.trackList.fetch();
-			
-			$("body").keydown(this.onKeydown);
-        },
-     	events: {
-        	"click .add-new-btn" : "onClickAddNew"
-      	},
-		onKeydown : function(e){
-			this.trackList.each(function(track){
-				if(track.get("hotkey") == e.keyCode){
-					console.log("play",e.keyCode,track);
-					track.view.play();
-				}
-			});
-		},
-		addOne: function(track) {
-			var view = new TrackView({model: track});
-			view.render();
-			$("#track_list").append(view.$el);
-			view.$el.css({"display":"none"});
-			view.$el.fadeIn();
-	    },
-		addAll: function(collection, filter) {
-	    	this.trackList.each(this.addOne);
-	    },
-		render : function() {
-		},
-		onClickAddNew : function(saveCallback,failureCallback){
-			var self = this;
-			var track = new Track();
-			track.save().then(function(gameTurnAgain) {
-				self.trackList.add(track);
-				if(_.isFunction(saveCallback)) saveCallback(track);
-//				if(saveCallback) saveCallback(track);
-			}, function(error) {
-//				if(failureCallback) failureCallback(error);
-				alert("fail to make new track");
-			});
-		}
-	});
-	
-    var LoginView = Parse.View.extend({
-    	el: $("#login_view"),
-		initialize: function() {
-			_.bindAll(this,"onLoginFailed","onLoginSuccess");
-        },
-     	events: {
-        	"click .login-btn" : "onClickLogin"
-      	},
-		onLoginFailed : function(user,error){
-			alert("failed to login : " + JSON.stringify(error));
-		},
-		onLoginSuccess : function(user){
-			window.trackListView = new TrackListView();
-			this.$el.fadeOut();
-		},
-		onClickLogin : function(){
-			var id 		 = this.$el.find(".id-input").val();
-			var password = this.$el.find(".password-input").val();
-			if (id && password) {
-			    Parse.User.logIn(id,password, {
-			    	success : this.onLoginSuccess,
-					error   : this.onLoginFailed
-			    });
-			} else {
-				alert("id or password is not filled");
-			}
-		}
-	});
-
-	var loginView = new LoginView();
-	loginView.$el.find(".id-input").val("admin");
-	loginView.$el.find(".password-input").val("admin");
-	loginView.onClickLogin();
-	
 });
