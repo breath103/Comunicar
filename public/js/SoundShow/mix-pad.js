@@ -29,18 +29,22 @@ $(document).ready(function(){
 			$("body").keydown(this.onKeydown);
       	},
 		onKeydown : function(e){
-			if (this.isInRecording){
-				var key = String.fromCharCode(e.keyCode);
-				var hotkeys = ['1','2','3','4'];
-				for(var i=0;i<hotkeys.length;i++){
-					if(hotkeys[i] == key){
-						$(this.$el.find(".btn-mix-type")[i]).trigger("click");
-						return;
-					}
-				}
+			var key = String.fromCharCode(e.keyCode);
+			if(e.keyCode == 192){
+				this.toggleRecording();
 			} else {
-				
+				if (this.isInRecording){
+					var hotkeys = ['1','2','3','4'];
+					for(var i=0;i<hotkeys.length;i++){
+						if(hotkeys[i] == key){
+							$(this.$el.find(".btn-mix-type")[i]).trigger("click");
+							return;
+						}
+					}
+				} else {
+				}	
 			}
+			
 		},
 		setCanvasImage : function(image_src) {
 	    	this.palleteImage = new Image();
@@ -138,7 +142,7 @@ $(document).ready(function(){
 			}
 		},
 		toggleRecording : function(e){
-			$button = $(e.currentTarget);
+			$button = this.$el.find(".recording-btn");
 			if (this.isInRecording) {
 				$button.html("Recording");
 				this.stopRecording();
