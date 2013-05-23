@@ -12,7 +12,7 @@ $(document).ready(function(){
 			if(str == "N" || str == "M"){
 				if(this.lastTimestamp) {
 					var elapsedTime = e.timeStamp - this.lastTimestamp;
-					console.log(elapsedTime);n
+					console.log(elapsedTime);
 					this.lastTimestamp = e.timeStamp;
 				} else {
 					this.lastTimestamp = e.timeStamp;
