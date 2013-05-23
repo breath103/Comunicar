@@ -1,0 +1,226 @@
+.touch-pad{
+	width:100%;
+	height:500px;
+}
+
+.login_view {
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	background-color:rgba(0,0,0,0.91);
+}
+.login_view .input-container{
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:26%;
+	width: 400px;
+}
+
+.monitoring-view
+{
+	width:100%;
+	border:none;
+}
+
+.container-fluid
+{
+	position:relative;
+}
+
+.touch-pad
+{
+/*	position:absolute;
+	left:0px;
+	top:0px;
+	width:100%;
+	height:100%;
+	display:none;
+*/}
+.touch-pad canvas
+{
+	width:100%;
+	height:80%;
+}
+.touch-pad .pad-background-list
+{
+	height:10%;
+	overflow-x: scroll;
+}
+.touch-pad .pad-background-list .pad-thumbnail
+{
+	width:auto;
+	height:100%;
+	float:left;
+	margin-left:10px;
+	margin-right:10px;
+}
+.touch-pad .pad-background-list .pad-thumbnail img
+{
+	width:auto;
+	height:100%;
+}
+
+
+.timeline-container {
+	width:100%;
+	height:200px;
+	background-color:#cccccc;
+}
+
+
+#pattern_list .pattern{
+	min-width:100px;
+	display:block;
+	border:1px solid black;
+	margin: 3px;
+	border-radius: 7px;
+	padding: 5px;
+	position:relative;
+}
+
+.pattern
+{
+	position:relative;
+}
+
+.pattern .delete-btn
+{
+	position:absolute;
+	display:none;
+	margin: 0;
+	padding: 2px;
+	top: 3%;
+	right: 3%;
+}
+.pattern:hover .delete-btn
+{
+	display:block;
+	
+}
+
+.FadeTo {
+	width:100px;
+}
+.FadeTo em{
+	width:30%;
+}
+.FadeTo input{
+	width:60%;
+	background:transparent;
+	margin:0;
+	padding:0;
+}
+.FadeTo .thumbnail
+{
+	height:50px;
+}
+
+
+.RandomBlink em{
+	width:30%;
+}
+.RandomBlink input{
+	width:60%;
+	background:transparent;
+	margin:0;
+	padding:0;
+}
+.RandomBlink .Colors{
+	
+}
+.RandomBlink .Colors .Color{
+	min-width:30px;
+	min-height:30px;
+}
+
+.BaseBlink em{
+	width:30%;
+}
+.BaseBlink input{
+	width:60%;
+	background:transparent;
+	margin:0;
+	padding:0;
+}
+.BaseBlink .Color{
+	min-width:30px;
+	min-height:30px;
+}
+
+
+
+
+.Color {
+	width: 50px;
+	height: 50px;
+}
+.pallete .pattern select{
+	float:left;
+}
+.pallete .pattern .add-color-btn {
+	float:right;
+	height:100%;
+	position:relative;
+}
+.pallete .pattern .Color {
+	float:left;
+	display:inline-block;
+	width:40px;
+	height:100%;
+	position:relative;
+}
+.pallete .pattern .Color .overlay {
+	position:absolute;
+	width:15px;
+	height:15px;
+	background-color:red;
+	display:none;
+}
+.pallete .pattern .Color:hover .overlay {
+	position:absolute;
+	width:15px;
+	height:15px;
+	background-color:rgba(0,0,0,100);
+	display:block;
+}
+
+.track_list 
+{
+	width:100%;
+	float:left;
+}
+.track_list .track
+{
+	width: 100%;
+	float: left;
+	margin-bottom: 10px;
+	padding: 10px;
+	background-color: rgb(201, 201, 201);
+	box-sizing: border-box;
+	border-radius: 12px;
+}
+.track_list .track .header 
+{
+	float:left;
+	width:20%;
+}
+.track_list .track .pattern_list
+{
+	float:left;
+	width:80%;
+}
+.track_list .track .hotkey-input
+{
+	width:1em;
+	padding:0;
+	margin:0;
+}
+
+.track_list .track .pattern_list .pattern
+{
+	width:auto;
+	height:auto;
+	display:inline-block;
+}
