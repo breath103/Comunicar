@@ -3,11 +3,11 @@ var fs = require("fs");
 module.exports = function(app){
     console.log("   --SITES--");
     
-    app.get("/",function(req,res){
-        res.render("FBdiary",{
-            title : "RollingPaper"
-        }); 
-    });
+    // app.get("/",function(req,res){
+    //     res.render("FBdiary",{
+    //         title : "RollingPaper"
+    //     }); 
+    // });
 
     require("./admin")(app);
     require("./auth")(app);

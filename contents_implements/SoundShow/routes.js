@@ -3,15 +3,14 @@ var fs   = require("fs");
 module.exports = function(content,app){
 	var path 	 = util.format("/contents/%s/",content.name);
 	var viewPath = util.format("contents/%s/" ,content.name);
-	
 		
-	app.get(path + "client",function(req,res){
+	app.get("/",function(req,res){
     	res.render(viewPath + "client-parking",{
     		content : req.content
     	});
     });
 	
-    app.get(path + "view",function(req,res){
+    app.get("/view",function(req,res){
 		fs.readdir(process.cwd() + "/public/contents/SoundShow/touchpads", function(error, files) {
 			if (error) {
 				console.log(error);
@@ -31,5 +30,4 @@ module.exports = function(content,app){
 			}
 		});
 	});
-	
 };	
