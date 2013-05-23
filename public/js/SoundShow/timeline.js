@@ -9,10 +9,10 @@ $(document).ready(function(){
 		},
 		onKeydown : function(e) {
 			var str = String.fromCharCode(e.keyCode);
-			console.log(str,e);
 			if(str == "N" || str == "M"){
 				if(this.lastTimestamp) {
 					var elapsedTime = e.timeStamp - this.lastTimestamp;
+					console.log(elapsedTime);n
 					this.lastTimestamp = e.timeStamp;
 				} else {
 					this.lastTimestamp = e.timeStamp;

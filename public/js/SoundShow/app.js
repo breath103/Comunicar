@@ -50,6 +50,7 @@
 			className : "Color",
 	     	template: _.template($('#Pattern-Color-template').html()),
 			events: {
+				"change .delay_input" : "onChange"
 			},
 		  	initialize: function() {
 	        	_.bindAll(this, 'render','onClickColor');
@@ -486,9 +487,9 @@
 			var track = new Track();
 			track.save().then(function(gameTurnAgain) {
 				self.trackList.add(track);
-				if(saveCallback) saveCallback(track);
+//				if(saveCallback) saveCallback(track);
 			}, function(error) {
-				if(failureCallback) failureCallback(error);
+//				if(failureCallback) failureCallback(error);
 				alert("fail to make new track");
 			});
 		}
