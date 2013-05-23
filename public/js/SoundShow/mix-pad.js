@@ -5,7 +5,7 @@ $(document).ready(function(){
 		events : {
 			"click .recording-btn" : "toggleRecording",
 			"click .pad-thumbnail" : "onClickPad",
-			"click .btn-mix-type"  : "onChangeMixType"
+			"click .btn-mix-type"  : "onChangeMixType",
 			"touchstart .btn-mix-type"  : "onChangeMixType"
 		},
       	initialize: function() {
