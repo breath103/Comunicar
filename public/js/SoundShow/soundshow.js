@@ -1,3 +1,16 @@
+
+
+$.fn.transitionStop = function (clearTransitionCB) {
+    if($.transit.useTransitionEnd) {
+        $(this).unbind(transitionEnd);
+    } else {
+//        clearTimeout(windowTimeout);
+    }
+    $(this).stop(true,true);
+    if (clearTransitionCB) clearTransitionCB.apply($(this));
+    return $(this);
+};
+
 function Track(){
 	this.patterns = [];//data.patterns;
 	this.currentIndex = 0;
@@ -21,7 +34,7 @@ Track.prototype = {
 		self.$div = $div;
 		var _runNextTrack = function(){
 			if (self.currentIndex >= self.patterns.length) {
-				self.stop();
+				self.stop($div);
 				if(cb)
 					cb();
 			} else {
@@ -35,7 +48,7 @@ Track.prototype = {
 	},
 	stop : function($div){
 		if($div)
-			$div.clearQueue();
+			$div.transitionStop();
 		if(this.currentPattern)
 			this.currentPattern.onEnd($div);
 		this.currentIndex 	= 0;
@@ -79,7 +92,7 @@ FadeTo.prototype = {
 	run : function($div,endCallback){
 		var self = this;
 		self.isEnd = false;
-		$div.clearQueue().transit({"background-color" : self.color},self.time,function(){
+		$div.transitionStop().transit({"background-color" : self.color},self.time,function(){
 			if(!self.isEnd){
 				self.endTimeoutHandle = setTimeout(function(){
 					self.onEnd($div);
@@ -92,7 +105,7 @@ FadeTo.prototype = {
 	onEnd : function($div){
 		var self = this;
 		self.isEnd = true; 
-		$div.clearQueue();
+		$div.transitionStop();
 		clearTimeout(self.endTimeoutHandle);
 	}
 }
