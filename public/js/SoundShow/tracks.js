@@ -66,14 +66,15 @@ $(function() {
 				track: this.jsonForPlay()
 			});
 			
-			if(window.trackLoopPlayHandle && window.currentTrack != this )
+			if( (window.trackLoopPlayHandle && window.currentTrack != this) ) 
+		   //     ( loop= && window.currentTrack == this))
 			{
 				console.log(window.trackLoopPlayHandle);
 				clearInterval(window.trackLoopPlayHandle);
 				window.trackLoopPlayHandle = null;
 				window.currentTrack = null;
 			}
-			
+			 
 			if(loop){
 				console.log(window.trackLoopPlayHandle);
 				clearInterval(window.trackLoopPlayHandle);
@@ -131,7 +132,7 @@ $(function() {
 			$("body").keydown(this.onKeydown);
         },
 		setSong : function(song){
-			$("#track_list").children(".Track").remove();
+			$("#track_list").children(".track").remove();
 	        this.trackList = new TrackList();
 			this.trackList.query = new Parse.Query(Track);
 			this.trackList.query.equalTo("song", song);

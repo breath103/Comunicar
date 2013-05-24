@@ -30,8 +30,10 @@ $(function() {
 			$(this.el).html( this.template({ e:this.model.toJSON() }) );
 		},
 		showSong : function(){
-			window.trackListView = new TrackListView({song : this.model});
-			console.log(this.model.toJSON());
+			if(!window.trackListView)
+				window.trackListView = new TrackListView({song : this.model});
+			else
+				window.trackListView.setSong(this.model);
 		},
       	delete: function() {
 			var self = this;
