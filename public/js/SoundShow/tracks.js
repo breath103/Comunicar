@@ -67,8 +67,13 @@ $(function() {
 			});
 			
 			if(loop){
-		//		var playTime = this.patternListView.patternList.getPlayTime();
-		//		setTimeout(this.play,playTime + 1);
+				var playTime = this.patternListView.patternList.getPlayTime();
+				if(window.trackLoopPlayHandle)
+				{
+					console.log(window.trackLoopPlayHandle);
+					clearInterval(window.trackLoopPlayHandle);
+				}
+				window.trackLoopPlayHandle = setInterval(this.play,playTime + 1);
 			}
 		},
       	delete: function() {
@@ -127,10 +132,12 @@ $(function() {
 		},
 		
 		onKeydown : function(e){
+			console.log(e);
+			var loop = e.shiftKey;
 			this.trackList.each(function(track){
 				if(track.get("hotkey") == e.keyCode){
-					console.log("play",e.keyCode,track);
-					track.view.play();
+//					console.log("play",e.keyCode,track);
+					track.view.play(loop);
 				}
 			});
 		},
