@@ -4,13 +4,13 @@ module.exports = function(content,app){
 	var path 	 = util.format("/contents/%s/",content.name);
 	var viewPath = util.format("contents/%s/" ,content.name);
 		
-	app.get("/",function(req,res){
-    	res.render(viewPath + "client-parking",{
-    		content : req.content
-    	});
-    });
+	// app.get("/",function(req,res){
+	//     	res.render(viewPath + "client-parking",{
+	//     		content : req.content
+	//     	});
+	//     });
 	
-	app.get("/client",function(req,res){
+	app.get("/",function(req,res){
     	res.render(viewPath + "client",{
     		content : req.content
     	});
