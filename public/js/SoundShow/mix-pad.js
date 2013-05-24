@@ -185,25 +185,25 @@ $(document).ready(function(){
 		stopRecording : function(){
 			this.isInRecording = false;
 
-			// var self = this;
-			// var track = this.recoding_track;
-			// var trackView = track.view;
-			// var patternListView = trackView.patternListView;
-			// var previousTimestamp = null;
-			// 
-			// _.each(self.colors,function(node){
-			// 	if(previousTimestamp){
-			// 		node.time = node.event.timeStamp - previousTimestamp;
-			// 	} else {
-			// 		node.time = 1;
-			// 	}
-			// 	previousTimestamp = node.event.timeStamp;
-			// 	patternListView.createPatternWithType("FadeTo",{
-			// 		color : node.color,
-			// 		delay : 0,
-			// 		time  : node.time
-			// 	});
-			// });
+			var self = this;
+			var track = this.recoding_track;
+			var trackView = track.view;
+			var patternListView = trackView.patternListView;
+			var previousTimestamp = null;
+
+			_.each(self.colors,function(node){
+				if(previousTimestamp){
+					node.time = node.event.timeStamp - previousTimestamp;
+				} else {
+					node.time = 1;
+				}
+				previousTimestamp = node.event.timeStamp;
+				patternListView.createPatternWithType("FadeTo",{
+					color : node.color,
+					delay : 0,
+					time  : node.time
+				});
+			});
 			
 			console.log("Stop recording");
 		},
