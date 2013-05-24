@@ -103,25 +103,29 @@ $(function() {
 	
     window.TrackListView = Parse.View.extend({
     	el: $("#track_list"),
+     	events: {
+        	"click .add-new-btn" : "onClickAddNew"
+      	},
 		initialize: function() {
 			var self = this;
 		    _.bindAll(this, 'addOne', 'addAll', 'render','onClickAddNew','onKeydown');
 			
         	this.song = this.options.song;
 			
+			this.setSong(this.song);
+			$("body").keydown(this.onKeydown);
+        },
+		setSong : function(song){
+			$("#track_list").children().remove();
 	        this.trackList = new TrackList();
 			this.trackList.query = new Parse.Query(Track);
-			this.trackList.query.equalTo("song", this.song);
+			this.trackList.query.equalTo("song", song);
 			this.trackList.bind('add',   this.addOne);
 	        this.trackList.bind('reset', this.addAll);
 	        this.trackList.bind('all',   this.render);
 			this.trackList.fetch();
-			
-			$("body").keydown(this.onKeydown);
-        },
-     	events: {
-        	"click .add-new-btn" : "onClickAddNew"
-      	},
+		},
+		
 		onKeydown : function(e){
 			this.trackList.each(function(track){
 				if(track.get("hotkey") == e.keyCode){
