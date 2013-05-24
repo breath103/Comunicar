@@ -170,17 +170,20 @@
 					$("#left-main-column").transit({"width":"100%"},function(){
 						mixPadView.onResize();
 					});
-					$("#right-main-column").transit({"width":"0%","opacity":0},function(){
-						mixPadView.onResize();
-					});
+					$("#right-main-column").css("display","none");
+//					$("#right-main-column").transit({"width":"0%","opacity":0},function(){
+//						mixPadView.onResize();
+//					});
 					opened = true;
 				} else {
 					$("#left-main-column").transit({"width":"23%"},function(){
 						mixPadView.onResize();
 					});
-					$("#right-main-column").transit({"width":"74%","opacity":1},function(){
-						mixPadView.onResize();
-					});
+					$("#right-main-column").css("display","block");
+					
+					// $("#right-main-column").transit({"width":"74%","opacity":1},function(){
+					// 	mixPadView.onResize();
+					// });
 					opened = false;
 				}
 			}
@@ -203,9 +206,6 @@
 			<div class="song-list">
 				
 			</div>
-			<button class="btn btn-success add-new-song">
-				<i class="icon-plus"></i> color
-			</button>
 		</div>
 		
 		<div class="container-fluid">
