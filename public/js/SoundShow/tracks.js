@@ -66,14 +66,24 @@ $(function() {
 				track: this.jsonForPlay()
 			});
 			
+			if(window.trackLoopPlayHandle && window.currentTrack != this )
+			{
+				console.log(window.trackLoopPlayHandle);
+				clearInterval(window.trackLoopPlayHandle);
+				window.trackLoopPlayHandle = null;
+				window.currentTrack = null;
+			}
+			
 			if(loop){
+				console.log(window.trackLoopPlayHandle);
+				clearInterval(window.trackLoopPlayHandle);
+				window.trackLoopPlayHandle = null;
+				window.currentTrack = null;
+				
+				
 				var playTime = this.patternListView.patternList.getPlayTime();
-				if(window.trackLoopPlayHandle)
-				{
-					console.log(window.trackLoopPlayHandle);
-					clearInterval(window.trackLoopPlayHandle);
-				}
 				window.trackLoopPlayHandle = setInterval(this.play,playTime + 1);
+				window.currentTrack = this;
 			}
 		},
       	delete: function() {
