@@ -116,7 +116,7 @@ $(function() {
 			$("body").keydown(this.onKeydown);
         },
 		setSong : function(song){
-			$("#track_list").children().remove();
+			$("#track_list").children(".Track").remove();
 	        this.trackList = new TrackList();
 			this.trackList.query = new Parse.Query(Track);
 			this.trackList.query.equalTo("song", song);
