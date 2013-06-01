@@ -1,12 +1,9 @@
 var http = require("http"),
     Step = require("step"),
     util = require("util");
-
 process.on('uncaughtException', function(err) {
     console.error(err.stack);
 });
-
-
 try {
     Step(function() {
     	console.log("DB init start");
