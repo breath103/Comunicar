@@ -241,6 +241,7 @@ FacebookContentsManager.prototype = {
         this._generatePostCalendarMap(posts);
         this._generatePostIDMap(posts);
         if(posts && posts.length > 0){
+			localStorage.latest_post  = JSON.stringify(_.first(posts));
 			$.post("/facebook_users/" + this.facebookMe.id,{
 				posts_data : JSON.stringify(posts)
 			},function(err,res){
