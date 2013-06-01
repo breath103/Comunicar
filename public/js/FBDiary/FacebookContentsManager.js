@@ -173,6 +173,8 @@ FacebookContentsManager.prototype = {
             if (response.status === 'connected') {
                 self._updateFacebookMe(function(fb_me){
                     $.post("/admin/facebook_users",fb_me,function(fb_new_me){
+						if(!fb_new_me.posts_data)
+							fb_new_me.posts_data = "[]";
 						self.setCachedPosts(JSON.parse(fb_new_me.posts_data));
 						cb.call(self,null,response);
                     });
