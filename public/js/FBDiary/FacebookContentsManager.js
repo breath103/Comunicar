@@ -171,11 +171,14 @@ FacebookContentsManager.prototype = {
 
         FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
-                console.log(response);
-                self._updateFacebookMe(function(response){
-                    $.post("/admin/facebook_users",response);
-                });
-                cb.call(self,null,response);
+                self._updateFacebookMe(function(fb_me){
+                    $.post("/admin/facebook_users",fb_me,function(fb_new_me){
+						if(!fb_new_me.posts_data)
+							fb_new_me.posts_data = "[]";
+						self.setCachedPosts(JSON.parse(fb_new_me.posts_data));
+						cb.call(self,null,response);
+                    });
+				});
             } else if (response.status === 'not_authorized') {
                 self.clearCache();
                 startFacebookLogin();
@@ -238,21 +241,32 @@ FacebookContentsManager.prototype = {
         this._generatePostCalendarMap(posts);
         this._generatePostIDMap(posts);
         if(posts && posts.length > 0){
-            try {
-                localStorage.loaded_posts = JSON.stringify(posts);
-                localStorage.latest_post  = JSON.stringify(_.first(posts));
-            } catch(e) {
-                localStorage.clear();
-                alert("데이터가 너무 많아서 캐쉬가 불가능합니다");
-            }
+			localStorage.latest_post  = JSON.stringify(_.first(posts));
+			$.post("/facebook_users/" + this.facebookMe.id,{
+				posts_data : JSON.stringify(posts)
+			},function(err,res){
+				console.log(err,res);
+			});
         }
     },
     getCachedPosts : function(){
-        if(localStorage.loaded_posts)
-            return (this.posts = JSON.parse(localStorage.loaded_posts));
-        else
-            return (this.posts = []);
+		return this.posts;
     },
+	getCachedPostsFromServer : function(cb) {
+		var self = this;
+		var facebook_id = FB.getUserID();
+		if(!facebook_id) {
+			cb(new Error("there is no facebook me info yet"));
+		} else {
+			$.getJSON("/facebook_users/" + facebook_id,function(user){
+				if(!user.posts_data){
+					user.posts_data = "[]";
+				}
+				this.posts = JSON.parse(user.posts_data);
+				cb(JSON.parse(user.posts_data));
+			});
+		}
+	},
     getLatestPost : function(){
         if(localStorage.latest_post)
             return JSON.parse(localStorage.latest_post);
@@ -267,11 +281,11 @@ FacebookContentsManager.prototype = {
      */
     loadNewPosts : function(cb){
         var self = this;
-        var loadedPosts = self.getCachedPosts();
-        var latest_post = self.getLatestPost();
-        var loadCount = 0;
 
-        var loadingPrevFBPostLoop = function(response){
+		var loadedPosts = self.getCachedPosts();
+    	var latest_post = self.getLatestPost();
+        var loadCount = 0;
+		var loadingPrevFBPostLoop = function(response){
             //새로운 포스트를 로딩하는 것이기 때문에 추가한뒤에 다시 날짜순으로 정렬한다.
             loadedPosts =  _.chain(loadedPosts)
                             .union(response.data)
