@@ -13,9 +13,11 @@ describe("DiaryController",function(){
 			expect(controller.fbContentsManager).to.be.a(FacebookContentsManager);
 		});
 	});
+	
 	describe("showDay",function(){
 		
 	});
+	
 	describe("serachFilter",function(){
 		var filter = {
 			query : "hello"

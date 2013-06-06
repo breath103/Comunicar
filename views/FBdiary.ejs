@@ -13,7 +13,8 @@
         <script src="/js/jquery-1.8.2.min.js"></script>
         <script src="/js/jquery.transit.min.js"></script>
         <script src="/js/jquery-ui-1.10.2.custom.js"></script>
-        <script src="/fancybox/jquery.fancybox.js"></script>
+        <script src="/js/jquery.cookie.js"></script>
+		<script src="/fancybox/jquery.fancybox.js"></script>
         <script src="/js/moment/moment.min.js"></script>
         <script src="/js/FBDiary/date.js"></script>
         <script src="/js/bootstrap.min.js"></script>
@@ -36,7 +37,13 @@
         <script>
             $(document).ready(function () {
                 FacebookDiaryApp();
-            });
+
+				$.cookie("saw_intro","");
+				if (!$.cookie("saw_intro")) {
+					$(".Intro").css({"display":"block"});
+					$.cookie("saw_intro", true);
+				}
+			});
         </script>
     </head>
     <body>
@@ -237,6 +244,18 @@
 			
             <a class="fancybox.iframe" id="facebook-popup"></a>
         </div>
-        <div class="Loading" ></div>
-    </body>
+        <div class="Loading"> </div>
+        <div class="Intro">
+				<div class="arrow-btn-left" style="display:inline-block; height:100%; width:10%;margin-left:10%">
+					<img src="/images/fbdiary/left_arrow_btn.png" width='100%' height='auto'/>
+				</div>	
+				<div class="image-container" style="display:inline-block; height:100%; width:60%">
+				</div>
+				<div class="arrow-btn-right" style="display:inline-block; height:100%; width:10%; margin-right:10%">
+					<img src="/images/fbdiary/right_arrow_btn.png" width='100%' height='auto'/>
+			    </div>
+				<!-- <a><img src="/images/fbdiary/intro/left_arrow_btn_intro.png"></a>
+			<a><img src="/images/fbdiary/intro/right_arrow_btn_intro.png"></a> -->
+		</div>
+	</body>
 </html>
