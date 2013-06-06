@@ -42,11 +42,9 @@
 
                 image.onload = function() {
                 	var $canvas = $("#painter");
-                	
                 	var ctx = $canvas.get2dContext();
                 	
-                	
-                	
+				
                 	var maxWidth    = $(".canvas_container").width(),
                         maxHeight   = $(".canvas_container").height(),
                         imageWidth = image.width,
@@ -148,8 +146,20 @@
                 });
             }
 
-            $(document).ready(function() {
-            //    alert("사진을 선택한뒤 화면에 보여지면 핸드폰을 흔들어주세요.\n그래도 업로드가 안된다면 아래 버튼을 눌러주세요");
+			function getLocation() {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(showPosition);
+			    } else{
+					alert("geolocation is not");
+			 	}
+			}
+			function showPosition(position) {
+				alert(JSON.stringify(position));
+			}
+			
+            $(document).ready(function() {		
+				getLocation();
+
                 connectWS();
                 $("#image_input").change(function() {
                     var fileReader = new FileReader();
@@ -252,6 +262,7 @@
 				background-image: url("/images/comunicar/postit_text_btn.png");
 				background-size: 100% 100%;
 			}
+			
         	.site { 
 	        	width:100%;
 	        	height:100%;
