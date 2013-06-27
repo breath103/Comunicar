@@ -17,11 +17,9 @@
             $.fn.get2dContext = function(){
 	            return this[0].getContext("2d");
             };
-            
             $.fn.resizeContext = function(){
 	           	$(this)[0].width  = $(this).width();
 	           	$(this)[0].height = $(this).height();
-            
             };
 
             function uploadImage() {
@@ -44,13 +42,11 @@
                 	var $canvas = $("#painter");
                 	var ctx = $canvas.get2dContext();
                 	
-				
-                	var maxWidth    = $(".canvas_container").width(),
+					var maxWidth    = $(".canvas_container").width(),
                         maxHeight   = $(".canvas_container").height(),
                         imageWidth = image.width,
                         imageHeight = image.height;
-
-                    if (imageWidth > imageHeight) {
+					if (imageWidth > imageHeight) {
                         if (imageWidth > maxWidth) {
                             imageHeight *= maxWidth / imageWidth;
                             imageWidth = maxWidth;
@@ -67,8 +63,7 @@
                     $canvas.height(imageHeight);
                     $canvas.resizeContext();
                     
-                    
-                    ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+					ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
                 }
             }
 
@@ -145,16 +140,16 @@
                 	return false;
                 });
             }
-
-			function getLocation() {
+			
+			//cb function(isCached, position){ }
+			function getLocation(cb) {
 				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(showPosition);
+					navigator.geolocation.getCurrentPosition(function(position){
+						alert(JSON.stringify(position));
+					});
 			    } else{
-					alert("geolocation is not");
+					alert("GeoLocation is not supported");
 			 	}
-			}
-			function showPosition(position) {
-				alert(JSON.stringify(position));
 			}
 			
             $(document).ready(function() {		
